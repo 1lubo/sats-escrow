@@ -1,2 +1,0 @@
-fn(axum::extract::State<AppState>, AuthUser, axum::extract::Path<Uuid>, Json<VoteRequest>) -> impl std::future::Future<Output = Result<ApiResponse<DisputeResponse>, ApiError>> {routes::dispute::submit_vote}
-fn(axum::extract::State<AppState>, AuthUser, axum::extract::Path<Uuid>, Json<VoteRequest>) -> impl std::future::Future<Output = Result<ApiResponse<DisputeResponse>, ApiError>> {routes::dispute::submit_vote}: Handler<_, _>

@@ -1,2 +1,0 @@
-fn(axum::extract::State<AppState>, AuthUser) -> impl std::future::Future<Output = Result<ApiResponse<Vec<EscrowResponse>>, ApiError>> {list_user_escrows}
-fn(axum::extract::State<AppState>, AuthUser) -> impl std::future::Future<Output = Result<ApiResponse<Vec<EscrowResponse>>, ApiError>> {list_user_escrows}: Handler<_, _>
