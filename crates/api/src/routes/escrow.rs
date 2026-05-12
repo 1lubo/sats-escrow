@@ -9,8 +9,9 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use sats_escrow_core::{
-    escrow::{CancelReason, Escrow, EscrowState, EscrowTerms},
-    types::{Evidence, Party, Satoshis},
+    dispute::Dispute,
+    escrow::{CancelReason, Escrow, EscrowTerms},
+    types::{DisputeId, EscrowId, Evidence, Party, Satoshis, TxId},
     user::UserId,
 };
 
@@ -82,6 +83,24 @@ pub struct DisputeRequest {
     pub attachments: Vec<String>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct FundRequest {
+    pub tx_id: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CancelRequest {
+    #[serde(default)]
+    pub reason: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct ActionResponse {
+    pub success: bool,
+    pub message: String,
+    pub escrow: EscrowResponse,
+}
+
 // === Route Handlers ===
 
 async fn create_escrow(
@@ -146,8 +165,200 @@ async fn list_user_escrows(
     Ok(ApiResponse::new(responses))
 }
 
+/// Mark escrow as funded (typically called via webhook from custodian)
+async fn fund_escrow(
+    State(state): State<AppState>,
+    Path(id): Path<Uuid>,
+    Json(req): Json<FundRequest>,
+) -> ApiResult<ApiResponse<ActionResponse>> {
+    let mut escrow = state.services.escrow_repo
+        .find_by_id(&EscrowId(id))
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?
+        .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+
+    escrow.mark_funded(TxId(req.tx_id))
+        .map_err(ApiError::from)?;
+
+    state.services.escrow_repo
+        .update(&escrow)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    Ok(ApiResponse::new(ActionResponse {
+        success: true,
+        message: "Escrow marked as funded".to_string(),
+        escrow: EscrowResponse::from(&escrow),
+    }))
+}
+
+/// Seller marks delivery complete
+async fn mark_delivered(
+    State(state): State<AppState>,
+    AuthUser(user_id): AuthUser,
+    Path(id): Path<Uuid>,
+) -> ApiResult<ApiResponse<ActionResponse>> {
+    let mut escrow = state.services.escrow_repo
+        .find_by_id(&EscrowId(id))
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?
+        .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+
+    // Verify caller is the seller
+    if escrow.seller != user_id {
+        return Err(ApiError::forbidden("Only the seller can mark as delivered"));
+    }
+
+    escrow.mark_delivered(user_id)
+        .map_err(ApiError::from)?;
+
+    state.services.escrow_repo
+        .update(&escrow)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    Ok(ApiResponse::new(ActionResponse {
+        success: true,
+        message: "Escrow marked as delivered".to_string(),
+        escrow: EscrowResponse::from(&escrow),
+    }))
+}
+
+/// Buyer confirms receipt and releases funds to seller
+async fn confirm_escrow(
+    State(state): State<AppState>,
+    AuthUser(user_id): AuthUser,
+    Path(id): Path<Uuid>,
+) -> ApiResult<ApiResponse<ActionResponse>> {
+    let mut escrow = state.services.escrow_repo
+        .find_by_id(&EscrowId(id))
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?
+        .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+
+    // Verify caller is the buyer
+    if escrow.buyer != user_id {
+        return Err(ApiError::forbidden("Only the buyer can confirm receipt"));
+    }
+
+    // Release funds to seller via custodian
+    let tx_id = state.services.custodian
+        .transfer(&escrow.id, &escrow.seller, escrow.amount.clone())
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    escrow.confirm(user_id, tx_id)
+        .map_err(ApiError::from)?;
+
+    state.services.escrow_repo
+        .update(&escrow)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    Ok(ApiResponse::new(ActionResponse {
+        success: true,
+        message: "Escrow confirmed, funds released to seller".to_string(),
+        escrow: EscrowResponse::from(&escrow),
+    }))
+}
+
+/// Buyer opens a dispute
+async fn open_dispute(
+    State(state): State<AppState>,
+    AuthUser(user_id): AuthUser,
+    Path(id): Path<Uuid>,
+    Json(req): Json<DisputeRequest>,
+) -> ApiResult<CreatedResponse<ActionResponse>> {
+    let mut escrow = state.services.escrow_repo
+        .find_by_id(&EscrowId(id))
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?
+        .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+
+    // Verify caller is the buyer
+    if escrow.buyer != user_id {
+        return Err(ApiError::forbidden("Only the buyer can open a dispute"));
+    }
+
+    // Create the dispute record
+    let evidence = Evidence {
+        description: req.description,
+        attachments: req.attachments,
+    };
+
+    let dispute = Dispute::new(
+        escrow.id.clone(),
+        user_id.clone(),
+        evidence,
+    );
+    let dispute_id = dispute.id.clone();
+
+    // Update escrow state
+    escrow.open_dispute(user_id, dispute_id)
+        .map_err(ApiError::from)?;
+
+    // Persist both
+    state.services.dispute_repo
+        .create(&dispute)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    state.services.escrow_repo
+        .update(&escrow)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    Ok(CreatedResponse(ActionResponse {
+        success: true,
+        message: "Dispute opened".to_string(),
+        escrow: EscrowResponse::from(&escrow),
+    }))
+}
+
+/// Cancel escrow (only allowed before funding)
+async fn cancel_escrow(
+    State(state): State<AppState>,
+    AuthUser(user_id): AuthUser,
+    Path(id): Path<Uuid>,
+    Json(_req): Json<CancelRequest>,
+) -> ApiResult<ApiResponse<ActionResponse>> {
+    let mut escrow = state.services.escrow_repo
+        .find_by_id(&EscrowId(id))
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?
+        .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+
+    // Verify caller is buyer or seller
+    let reason = if escrow.buyer == user_id {
+        CancelReason::BuyerCancelled
+    } else if escrow.seller == user_id {
+        CancelReason::SellerCancelled
+    } else {
+        return Err(ApiError::forbidden("Only buyer or seller can cancel"));
+    };
+
+    escrow.cancel(reason, user_id)
+        .map_err(ApiError::from)?;
+
+    state.services.escrow_repo
+        .update(&escrow)
+        .await
+        .map_err(|e| ApiError::internal(e.to_string()))?;
+
+    Ok(ApiResponse::new(ActionResponse {
+        success: true,
+        message: "Escrow cancelled".to_string(),
+        escrow: EscrowResponse::from(&escrow),
+    }))
+}
+
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/api/v1/escrows", post(create_escrow).get(list_user_escrows))
         .route("/api/v1/escrows/{id}", get(get_escrow))
+        .route("/api/v1/escrows/{id}/fund", post(fund_escrow))
+        .route("/api/v1/escrows/{id}/deliver", post(mark_delivered))
+        .route("/api/v1/escrows/{id}/confirm", post(confirm_escrow))
+        .route("/api/v1/escrows/{id}/dispute", post(open_dispute))
+        .route("/api/v1/escrows/{id}/cancel", post(cancel_escrow))
 }

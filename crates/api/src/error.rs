@@ -145,6 +145,15 @@ impl ApiError {
             details: None,
         }
     }
+
+    pub fn forbidden(message: impl Into<String>) -> Self {
+        Self {
+            status: StatusCode::FORBIDDEN,
+            code: "FORBIDDEN".to_string(),
+            message: message.into(),
+            details: None,
+        }
+    }
 }
 
 pub type ApiResult<T> = Result<T, ApiError>;
