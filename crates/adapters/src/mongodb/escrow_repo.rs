@@ -1,6 +1,6 @@
 //! MongoDB implementation of EscrowRepository
 
-use mongodb::{bson::doc, Collection};
+use mongodb::{bson::doc, Collection, Database};
 use sats_escrow_core::{
     escrow::Escrow,
     error::{Error, Result},
@@ -9,8 +9,6 @@ use sats_escrow_core::{
     user::UserId,
 };
 
-use super::MongoClient;
-
 /// MongoDB-backed escrow repository
 pub struct MongoEscrowRepository {
     collection: Collection<Escrow>,
@@ -18,8 +16,8 @@ pub struct MongoEscrowRepository {
 
 impl MongoEscrowRepository {
     /// Create a new MongoDB escrow repository
-    pub fn new(client: &MongoClient) -> Self {
-        let collection = client.database().collection(client.escrows_collection());
+    pub fn new(database: Database) -> Self {
+        let collection = database.collection("escrows");
         Self { collection }
     }
 }

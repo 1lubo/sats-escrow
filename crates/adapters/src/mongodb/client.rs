@@ -7,26 +7,40 @@ use tracing::info;
 #[derive(Clone)]
 pub struct MongoClient {
     client: Client,
-    database: Database,
 }
 
 impl MongoClient {
-    /// Create a new MongoDB client
-    pub async fn new(uri: &str, database_name: &str) -> Result<Self, mongodb::error::Error> {
+    /// Connect to MongoDB using a connection string
+    pub async fn connect(uri: &str) -> Result<Self, mongodb::error::Error> {
         let options = ClientOptions::parse(uri).await?;
         let client = Client::with_options(options)?;
-        let database = client.database(database_name);
-        
-        // Test connection
-        database.run_command(mongodb::bson::doc! { "ping": 1 }, None).await?;
-        info!("Connected to MongoDB database: {}", database_name);
-        
-        Ok(Self { client, database })
+        Ok(Self { client })
     }
 
-    /// Get the underlying database reference
-    pub fn database(&self) -> &Database {
-        &self.database
+    /// Create a new MongoDB client (legacy API)
+    pub async fn new(uri: &str, database_name: &str) -> Result<Self, mongodb::error::Error> {
+        let client = Self::connect(uri).await?;
+
+        // Test connection
+        let db = client.database(database_name);
+        db.run_command(mongodb::bson::doc! { "ping": 1 }, None).await?;
+        info!("Connected to MongoDB database: {}", database_name);
+
+        Ok(client)
+    }
+
+    /// Ping the database to verify connection
+    pub async fn ping(&self) -> Result<(), mongodb::error::Error> {
+        self.client
+            .database("admin")
+            .run_command(mongodb::bson::doc! { "ping": 1 }, None)
+            .await?;
+        Ok(())
+    }
+
+    /// Get a database reference by name
+    pub fn database(&self, name: &str) -> Database {
+        self.client.database(name)
     }
 
     /// Get the underlying client reference

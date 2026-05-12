@@ -1,13 +1,11 @@
 //! MongoDB implementation of UserRepository
 
-use mongodb::{bson::doc, Collection};
+use mongodb::{bson::doc, Collection, Database};
 use sats_escrow_core::{
     error::{Error, Result},
     traits::repository::{BoxFuture, UserRepository},
     user::{User, UserId, UserRole},
 };
-
-use super::MongoClient;
 
 /// MongoDB-backed user repository
 pub struct MongoUserRepository {
@@ -16,8 +14,8 @@ pub struct MongoUserRepository {
 
 impl MongoUserRepository {
     /// Create a new MongoDB user repository
-    pub fn new(client: &MongoClient) -> Self {
-        let collection = client.database().collection(client.users_collection());
+    pub fn new(database: Database) -> Self {
+        let collection = database.collection("users");
         Self { collection }
     }
 }

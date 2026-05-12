@@ -1,6 +1,6 @@
 //! MongoDB implementation of DisputeRepository
 
-use mongodb::{bson::doc, Collection};
+use mongodb::{bson::doc, Collection, Database};
 use sats_escrow_core::{
     dispute::Dispute,
     error::{Error, Result},
@@ -9,8 +9,6 @@ use sats_escrow_core::{
     user::UserId,
 };
 
-use super::MongoClient;
-
 /// MongoDB-backed dispute repository
 pub struct MongoDisputeRepository {
     collection: Collection<Dispute>,
@@ -18,8 +16,8 @@ pub struct MongoDisputeRepository {
 
 impl MongoDisputeRepository {
     /// Create a new MongoDB dispute repository
-    pub fn new(client: &MongoClient) -> Self {
-        let collection = client.database().collection(client.disputes_collection());
+    pub fn new(database: Database) -> Self {
+        let collection = database.collection("disputes");
         Self { collection }
     }
 }

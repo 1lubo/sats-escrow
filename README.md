@@ -66,7 +66,7 @@ Authorization: Bearer <user-uuid>
 
 The token is parsed as a UUID and used as the user ID. Production will require proper JWT/session handling.
 
-## Running the Project
+## Running Locally
 
 ```bash
 # Build
@@ -75,9 +75,47 @@ cd sats-escrow && cargo build
 # Run tests
 cargo test
 
-# Start server (with mock adapters)
+# Start server with mock adapters (no database required)
 cargo run
+
+# Start server with MongoDB
+MONGODB_URI="mongodb+srv://user:pass@cluster.mongodb.net" cargo run
 ```
+
+## Deployment to fly.io
+
+### Prerequisites
+1. [Install flyctl](https://fly.io/docs/hands-on/install-flyctl/)
+2. Create a [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) free cluster
+3. Get your MongoDB connection string
+
+### Deploy
+
+```bash
+# Login to fly.io
+fly auth login
+
+# Launch the app (first time only)
+fly launch --no-deploy
+
+# Set MongoDB connection string as a secret
+fly secrets set MONGODB_URI="mongodb+srv://user:pass@cluster.mongodb.net/?retryWrites=true&w=majority"
+
+# Deploy
+fly deploy
+
+# Check status
+fly status
+
+# View logs
+fly logs
+```
+
+### MongoDB Atlas Setup
+1. Create a free M0 cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a database user with read/write permissions
+3. Set network access to "Allow from anywhere" (0.0.0.0/0)
+4. Copy the connection string and use it with `fly secrets set`
 
 ## Next Steps
 
