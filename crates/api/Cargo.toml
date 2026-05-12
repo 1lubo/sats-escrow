@@ -21,3 +21,8 @@ thiserror = { workspace = true }
 
 [dev-dependencies]
 tokio-test = { workspace = true }
+sats-escrow-adapters = { workspace = true }
+uuid = { workspace = true }
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"
+hyper = { version = "1", features = ["full"] }
