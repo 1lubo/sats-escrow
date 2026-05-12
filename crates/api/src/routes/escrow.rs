@@ -355,10 +355,10 @@ async fn cancel_escrow(
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/api/v1/escrows", post(create_escrow).get(list_user_escrows))
-        .route("/api/v1/escrows/{id}", get(get_escrow))
-        .route("/api/v1/escrows/{id}/fund", post(fund_escrow))
-        .route("/api/v1/escrows/{id}/deliver", post(mark_delivered))
-        .route("/api/v1/escrows/{id}/confirm", post(confirm_escrow))
-        .route("/api/v1/escrows/{id}/dispute", post(open_dispute))
-        .route("/api/v1/escrows/{id}/cancel", post(cancel_escrow))
+        .route("/api/v1/escrows/:id", get(get_escrow))
+        .route("/api/v1/escrows/:id/fund", post(fund_escrow))
+        .route("/api/v1/escrows/:id/deliver", post(mark_delivered))
+        .route("/api/v1/escrows/:id/confirm", post(confirm_escrow))
+        .route("/api/v1/escrows/:id/dispute", post(open_dispute))
+        .route("/api/v1/escrows/:id/cancel", post(cancel_escrow))
 }

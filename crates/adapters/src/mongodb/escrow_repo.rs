@@ -57,17 +57,10 @@ impl EscrowRepository for MongoEscrowRepository {
         let id = id.clone();
         Box::pin(async move {
             let filter = doc! { "id": id.0.to_string() };
-            debug!("Finding escrow with filter: {:?}", filter);
-            match self.collection.find_one(filter.clone(), None).await {
-                Ok(result) => {
-                    debug!("Find result: {:?}", result.is_some());
-                    Ok(result)
-                }
-                Err(e) => {
-                    error!("Failed to find escrow: {}", e);
-                    Err(Error::Repository(e.to_string()))
-                }
-            }
+            self.collection
+                .find_one(filter, None)
+                .await
+                .map_err(|e| Error::Repository(e.to_string()))
         })
     }
 
