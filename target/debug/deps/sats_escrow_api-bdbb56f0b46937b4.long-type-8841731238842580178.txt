@@ -1,0 +1,2 @@
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<EscrowResponse>, ApiError>> {get_escrow}
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<EscrowResponse>, ApiError>> {get_escrow}: Handler<_, _>

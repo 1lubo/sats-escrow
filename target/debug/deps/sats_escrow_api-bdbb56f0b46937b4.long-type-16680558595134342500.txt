@@ -1,0 +1,2 @@
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<ReputationDto>, ApiError>> {get_user_reputation}
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<ReputationDto>, ApiError>> {get_user_reputation}: Handler<_, _>

@@ -1,0 +1,22 @@
+[package]
+name = "sats-escrow-adapters"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Adapter implementations for SatsEscrow - mocks, MongoDB, external integrations"
+
+[dependencies]
+sats-escrow-core = { workspace = true }
+tokio = { workspace = true }
+mongodb = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }

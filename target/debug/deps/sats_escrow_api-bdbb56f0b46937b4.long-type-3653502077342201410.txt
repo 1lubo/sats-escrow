@@ -1,0 +1,2 @@
+fn(axum::extract::State<AppState>, AuthUser, Json<CreateEscrowRequest>) -> impl std::future::Future<Output = Result<CreatedResponse<EscrowResponse>, ApiError>> {create_escrow}
+fn(axum::extract::State<AppState>, AuthUser, Json<CreateEscrowRequest>) -> impl std::future::Future<Output = Result<CreatedResponse<EscrowResponse>, ApiError>> {create_escrow}: Handler<_, _>

@@ -1,0 +1,2 @@
+fn(axum::extract::State<AppState>, AuthUser) -> impl std::future::Future<Output = Result<ApiResponse<UserResponse>, ApiError>> {get_current_user}
+fn(axum::extract::State<AppState>, AuthUser) -> impl std::future::Future<Output = Result<ApiResponse<UserResponse>, ApiError>> {get_current_user}: Handler<_, _>

@@ -1,0 +1,2 @@
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<DisputeResponse>, ApiError>> {get_dispute}
+fn(axum::extract::State<AppState>, axum::extract::Path<Uuid>) -> impl std::future::Future<Output = Result<ApiResponse<DisputeResponse>, ApiError>> {get_dispute}: Handler<_, _>
