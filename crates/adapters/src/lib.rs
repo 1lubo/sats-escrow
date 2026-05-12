@@ -6,7 +6,9 @@
 //! - (Future) Real custodian integrations
 
 pub mod mock;
+pub mod mongodb;
 
+// Re-export mock implementations
 pub use mock::{
     MockCustodian,
     MockPaymentProcessor,
@@ -15,4 +17,12 @@ pub use mock::{
     MockEscrowRepository,
     MockDisputeRepository,
     MockUserRepository,
+};
+
+// Re-export MongoDB implementations
+pub use mongodb::{
+    MongoClient,
+    MongoEscrowRepository,
+    MongoDisputeRepository,
+    MongoUserRepository,
 };

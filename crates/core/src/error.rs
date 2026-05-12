@@ -45,4 +45,7 @@ pub enum Error {
 
     #[error("Identity provider error: {0}")]
     IdentityProvider(String),
+
+    #[error("Repository error: {0}")]
+    Repository(String),
 }

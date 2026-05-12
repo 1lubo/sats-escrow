@@ -114,6 +114,12 @@ impl From<CoreError> for ApiError {
                 message: "An external service is unavailable".to_string(),
                 details: None,
             },
+            CoreError::Repository(_) => ApiError {
+                status: StatusCode::INTERNAL_SERVER_ERROR,
+                code: "DATABASE_ERROR".to_string(),
+                message: "A database error occurred".to_string(),
+                details: None,
+            },
         }
     }
 }
