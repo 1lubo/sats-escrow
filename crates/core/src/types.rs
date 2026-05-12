@@ -1,11 +1,11 @@
 //! Common types used throughout the domain
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
 
 /// Unique identifier for an escrow
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
+/// Serializes as a string for MongoDB compatibility
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct EscrowId(pub Uuid);
 
 impl EscrowId {
@@ -20,9 +20,55 @@ impl Default for EscrowId {
     }
 }
 
+impl Serialize for EscrowId {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.0.to_string())
+    }
+}
+
+impl<'de> Deserialize<'de> for EscrowId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct UuidVisitor;
+
+        impl<'de> serde::de::Visitor<'de> for UuidVisitor {
+            type Value = EscrowId;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a UUID string or bytes")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<EscrowId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::parse_str(value)
+                    .map(EscrowId)
+                    .map_err(serde::de::Error::custom)
+            }
+
+            fn visit_bytes<E>(self, value: &[u8]) -> Result<EscrowId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::from_slice(value)
+                    .map(EscrowId)
+                    .map_err(serde::de::Error::custom)
+            }
+        }
+
+        deserializer.deserialize_any(UuidVisitor)
+    }
+}
+
 /// Unique identifier for a dispute
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
+/// Serializes as a string for MongoDB compatibility
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct DisputeId(pub Uuid);
 
 impl DisputeId {
@@ -34,6 +80,52 @@ impl DisputeId {
 impl Default for DisputeId {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl Serialize for DisputeId {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.0.to_string())
+    }
+}
+
+impl<'de> Deserialize<'de> for DisputeId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct UuidVisitor;
+
+        impl<'de> serde::de::Visitor<'de> for UuidVisitor {
+            type Value = DisputeId;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a UUID string or bytes")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<DisputeId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::parse_str(value)
+                    .map(DisputeId)
+                    .map_err(serde::de::Error::custom)
+            }
+
+            fn visit_bytes<E>(self, value: &[u8]) -> Result<DisputeId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::from_slice(value)
+                    .map(DisputeId)
+                    .map_err(serde::de::Error::custom)
+            }
+        }
+
+        deserializer.deserialize_any(UuidVisitor)
     }
 }
 

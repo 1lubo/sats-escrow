@@ -1,11 +1,11 @@
 //! User and reputation types
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
 
 /// Unique identifier for a user
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
+/// Serializes as a string for MongoDB compatibility
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct UserId(pub Uuid);
 
 impl UserId {
@@ -17,6 +17,53 @@ impl UserId {
 impl Default for UserId {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl Serialize for UserId {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.0.to_string())
+    }
+}
+
+impl<'de> Deserialize<'de> for UserId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        // Support both string and UUID binary deserialization
+        struct UuidVisitor;
+
+        impl<'de> serde::de::Visitor<'de> for UuidVisitor {
+            type Value = UserId;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a UUID string or bytes")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<UserId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::parse_str(value)
+                    .map(UserId)
+                    .map_err(serde::de::Error::custom)
+            }
+
+            fn visit_bytes<E>(self, value: &[u8]) -> Result<UserId, E>
+            where
+                E: serde::de::Error,
+            {
+                Uuid::from_slice(value)
+                    .map(UserId)
+                    .map_err(serde::de::Error::custom)
+            }
+        }
+
+        deserializer.deserialize_any(UuidVisitor)
     }
 }
 

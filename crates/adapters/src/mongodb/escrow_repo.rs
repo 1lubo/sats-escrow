@@ -28,10 +28,6 @@ impl EscrowRepository for MongoEscrowRepository {
         let escrow = escrow.clone();
         Box::pin(async move {
             debug!("Creating escrow with id: {:?}", escrow.id);
-            // Debug: show the BSON document structure
-            if let Ok(doc) = mongodb::bson::to_document(&escrow) {
-                debug!("Document buyer field: {:?}", doc.get("buyer"));
-            }
             match self.collection.insert_one(escrow, None).await {
                 Ok(result) => {
                     debug!("Escrow inserted with MongoDB _id: {:?}", result.inserted_id);
@@ -109,22 +105,17 @@ impl EscrowRepository for MongoEscrowRepository {
 
     fn find_by_user(&self, user: &UserId) -> BoxFuture<'_, Result<Vec<Escrow>>> {
         let user = user.clone();
+        let collection = self.collection.clone();
         Box::pin(async move {
             use futures::TryStreamExt;
-
-            // Debug: dump one document to see its structure
-            if let Ok(Some(sample)) = self.collection.find_one(doc! {}, None).await {
-                debug!("Sample document buyer field: {:?}", sample.buyer);
-            }
-
             let filter = doc! {
                 "$or": [
                     { "buyer": user.0.to_string() },
                     { "seller": user.0.to_string() }
                 ]
             };
-            debug!("Finding escrows for user {} with filter: {:?}", user.0, filter);
-            let cursor = self.collection
+            debug!("Finding escrows for user {}", user.0);
+            let cursor = collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;
