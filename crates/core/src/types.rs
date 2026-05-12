@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 /// Unique identifier for an escrow
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct EscrowId(pub Uuid);
 
 impl EscrowId {
@@ -21,6 +22,7 @@ impl Default for EscrowId {
 
 /// Unique identifier for a dispute
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct DisputeId(pub Uuid);
 
 impl DisputeId {

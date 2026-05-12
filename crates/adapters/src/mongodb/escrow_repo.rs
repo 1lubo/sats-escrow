@@ -8,6 +8,7 @@ use sats_escrow_core::{
     types::EscrowId,
     user::UserId,
 };
+use tracing::{debug, error};
 
 /// MongoDB-backed escrow repository
 pub struct MongoEscrowRepository {
@@ -26,11 +27,21 @@ impl EscrowRepository for MongoEscrowRepository {
     fn create(&self, escrow: &Escrow) -> BoxFuture<'_, Result<()>> {
         let escrow = escrow.clone();
         Box::pin(async move {
-            self.collection
-                .insert_one(escrow, None)
-                .await
-                .map_err(|e| Error::Repository(e.to_string()))?;
-            Ok(())
+            debug!("Creating escrow with id: {:?}", escrow.id);
+            // Debug: show the BSON document structure
+            if let Ok(doc) = mongodb::bson::to_document(&escrow) {
+                debug!("Document buyer field: {:?}", doc.get("buyer"));
+            }
+            match self.collection.insert_one(escrow, None).await {
+                Ok(result) => {
+                    debug!("Escrow inserted with MongoDB _id: {:?}", result.inserted_id);
+                    Ok(())
+                }
+                Err(e) => {
+                    error!("Failed to insert escrow: {}", e);
+                    Err(Error::Repository(e.to_string()))
+                }
+            }
         })
     }
 
@@ -50,10 +61,17 @@ impl EscrowRepository for MongoEscrowRepository {
         let id = id.clone();
         Box::pin(async move {
             let filter = doc! { "id": id.0.to_string() };
-            self.collection
-                .find_one(filter, None)
-                .await
-                .map_err(|e| Error::Repository(e.to_string()))
+            debug!("Finding escrow with filter: {:?}", filter);
+            match self.collection.find_one(filter.clone(), None).await {
+                Ok(result) => {
+                    debug!("Find result: {:?}", result.is_some());
+                    Ok(result)
+                }
+                Err(e) => {
+                    error!("Failed to find escrow: {}", e);
+                    Err(Error::Repository(e.to_string()))
+                }
+            }
         })
     }
 
@@ -93,20 +111,29 @@ impl EscrowRepository for MongoEscrowRepository {
         let user = user.clone();
         Box::pin(async move {
             use futures::TryStreamExt;
+
+            // Debug: dump one document to see its structure
+            if let Ok(Some(sample)) = self.collection.find_one(doc! {}, None).await {
+                debug!("Sample document buyer field: {:?}", sample.buyer);
+            }
+
             let filter = doc! {
                 "$or": [
                     { "buyer": user.0.to_string() },
                     { "seller": user.0.to_string() }
                 ]
             };
+            debug!("Finding escrows for user {} with filter: {:?}", user.0, filter);
             let cursor = self.collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;
-            cursor
+            let results: Vec<Escrow> = cursor
                 .try_collect()
                 .await
-                .map_err(|e| Error::Repository(e.to_string()))
+                .map_err(|e| Error::Repository(e.to_string()))?;
+            debug!("Found {} escrows for user", results.len());
+            Ok(results)
         })
     }
 

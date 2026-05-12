@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 /// Unique identifier for a user
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct UserId(pub Uuid);
 
 impl UserId {
