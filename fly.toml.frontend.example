@@ -1,0 +1,25 @@
+# Example fly.toml for frontend deployment
+# Copy this content and merge with your existing fly.toml or create a separate one
+
+app = "sats-escrow-frontend"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile.frontend"
+
+[env]
+  VITE_API_URL = "https://sats-escrow.fly.dev/api/v1"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    timeout = "2s"
