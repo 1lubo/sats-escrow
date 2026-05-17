@@ -1,14 +1,17 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const client = axios.create({
-  baseURL: API_BASE,
+  baseURL: `${API_URL}/api/v1`,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Add auth token from localStorage
+// Add auth token to requests
 client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('auth_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -16,14 +19,14 @@ client.interceptors.request.use((config) => {
 });
 
 export const escrowAPI = {
-  createEscrow: (data) => client.post('/escrows', data),
-  listEscrows: () => client.get('/escrows'),
-  getEscrow: (id) => client.get(`/escrows/${id}`),
-  fundEscrow: (id) => client.post(`/escrows/${id}/fund`, {}),
-  deliverEscrow: (id) => client.post(`/escrows/${id}/deliver`, {}),
-  confirmDelivery: (id) => client.post(`/escrows/${id}/confirm`, {}),
-  openDispute: (id, reason) => client.post(`/escrows/${id}/dispute`, { reason }),
-  cancelEscrow: (id) => client.post(`/escrows/${id}/cancel`, {}),
+  create: (data) => client.post('/escrows', data),
+  list: () => client.get('/escrows'),
+  getById: (id) => client.get(`/escrows/${id}`),
+  fund: (id) => client.post(`/escrows/${id}/fund`),
+  deliver: (id) => client.post(`/escrows/${id}/deliver`),
+  confirm: (id) => client.post(`/escrows/${id}/confirm`),
+  dispute: (id, reason) => client.post(`/escrows/${id}/dispute`, { reason }),
+  cancel: (id) => client.post(`/escrows/${id}/cancel`),
 };
 
 export default client;

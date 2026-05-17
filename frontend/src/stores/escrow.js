@@ -6,6 +6,7 @@ function createEscrowStore() {
     escrows: [],
     loading: false,
     error: null,
+    currentEscrow: null,
   });
 
   return {
@@ -13,32 +14,54 @@ function createEscrowStore() {
     fetch: async () => {
       update((state) => ({ ...state, loading: true, error: null }));
       try {
-        const response = await escrowAPI.listEscrows();
-        update((state) => ({
-          ...state,
-          escrows: response.data,
-          loading: false,
-        }));
+        const { data } = await escrowAPI.list();
+        update((state) => ({ ...state, escrows: data, loading: false }));
       } catch (error) {
         update((state) => ({
           ...state,
-          error: error.message,
+          error: error.response?.data?.message || 'Failed to fetch escrows',
           loading: false,
         }));
       }
     },
-    createEscrow: async (data) => {
+    create: async (escrowData) => {
+      update((state) => ({ ...state, loading: true, error: null }));
       try {
-        const response = await escrowAPI.createEscrow(data);
+        const { data } = await escrowAPI.create(escrowData);
         update((state) => ({
           ...state,
-          escrows: [...state.escrows, response.data],
+          escrows: [...state.escrows, data],
+          loading: false,
         }));
-        return response.data;
+        return data;
       } catch (error) {
         update((state) => ({
           ...state,
-          error: error.message,
+          error: error.response?.data?.message || 'Failed to create escrow',
+          loading: false,
+        }));
+        throw error;
+      }
+    },
+    updateStatus: async (id, action) => {
+      update((state) => ({ ...state, loading: true }));
+      try {
+        let response;
+        if (action === 'fund') response = await escrowAPI.fund(id);
+        else if (action === 'deliver') response = await escrowAPI.deliver(id);
+        else if (action === 'confirm') response = await escrowAPI.confirm(id);
+        else if (action === 'cancel') response = await escrowAPI.cancel(id);
+
+        update((state) => ({
+          ...state,
+          escrows: state.escrows.map((e) => (e.id === id ? response.data : e)),
+          loading: false,
+        }));
+      } catch (error) {
+        update((state) => ({
+          ...state,
+          error: error.response?.data?.message || `Failed to ${action} escrow`,
+          loading: false,
         }));
         throw error;
       }
@@ -46,4 +69,4 @@ function createEscrowStore() {
   };
 }
 
-export const escrowStore = createEscrowStore();
+export const escrow = createEscrowStore();

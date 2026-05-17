@@ -1,85 +1,109 @@
 <script>
-  import { escrowStore } from '../stores/escrow';
+  import { createEventDispatcher } from 'svelte';
+  import { escrow } from '../stores/escrow';
+  import { auth } from '../stores/auth';
 
-  export let onCreated = () => {};
+  const dispatch = createEventDispatcher();
 
   let formData = {
-    amount: '',
     seller_id: '',
+    amount: '',
     description: '',
   };
-  let loading = false;
   let error = '';
+  let loading = false;
 
-  const handleSubmit = async () => {
-    if (!formData.amount || !formData.seller_id) {
-      error = 'Amount and Seller ID are required';
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    loading = true;
+    error = '';
+
+    if (!formData.seller_id.trim() || !formData.amount || !formData.description.trim()) {
+      error = 'All fields are required';
+      loading = false;
       return;
     }
 
-    loading = true;
-    error = '';
     try {
-      await escrowStore.createEscrow(formData);
-      formData = { amount: '', seller_id: '', description: '' };
-      onCreated();
-    } catch (e) {
-      error = e.response?.data?.error || 'Failed to create escrow';
+      await escrow.create({
+        seller_id: formData.seller_id,
+        amount: parseInt(formData.amount),
+        description: formData.description,
+      });
+      dispatch('created');
+      formData = { seller_id: '', amount: '', description: '' };
+    } catch (err) {
+      error = err.response?.data?.message || 'Failed to create escrow';
     } finally {
       loading = false;
     }
   };
 </script>
 
-<div class="bg-white rounded-lg shadow-md p-6">
-  <h2 class="text-xl font-semibold text-gray-900 mb-4">Create New Escrow</h2>
+<form on:submit={handleSubmit} class="bg-white rounded-lg shadow-lg p-6 mb-8">
+  <h3 class="text-2xl font-bold text-gray-800 mb-4">Create New Escrow</h3>
 
-  <form on:submit|preventDefault={handleSubmit} class="space-y-4">
-    <div>
-      <label for="amount" class="block text-sm font-medium text-gray-700">Amount (satoshis)</label>
-      <input
-        id="amount"
-        type="number"
-        placeholder="e.g., 100000"
-        bind:value={formData.amount}
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-      />
+  {#if error}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      {error}
     </div>
+  {/if}
 
+  <div class="space-y-4">
     <div>
-      <label for="seller_id" class="block text-sm font-medium text-gray-700">Seller ID (UUID)</label>
+      <label for="seller_id" class="block text-sm font-semibold text-gray-700 mb-2"
+        >Seller UUID</label
+      >
       <input
-        id="seller_id"
         type="text"
-        placeholder="e.g., 550e8400-e29b-41d4-a716-446655440000"
+        id="seller_id"
         bind:value={formData.seller_id}
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        placeholder="Enter seller's UUID"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        disabled={loading}
+        required
       />
     </div>
 
     <div>
-      <label for="description" class="block text-sm font-medium text-gray-700">Description (optional)</label>
+      <label for="amount" class="block text-sm font-semibold text-gray-700 mb-2"
+        >Amount (sats)</label
+      >
+      <input
+        type="number"
+        id="amount"
+        bind:value={formData.amount}
+        placeholder="Amount in satoshis"
+        min="1"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        disabled={loading}
+        required
+      />
+    </div>
+
+    <div>
+      <label for="description" class="block text-sm font-semibold text-gray-700 mb-2"
+        >Description</label
+      >
       <textarea
         id="description"
-        placeholder="Describe the transaction..."
         bind:value={formData.description}
-        rows="3"
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        placeholder="Describe the goods or services"
+        rows="4"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        disabled={loading}
+        required
       />
     </div>
+  </div>
 
-    {#if error}
-      <div class="rounded-md bg-red-50 p-4">
-        <p class="text-sm font-medium text-red-800">{error}</p>
-      </div>
-    {/if}
-
+  <div class="flex gap-4 mt-6">
     <button
       type="submit"
       disabled={loading}
-      class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-green-500 font-medium"
+      class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-semibold disabled:opacity-50"
     >
       {loading ? 'Creating...' : 'Create Escrow'}
     </button>
-  </form>
-</div>
+  </div>
+</form>

@@ -1,22 +1,21 @@
 import { writable } from 'svelte/store';
 
 function createAuthStore() {
-  const { subscribe, set } = writable({
-    token: localStorage.getItem('authToken') || null,
-    userId: localStorage.getItem('userId') || null,
+  const storedToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  const { subscribe, set, update } = writable({
+    token: storedToken,
+    isAuthenticated: !!storedToken,
   });
 
   return {
     subscribe,
-    login: (token, userId) => {
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userId', userId);
-      set({ token, userId });
+    login: (uuid) => {
+      localStorage.setItem('auth_token', uuid);
+      set({ token: uuid, isAuthenticated: true });
     },
     logout: () => {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userId');
-      set({ token: null, userId: null });
+      localStorage.removeItem('auth_token');
+      set({ token: null, isAuthenticated: false });
     },
   };
 }
