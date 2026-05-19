@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -15,10 +17,16 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.1.0",
     "@tailwindcss/forms": "^0.5.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/svelte": "^5.3.1",
+    "@vitest/coverage-v8": "^4.1.6",
     "autoprefixer": "^10.4.14",
+    "c8": "^11.0.0",
+    "jsdom": "^29.1.1",
     "postcss": "^8.4.24",
     "svelte-check": "^3.0.0",
     "tailwindcss": "^3.3.2",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vitest": "^4.1.6"
   }
 }

@@ -136,3 +136,158 @@ impl Dispute {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::types::{EscrowId, Evidence};
+    use crate::user::UserId;
+
+    fn make_evidence(desc: &str) -> Evidence {
+        Evidence {
+            description: desc.to_string(),
+            attachments: vec![],
+        }
+    }
+
+    fn make_vote(arbitrator: UserId, decision: Party) -> Vote {
+        Vote {
+            arbitrator,
+            decision,
+            reasoning: Some("test reasoning".to_string()),
+            voted_at: Utc::now(),
+        }
+    }
+
+    #[test]
+    fn new_dispute_is_opened() {
+        let dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("buyer complaint"),
+        );
+        assert!(matches!(dispute.state, DisputeState::Opened));
+        assert!(dispute.seller_evidence.is_none());
+        assert!(dispute.votes.is_empty());
+        assert!(dispute.resolution().is_none());
+    }
+
+    #[test]
+    fn assign_arbitrators_transitions_to_in_review() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+        dispute.assign_arbitrators(arbs.clone(), 48);
+
+        match &dispute.state {
+            DisputeState::InReview { arbitrators } => {
+                assert_eq!(arbitrators.len(), 3);
+            }
+            _ => panic!("Expected InReview state"),
+        }
+        assert!(dispute.review_deadline.is_some());
+    }
+
+    #[test]
+    fn record_vote_rejects_when_not_in_review() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        // State is Opened, not InReview
+        let vote = make_vote(UserId::new(), Party::Buyer);
+        let result = dispute.record_vote(vote);
+        assert!(matches!(result, Err(crate::Error::DisputeNotVotable)));
+    }
+
+    #[test]
+    fn record_vote_rejects_duplicate() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        let arb = UserId::new();
+        dispute.assign_arbitrators(vec![arb.clone(), UserId::new(), UserId::new()], 48);
+
+        let vote1 = make_vote(arb.clone(), Party::Buyer);
+        dispute.record_vote(vote1).unwrap();
+
+        let vote2 = make_vote(arb, Party::Seller);
+        let result = dispute.record_vote(vote2);
+        assert!(matches!(result, Err(crate::Error::AlreadyVoted)));
+    }
+
+    #[test]
+    fn majority_buyer_votes_resolves_for_buyer() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+        dispute.assign_arbitrators(arbs.clone(), 48);
+
+        dispute.record_vote(make_vote(arbs[0].clone(), Party::Buyer)).unwrap();
+        dispute.record_vote(make_vote(arbs[1].clone(), Party::Buyer)).unwrap();
+
+        let res = dispute.resolution().expect("should be resolved");
+        assert_eq!(res.winner, Party::Buyer);
+        assert_eq!(res.votes_for_buyer, 2);
+    }
+
+    #[test]
+    fn majority_seller_votes_resolves_for_seller() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+        dispute.assign_arbitrators(arbs.clone(), 48);
+
+        dispute.record_vote(make_vote(arbs[0].clone(), Party::Seller)).unwrap();
+        dispute.record_vote(make_vote(arbs[1].clone(), Party::Seller)).unwrap();
+
+        let res = dispute.resolution().expect("should be resolved");
+        assert_eq!(res.winner, Party::Seller);
+        assert_eq!(res.votes_for_seller, 2);
+    }
+
+    #[test]
+    fn no_majority_stays_in_review() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("complaint"),
+        );
+        let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+        dispute.assign_arbitrators(arbs.clone(), 48);
+
+        dispute.record_vote(make_vote(arbs[0].clone(), Party::Buyer)).unwrap();
+
+        assert!(dispute.resolution().is_none());
+        assert!(matches!(dispute.state, DisputeState::InReview { .. }));
+    }
+
+    #[test]
+    fn submit_seller_evidence_works() {
+        let mut dispute = Dispute::new(
+            EscrowId::new(),
+            UserId::new(),
+            make_evidence("buyer complaint"),
+        );
+        assert!(dispute.seller_evidence.is_none());
+
+        dispute.submit_seller_evidence(make_evidence("seller rebuttal"));
+        assert!(dispute.seller_evidence.is_some());
+        assert_eq!(
+            dispute.seller_evidence.unwrap().description,
+            "seller rebuttal"
+        );
+    }
+}

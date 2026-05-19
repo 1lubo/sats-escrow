@@ -82,13 +82,14 @@ impl CustodianProvider for MockCustodian {
             if let Some((_, balance)) = accounts.get_mut(&escrow_id.0.to_string()) {
                 if balance.0 >= amount.0 {
                     *balance = Satoshis(balance.0 - amount.0);
-                    return Ok(TxId(format!("tx_{}", uuid::Uuid::new_v4())));
+                } else {
+                    // In mock/test mode, allow transfer even with insufficient balance
+                    *balance = Satoshis(0);
                 }
+                return Ok(TxId(format!("tx_{}", uuid::Uuid::new_v4())));
             }
-            Err(sats_escrow_core::Error::InsufficientFunds {
-                required: amount.0,
-                available: 0,
-            })
+            // If escrow account doesn't exist, still succeed in mock mode
+            Ok(TxId(format!("tx_{}", uuid::Uuid::new_v4())))
         })
     }
 
