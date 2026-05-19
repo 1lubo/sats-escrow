@@ -83,7 +83,7 @@ impl ArbitrationStrategy for MockArbitration {
             let mut votes = self.votes.write().unwrap();
             votes
                 .entry(dispute_id.0.to_string())
-                .or_insert_with(Vec::new)
+                .or_default()
                 .push(vote);
             Ok(())
         })
