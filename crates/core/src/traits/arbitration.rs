@@ -1,7 +1,7 @@
 //! Arbitration strategy trait for dispute resolution
 
-use std::pin::Pin;
 use std::future::Future;
+use std::pin::Pin;
 
 use crate::{
     dispute::{Dispute, Vote},
@@ -22,7 +22,11 @@ pub type BoxFuture<'a, T> = Pin<Box<dyn Future<Output = T> + Send + 'a>>;
 /// - Professional tier with expert arbitrators
 pub trait ArbitrationStrategy: Send + Sync {
     /// Select arbitrators for a dispute
-    fn select_arbitrators(&self, dispute: &Dispute, count: usize) -> BoxFuture<'_, Result<Vec<UserId>>>;
+    fn select_arbitrators(
+        &self,
+        dispute: &Dispute,
+        count: usize,
+    ) -> BoxFuture<'_, Result<Vec<UserId>>>;
 
     /// Submit a vote for a dispute
     fn submit_vote(&self, dispute_id: &DisputeId, vote: Vote) -> BoxFuture<'_, Result<()>>;

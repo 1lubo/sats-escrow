@@ -17,8 +17,8 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use sats_escrow_adapters::{
     MockArbitration, MockCustodian, MockDisputeRepository, MockEscrowRepository,
-    MockIdentityProvider, MockPaymentProcessor, MockUserRepository,
-    MongoClient, MongoEscrowRepository, MongoDisputeRepository, MongoUserRepository,
+    MockIdentityProvider, MockPaymentProcessor, MockUserRepository, MongoClient,
+    MongoDisputeRepository, MongoEscrowRepository, MongoUserRepository,
 };
 use sats_escrow_api::{create_router, state::Services, AppState};
 
@@ -40,7 +40,14 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("Starting SatsEscrow server...");
     tracing::info!("Port: {}", config.port);
-    tracing::info!("Database: {}", if config.use_mongodb() { "MongoDB" } else { "In-Memory (Mock)" });
+    tracing::info!(
+        "Database: {}",
+        if config.use_mongodb() {
+            "MongoDB"
+        } else {
+            "In-Memory (Mock)"
+        }
+    );
 
     // Build application state based on configuration
     let state = if let Some(ref uri) = config.mongodb_uri {
@@ -87,11 +94,14 @@ fn create_mock_state() -> AppState {
 async fn create_mongo_state(uri: &str, database_name: &str) -> anyhow::Result<AppState> {
     tracing::info!("Connecting to MongoDB...");
 
-    let client = MongoClient::connect(uri).await
+    let client = MongoClient::connect(uri)
+        .await
         .map_err(|e| anyhow::anyhow!("Failed to connect to MongoDB: {}", e))?;
 
     // Verify connection
-    client.ping().await
+    client
+        .ping()
+        .await
         .map_err(|e| anyhow::anyhow!("MongoDB ping failed: {}", e))?;
 
     tracing::info!("MongoDB connected successfully");
@@ -99,7 +109,7 @@ async fn create_mongo_state(uri: &str, database_name: &str) -> anyhow::Result<Ap
     let db = client.database(database_name);
 
     let services = Services::new(
-        MockCustodian::new(),           // TODO: Real Bitcoin custodian
+        MockCustodian::new(),            // TODO: Real Bitcoin custodian
         MockPaymentProcessor::default(), // TODO: Real payment processor
         MockArbitration::default(),      // TODO: Real arbitration service
         MockIdentityProvider::new(),     // TODO: Real identity provider

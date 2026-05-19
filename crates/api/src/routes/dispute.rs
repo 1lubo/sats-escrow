@@ -69,7 +69,9 @@ async fn get_dispute(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<DisputeResponse>> {
-    let dispute = state.services.dispute_repo
+    let dispute = state
+        .services
+        .dispute_repo
         .find_by_id(&DisputeId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -82,7 +84,9 @@ async fn list_open_disputes(
     State(state): State<AppState>,
     AuthUser(_user_id): AuthUser,
 ) -> ApiResult<ApiResponse<Vec<DisputeResponse>>> {
-    let disputes = state.services.dispute_repo
+    let disputes = state
+        .services
+        .dispute_repo
         .find_open_disputes()
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -97,7 +101,9 @@ async fn submit_vote(
     Path(id): Path<Uuid>,
     Json(req): Json<VoteRequest>,
 ) -> ApiResult<ApiResponse<DisputeResponse>> {
-    let mut dispute = state.services.dispute_repo
+    let mut dispute = state
+        .services
+        .dispute_repo
         .find_by_id(&DisputeId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -117,7 +123,9 @@ async fn submit_vote(
 
     dispute.record_vote(vote).map_err(ApiError::from)?;
 
-    state.services.dispute_repo
+    state
+        .services
+        .dispute_repo
         .update(&dispute)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;

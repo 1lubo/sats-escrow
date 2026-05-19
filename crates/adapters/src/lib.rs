@@ -10,19 +10,11 @@ pub mod mongodb;
 
 // Re-export mock implementations
 pub use mock::{
-    MockCustodian,
-    MockPaymentProcessor,
-    MockArbitration,
-    MockIdentityProvider,
-    MockEscrowRepository,
-    MockDisputeRepository,
-    MockUserRepository,
+    MockArbitration, MockCustodian, MockDisputeRepository, MockEscrowRepository,
+    MockIdentityProvider, MockPaymentProcessor, MockUserRepository,
 };
 
 // Re-export MongoDB implementations
 pub use mongodb::{
-    MongoClient,
-    MongoEscrowRepository,
-    MongoDisputeRepository,
-    MongoUserRepository,
+    MongoClient, MongoDisputeRepository, MongoEscrowRepository, MongoUserRepository,
 };

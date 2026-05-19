@@ -1,7 +1,7 @@
 //! Identity provider trait for authentication and reputation
 
-use std::pin::Pin;
 use std::future::Future;
+use std::pin::Pin;
 
 use crate::{
     error::Result,
@@ -50,8 +50,16 @@ pub trait IdentityProvider: Send + Sync {
     fn get_reputation(&self, user_id: &UserId) -> BoxFuture<'_, Result<ReputationScore>>;
 
     /// Update reputation after a transaction
-    fn update_reputation(&self, user_id: &UserId, score: ReputationScore) -> BoxFuture<'_, Result<()>>;
+    fn update_reputation(
+        &self,
+        user_id: &UserId,
+        score: ReputationScore,
+    ) -> BoxFuture<'_, Result<()>>;
 
     /// Register a new user
-    fn register(&self, display_name: String, credentials: Credentials) -> BoxFuture<'_, Result<User>>;
+    fn register(
+        &self,
+        display_name: String,
+        credentials: Credentials,
+    ) -> BoxFuture<'_, Result<User>>;
 }

@@ -2,8 +2,8 @@
 
 use mongodb::{bson::doc, Collection, Database};
 use sats_escrow_core::{
-    escrow::Escrow,
     error::{Error, Result},
+    escrow::Escrow,
     traits::repository::{BoxFuture, EscrowRepository},
     types::EscrowId,
     user::UserId,
@@ -69,7 +69,8 @@ impl EscrowRepository for MongoEscrowRepository {
         Box::pin(async move {
             use futures::TryStreamExt;
             let filter = doc! { "buyer": buyer.0.to_string() };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;
@@ -85,7 +86,8 @@ impl EscrowRepository for MongoEscrowRepository {
         Box::pin(async move {
             use futures::TryStreamExt;
             let filter = doc! { "seller": seller.0.to_string() };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;
@@ -128,7 +130,8 @@ impl EscrowRepository for MongoEscrowRepository {
             let filter = doc! {
                 "state": { "$regex": "^AwaitingDelivery" }
             };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;

@@ -1,6 +1,6 @@
 //! API route handlers
 
-pub mod escrow;
 pub mod dispute;
-pub mod user;
+pub mod escrow;
 pub mod health;
+pub mod user;

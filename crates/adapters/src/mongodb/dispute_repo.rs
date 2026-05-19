@@ -78,7 +78,8 @@ impl DisputeRepository for MongoDisputeRepository {
                     { "state": { "$regex": "^InReview" } }
                 ]
             };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;
@@ -97,7 +98,8 @@ impl DisputeRepository for MongoDisputeRepository {
             let filter = doc! {
                 "state.InReview.arbitrators": arbitrator.0.to_string()
             };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;

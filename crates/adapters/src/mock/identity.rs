@@ -61,7 +61,8 @@ impl IdentityProvider for MockIdentityProvider {
                         if stored_password == &password {
                             // Find user by username (simplified: username == display_name)
                             let users = self.users.read().unwrap();
-                            if let Some(user) = users.values().find(|u| u.display_name == username) {
+                            if let Some(user) = users.values().find(|u| u.display_name == username)
+                            {
                                 let user_id = user.id.clone();
                                 drop(users); // Release read lock before write
 
@@ -141,7 +142,11 @@ impl IdentityProvider for MockIdentityProvider {
         })
     }
 
-    fn update_reputation(&self, user_id: &UserId, score: ReputationScore) -> BoxFuture<'_, Result<()>> {
+    fn update_reputation(
+        &self,
+        user_id: &UserId,
+        score: ReputationScore,
+    ) -> BoxFuture<'_, Result<()>> {
         let user_id = user_id.clone();
         Box::pin(async move {
             let mut users = self.users.write().unwrap();
@@ -152,7 +157,11 @@ impl IdentityProvider for MockIdentityProvider {
         })
     }
 
-    fn register(&self, display_name: String, credentials: Credentials) -> BoxFuture<'_, Result<User>> {
+    fn register(
+        &self,
+        display_name: String,
+        credentials: Credentials,
+    ) -> BoxFuture<'_, Result<User>> {
         Box::pin(async move {
             let user = User {
                 id: UserId::new(),

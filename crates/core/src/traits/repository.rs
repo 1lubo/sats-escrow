@@ -1,7 +1,7 @@
 //! Repository traits for data persistence
 
-use std::pin::Pin;
 use std::future::Future;
+use std::pin::Pin;
 
 use crate::{
     dispute::Dispute,

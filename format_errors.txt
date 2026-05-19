@@ -1,0 +1,1499 @@
+2026-05-19T07:51:41.2406052Z Current runner version: '2.334.0'
+2026-05-19T07:51:41.2425901Z ##[group]Runner Image Provisioner
+2026-05-19T07:51:41.2426578Z Hosted Compute Agent
+2026-05-19T07:51:41.2427105Z Version: 20260213.493
+2026-05-19T07:51:41.2427575Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-05-19T07:51:41.2428191Z Build Date: 2026-02-13T00:28:41Z
+2026-05-19T07:51:41.2428729Z Worker ID: {09770dd9-49d0-467b-aff1-96fef21cd382}
+2026-05-19T07:51:41.2429460Z Azure Region: westus
+2026-05-19T07:51:41.2429891Z ##[endgroup]
+2026-05-19T07:51:41.2431002Z ##[group]Operating System
+2026-05-19T07:51:41.2431480Z Ubuntu
+2026-05-19T07:51:41.2431921Z 24.04.4
+2026-05-19T07:51:41.2432344Z LTS
+2026-05-19T07:51:41.2432723Z ##[endgroup]
+2026-05-19T07:51:41.2433155Z ##[group]Runner Image
+2026-05-19T07:51:41.2433562Z Image: ubuntu-24.04
+2026-05-19T07:51:41.2434051Z Version: 20260513.135.3
+2026-05-19T07:51:41.2435020Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260513.135/images/ubuntu/Ubuntu2404-Readme.md
+2026-05-19T07:51:41.2436206Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260513.135
+2026-05-19T07:51:41.2436964Z ##[endgroup]
+2026-05-19T07:51:41.2437894Z ##[group]GITHUB_TOKEN Permissions
+2026-05-19T07:51:41.2439486Z Contents: read
+2026-05-19T07:51:41.2439908Z Metadata: read
+2026-05-19T07:51:41.2440436Z Packages: read
+2026-05-19T07:51:41.2440835Z ##[endgroup]
+2026-05-19T07:51:41.2442539Z Secret source: Actions
+2026-05-19T07:51:41.2443182Z Prepare workflow directory
+2026-05-19T07:51:41.5869123Z Prepare all required actions
+2026-05-19T07:51:41.5903668Z Getting action download info
+2026-05-19T07:51:42.0669168Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-05-19T07:51:42.7785389Z Download action repository 'dtolnay/rust-toolchain@stable' (SHA:29eef336d9b2848a0b548edc03f92a220660cdb8)
+2026-05-19T07:51:43.0546407Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-05-19T07:51:43.4275524Z Complete job name: Rust Tests
+2026-05-19T07:51:43.4947045Z ##[group]Run actions/checkout@v4
+2026-05-19T07:51:43.4948133Z with:
+2026-05-19T07:51:43.4948795Z   repository: 1lubo/sats-escrow
+2026-05-19T07:51:43.4949998Z   token: ***
+2026-05-19T07:51:43.4950658Z   ssh-strict: true
+2026-05-19T07:51:43.4951349Z   ssh-user: git
+2026-05-19T07:51:43.4952042Z   persist-credentials: true
+2026-05-19T07:51:43.4952827Z   clean: true
+2026-05-19T07:51:43.4953526Z   sparse-checkout-cone-mode: true
+2026-05-19T07:51:43.4954369Z   fetch-depth: 1
+2026-05-19T07:51:43.4955051Z   fetch-tags: false
+2026-05-19T07:51:43.4955803Z   show-progress: true
+2026-05-19T07:51:43.4956534Z   lfs: false
+2026-05-19T07:51:43.4957183Z   submodules: false
+2026-05-19T07:51:43.4957906Z   set-safe-directory: true
+2026-05-19T07:51:43.4958842Z env:
+2026-05-19T07:51:43.4959662Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:43.4960433Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:43.4961119Z ##[endgroup]
+2026-05-19T07:51:43.5858009Z Syncing repository: 1lubo/sats-escrow
+2026-05-19T07:51:43.5860416Z ##[group]Getting Git version info
+2026-05-19T07:51:43.5861567Z Working directory is '/home/runner/work/sats-escrow/sats-escrow'
+2026-05-19T07:51:43.5863244Z [command]/usr/bin/git version
+2026-05-19T07:51:43.7444327Z git version 2.54.0
+2026-05-19T07:51:43.7457174Z ##[endgroup]
+2026-05-19T07:51:43.7469794Z Temporarily overriding HOME='/home/runner/work/_temp/71a2bb7d-263b-4dfb-b66f-98750ddc2870' before making global git config changes
+2026-05-19T07:51:43.7472042Z Adding repository directory to the temporary git global config as a safe directory
+2026-05-19T07:51:43.7481234Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sats-escrow/sats-escrow
+2026-05-19T07:51:43.7509384Z Deleting the contents of '/home/runner/work/sats-escrow/sats-escrow'
+2026-05-19T07:51:43.7512680Z ##[group]Initializing the repository
+2026-05-19T07:51:43.7516814Z [command]/usr/bin/git init /home/runner/work/sats-escrow/sats-escrow
+2026-05-19T07:51:43.7571821Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-05-19T07:51:43.7574360Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-05-19T07:51:43.7576509Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-05-19T07:51:43.7578187Z hint: call:
+2026-05-19T07:51:43.7579004Z hint:
+2026-05-19T07:51:43.7580234Z hint: 	git config --global init.defaultBranch <name>
+2026-05-19T07:51:43.7581601Z hint:
+2026-05-19T07:51:43.7582912Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-05-19T07:51:43.7584995Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-05-19T07:51:43.7586598Z hint:
+2026-05-19T07:51:43.7587621Z hint: 	git branch -m <name>
+2026-05-19T07:51:43.7588471Z hint:
+2026-05-19T07:51:43.7589614Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-05-19T07:51:43.7591269Z Initialized empty Git repository in /home/runner/work/sats-escrow/sats-escrow/.git/
+2026-05-19T07:51:43.7594788Z [command]/usr/bin/git remote add origin https://github.com/1lubo/sats-escrow
+2026-05-19T07:51:43.7608663Z ##[endgroup]
+2026-05-19T07:51:43.7610530Z ##[group]Disabling automatic garbage collection
+2026-05-19T07:51:43.7612059Z [command]/usr/bin/git config --local gc.auto 0
+2026-05-19T07:51:43.7635615Z ##[endgroup]
+2026-05-19T07:51:43.7637149Z ##[group]Setting up auth
+2026-05-19T07:51:43.7641548Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-05-19T07:51:43.7667232Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-05-19T07:51:43.7898491Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-05-19T07:51:43.7922818Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-05-19T07:51:43.8101458Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-05-19T07:51:43.8126467Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-05-19T07:51:43.8314940Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-05-19T07:51:43.8343195Z ##[endgroup]
+2026-05-19T07:51:43.8344775Z ##[group]Fetching the repository
+2026-05-19T07:51:43.8351162Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d96334e9f1fe4d5d816f61b043a1c71bd6f5e831:refs/remotes/origin/master
+2026-05-19T07:51:44.5341886Z From https://github.com/1lubo/sats-escrow
+2026-05-19T07:51:44.5342759Z  * [new ref]         d96334e9f1fe4d5d816f61b043a1c71bd6f5e831 -> origin/master
+2026-05-19T07:51:44.5367856Z ##[endgroup]
+2026-05-19T07:51:44.5368479Z ##[group]Determining the checkout info
+2026-05-19T07:51:44.5369479Z ##[endgroup]
+2026-05-19T07:51:44.5374575Z [command]/usr/bin/git sparse-checkout disable
+2026-05-19T07:51:44.5405770Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-05-19T07:51:44.5427756Z ##[group]Checking out the ref
+2026-05-19T07:51:44.5431231Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+2026-05-19T07:51:44.5497998Z Reset branch 'master'
+2026-05-19T07:51:44.5500588Z branch 'master' set up to track 'origin/master'.
+2026-05-19T07:51:44.5530211Z ##[endgroup]
+2026-05-19T07:51:44.5532879Z [command]/usr/bin/git log -1 --format=%H
+2026-05-19T07:51:44.5551142Z d96334e9f1fe4d5d816f61b043a1c71bd6f5e831
+2026-05-19T07:51:44.5795678Z ##[group]Run dtolnay/rust-toolchain@stable
+2026-05-19T07:51:44.5795965Z with:
+2026-05-19T07:51:44.5796163Z   components: rustfmt, clippy
+2026-05-19T07:51:44.5796393Z   toolchain: stable
+2026-05-19T07:51:44.5796583Z env:
+2026-05-19T07:51:44.5796935Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.5797143Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.5797334Z ##[endgroup]
+2026-05-19T07:51:44.5888405Z ##[group]Run : parse toolchain version
+2026-05-19T07:51:44.5888751Z [36;1m: parse toolchain version[0m
+2026-05-19T07:51:44.5889022Z [36;1mif [[ -z $toolchain ]]; then[0m
+2026-05-19T07:51:44.5889706Z [36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070[0m
+2026-05-19T07:51:44.5890188Z [36;1m  echo "'toolchain' is a required input" >&2[0m
+2026-05-19T07:51:44.5890447Z [36;1m  exit 1[0m
+2026-05-19T07:51:44.5890750Z [36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then[0m
+2026-05-19T07:51:44.5891141Z [36;1m  if [[ Linux == macOS ]]; then[0m
+2026-05-19T07:51:44.5891580Z [36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.5892027Z [36;1m  else[0m
+2026-05-19T07:51:44.5892392Z [36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.5892775Z [36;1m  fi[0m
+2026-05-19T07:51:44.5893043Z [36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then[0m
+2026-05-19T07:51:44.5893473Z [36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.5893855Z [36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then[0m
+2026-05-19T07:51:44.5894286Z [36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.5894682Z [36;1melse[0m
+2026-05-19T07:51:44.5894920Z [36;1m  echo "toolchain=$toolchain" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.5895180Z [36;1mfi[0m
+2026-05-19T07:51:44.5929937Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:44.5930265Z env:
+2026-05-19T07:51:44.5930466Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.5930691Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.5930885Z   toolchain: stable
+2026-05-19T07:51:44.5931078Z ##[endgroup]
+2026-05-19T07:51:44.6103269Z ##[group]Run : construct rustup command line
+2026-05-19T07:51:44.6103572Z [36;1m: construct rustup command line[0m
+2026-05-19T07:51:44.6103949Z [36;1mecho "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.6104457Z [36;1mecho "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.6104848Z [36;1mecho "downgrade=" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:44.6130815Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:44.6131121Z env:
+2026-05-19T07:51:44.6131302Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.6131517Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.6131707Z   targets: 
+2026-05-19T07:51:44.6131896Z   components: rustfmt, clippy
+2026-05-19T07:51:44.6132126Z ##[endgroup]
+2026-05-19T07:51:44.6203569Z ##[group]Run : set $CARGO_HOME
+2026-05-19T07:51:44.6203842Z [36;1m: set $CARGO_HOME[0m
+2026-05-19T07:51:44.6204124Z [36;1mecho CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV[0m
+2026-05-19T07:51:44.6228859Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:44.6229164Z env:
+2026-05-19T07:51:44.6229612Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.6229836Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.6230031Z ##[endgroup]
+2026-05-19T07:51:44.6294874Z ##[group]Run : install rustup if needed
+2026-05-19T07:51:44.6295158Z [36;1m: install rustup if needed[0m
+2026-05-19T07:51:44.6295426Z [36;1mif ! command -v rustup &>/dev/null; then[0m
+2026-05-19T07:51:44.6296189Z [36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y[0m
+2026-05-19T07:51:44.6296784Z [36;1m  echo "$CARGO_HOME/bin" >> $GITHUB_PATH[0m
+2026-05-19T07:51:44.6297140Z [36;1mfi[0m
+2026-05-19T07:51:44.6322109Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:44.6322423Z env:
+2026-05-19T07:51:44.6322608Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.6322831Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.6323031Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:44.6323262Z ##[endgroup]
+2026-05-19T07:51:44.6389064Z ##[group]Run rustup toolchain install stable --component rustfmt --component clippy --profile minimal --no-self-update
+2026-05-19T07:51:44.6389924Z [36;1mrustup toolchain install stable --component rustfmt --component clippy --profile minimal --no-self-update[0m
+2026-05-19T07:51:44.6414885Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:44.6415191Z env:
+2026-05-19T07:51:44.6415377Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:44.6415592Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:44.6415795Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:44.6416038Z   RUSTUP_PERMIT_COPY_RENAME: 1
+2026-05-19T07:51:44.6416266Z ##[endgroup]
+2026-05-19T07:51:45.3276934Z info: syncing channel updates for stable-x86_64-unknown-linux-gnu
+2026-05-19T07:51:45.4097450Z info: latest update on 2026-04-16 for version 1.95.0 (59807616e 2026-04-14)
+2026-05-19T07:51:45.4189401Z info: component clippy is up to date
+2026-05-19T07:51:45.4189745Z info: component rustfmt is up to date
+2026-05-19T07:51:45.4199358Z 
+2026-05-19T07:51:45.4276373Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.95.0 (59807616e 2026-04-14)
+2026-05-19T07:51:45.4276964Z 
+2026-05-19T07:51:45.4316215Z ##[group]Run rustup default stable
+2026-05-19T07:51:45.4316459Z [36;1mrustup default stable[0m
+2026-05-19T07:51:45.4345302Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.4345583Z env:
+2026-05-19T07:51:45.4345745Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.4345926Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.4346089Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.4346291Z ##[endgroup]
+2026-05-19T07:51:45.4434679Z info: using existing install for stable-x86_64-unknown-linux-gnu
+2026-05-19T07:51:45.4442087Z info: default toolchain set to stable-x86_64-unknown-linux-gnu
+2026-05-19T07:51:45.4442417Z 
+2026-05-19T07:51:45.4514942Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.95.0 (59807616e 2026-04-14)
+2026-05-19T07:51:45.4515371Z 
+2026-05-19T07:51:45.4542492Z ##[group]Run : create cachekey
+2026-05-19T07:51:45.4542719Z [36;1m: create cachekey[0m
+2026-05-19T07:51:45.4543106Z [36;1mDATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')[0m
+2026-05-19T07:51:45.4543595Z [36;1mHASH=$(rustc +stable --version --verbose | sed -ne 's/^commit-hash: //p')[0m
+2026-05-19T07:51:45.4543992Z [36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT[0m
+2026-05-19T07:51:45.4570878Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.4571140Z env:
+2026-05-19T07:51:45.4571293Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.4571483Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.4571691Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.4571884Z ##[endgroup]
+2026-05-19T07:51:45.4892259Z ##[group]Run : disable incremental compilation
+2026-05-19T07:51:45.4892551Z [36;1m: disable incremental compilation[0m
+2026-05-19T07:51:45.4892798Z [36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then[0m
+2026-05-19T07:51:45.4893105Z [36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV[0m
+2026-05-19T07:51:45.4893317Z [36;1mfi[0m
+2026-05-19T07:51:45.4921959Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.4922239Z env:
+2026-05-19T07:51:45.4922395Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.4922577Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.4922900Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.4923093Z ##[endgroup]
+2026-05-19T07:51:45.4978612Z ##[group]Run : enable colors in Cargo output
+2026-05-19T07:51:45.4978866Z [36;1m: enable colors in Cargo output[0m
+2026-05-19T07:51:45.4979106Z [36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then[0m
+2026-05-19T07:51:45.4979712Z [36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV[0m
+2026-05-19T07:51:45.4979937Z [36;1mfi[0m
+2026-05-19T07:51:45.5004121Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.5004373Z env:
+2026-05-19T07:51:45.5004536Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.5004705Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.5004874Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.5005059Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:45.5005222Z ##[endgroup]
+2026-05-19T07:51:45.5059166Z ##[group]Run : enable Cargo sparse registry
+2026-05-19T07:51:45.5059615Z [36;1m: enable Cargo sparse registry[0m
+2026-05-19T07:51:45.5059898Z [36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70[0m
+2026-05-19T07:51:45.5060407Z [36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then[0m
+2026-05-19T07:51:45.5060987Z [36;1m  if rustc +stable --version --verbose | grep -q '^release: 1\.6[89]\.'; then[0m
+2026-05-19T07:51:45.5061425Z [36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+2026-05-19T07:51:45.5061813Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV[0m
+2026-05-19T07:51:45.5062173Z [36;1m  elif rustc +stable --version --verbose | grep -q '^release: 1\.6[67]\.'; then[0m
+2026-05-19T07:51:45.5062570Z [36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+2026-05-19T07:51:45.5062946Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV[0m
+2026-05-19T07:51:45.5063201Z [36;1m  fi[0m
+2026-05-19T07:51:45.5063344Z [36;1mfi[0m
+2026-05-19T07:51:45.5087448Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.5087703Z env:
+2026-05-19T07:51:45.5087865Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.5088041Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.5088233Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.5088520Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:45.5088686Z ##[endgroup]
+2026-05-19T07:51:45.5387449Z ##[group]Run : work around spurious network errors in curl 8.0
+2026-05-19T07:51:45.5387815Z [36;1m: work around spurious network errors in curl 8.0[0m
+2026-05-19T07:51:45.5388237Z [36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation[0m
+2026-05-19T07:51:45.5388699Z [36;1mif rustc +stable --version --verbose | grep -q '^release: 1\.7[01]\.'; then[0m
+2026-05-19T07:51:45.5389051Z [36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV[0m
+2026-05-19T07:51:45.5389522Z [36;1mfi[0m
+2026-05-19T07:51:45.5418505Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.5418791Z env:
+2026-05-19T07:51:45.5418943Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.5419120Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.5419462Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.5419670Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:45.5419863Z ##[endgroup]
+2026-05-19T07:51:45.5600263Z ##[group]Run rustc +stable --version --verbose
+2026-05-19T07:51:45.5600548Z [36;1mrustc +stable --version --verbose[0m
+2026-05-19T07:51:45.5627274Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-05-19T07:51:45.5627547Z env:
+2026-05-19T07:51:45.5627697Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.5627881Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.5628046Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.5628236Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:45.5628394Z ##[endgroup]
+2026-05-19T07:51:45.5772015Z rustc 1.95.0 (59807616e 2026-04-14)
+2026-05-19T07:51:45.5772391Z binary: rustc
+2026-05-19T07:51:45.5772604Z commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860
+2026-05-19T07:51:45.5773182Z commit-date: 2026-04-14
+2026-05-19T07:51:45.5773364Z host: x86_64-unknown-linux-gnu
+2026-05-19T07:51:45.5773551Z release: 1.95.0
+2026-05-19T07:51:45.5773716Z LLVM version: 22.1.2
+2026-05-19T07:51:45.6421429Z ##[group]Run actions/cache@v4
+2026-05-19T07:51:45.6421821Z with:
+2026-05-19T07:51:45.6422013Z   path: ~/.cargo/registry
+~/.cargo/git
+target
+
+2026-05-19T07:51:45.6422368Z   key: Linux-cargo-fc0512c711434b7d7e3120af71ce8c01e90326b2656b7f4f918cc627e5d0670b
+2026-05-19T07:51:45.6422699Z   restore-keys: Linux-cargo-
+
+2026-05-19T07:51:45.6422904Z   enableCrossOsArchive: false
+2026-05-19T07:51:45.6423094Z   fail-on-cache-miss: false
+2026-05-19T07:51:45.6423275Z   lookup-only: false
+2026-05-19T07:51:45.6423436Z   save-always: false
+2026-05-19T07:51:45.6423593Z env:
+2026-05-19T07:51:45.6423737Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:45.6423909Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:45.6424083Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:45.6424276Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:45.6424442Z ##[endgroup]
+2026-05-19T07:51:46.2285508Z Cache not found for input keys: Linux-cargo-fc0512c711434b7d7e3120af71ce8c01e90326b2656b7f4f918cc627e5d0670b, Linux-cargo-
+2026-05-19T07:51:46.2342390Z ##[group]Run cargo fmt --all -- --check
+2026-05-19T07:51:46.2342678Z [36;1mcargo fmt --all -- --check[0m
+2026-05-19T07:51:46.2372533Z shell: /usr/bin/bash -e {0}
+2026-05-19T07:51:46.2372735Z env:
+2026-05-19T07:51:46.2372885Z   CARGO_TERM_COLOR: always
+2026-05-19T07:51:46.2373070Z   RUST_BACKTRACE: 1
+2026-05-19T07:51:46.2373236Z   CARGO_HOME: /home/runner/.cargo
+2026-05-19T07:51:46.2373441Z   CARGO_INCREMENTAL: 0
+2026-05-19T07:51:46.2373599Z ##[endgroup]
+2026-05-19T07:51:46.3380459Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/lib.rs:10:
+2026-05-19T07:51:46.3380814Z  
+2026-05-19T07:51:46.3380983Z  // Re-export mock implementations
+2026-05-19T07:51:46.3385557Z  pub use mock::{
+2026-05-19T07:51:46.3385816Z -    MockCustodian,
+2026-05-19T07:51:46.3386043Z -    MockPaymentProcessor,
+2026-05-19T07:51:46.3386241Z -    MockArbitration,
+2026-05-19T07:51:46.3386433Z -    MockIdentityProvider,
+2026-05-19T07:51:46.3386613Z -    MockEscrowRepository,
+2026-05-19T07:51:46.3386854Z -    MockDisputeRepository,
+2026-05-19T07:51:46.3387042Z -    MockUserRepository,
+2026-05-19T07:51:46.3387344Z +    MockArbitration, MockCustodian, MockDisputeRepository, MockEscrowRepository,
+2026-05-19T07:51:46.3387718Z +    MockIdentityProvider, MockPaymentProcessor, MockUserRepository,
+2026-05-19T07:51:46.3387979Z  };
+2026-05-19T07:51:46.3388107Z  
+2026-05-19T07:51:46.3388265Z  // Re-export MongoDB implementations
+2026-05-19T07:51:46.3388556Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/lib.rs:23:
+2026-05-19T07:51:46.3388862Z  pub use mongodb::{
+2026-05-19T07:51:46.3389021Z -    MongoClient,
+2026-05-19T07:51:46.3389187Z -    MongoEscrowRepository,
+2026-05-19T07:51:46.3389603Z -    MongoDisputeRepository,
+2026-05-19T07:51:46.3389797Z -    MongoUserRepository,
+2026-05-19T07:51:46.3390096Z +    MongoClient, MongoDisputeRepository, MongoEscrowRepository, MongoUserRepository,
+2026-05-19T07:51:46.3390400Z  };
+2026-05-19T07:51:46.3390537Z  
+2026-05-19T07:51:46.3390888Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/arbitration.rs:53:
+2026-05-19T07:51:46.3391313Z  }
+2026-05-19T07:51:46.3391484Z  
+2026-05-19T07:51:46.3391738Z  impl ArbitrationStrategy for MockArbitration {
+2026-05-19T07:51:46.3392305Z -    fn select_arbitrators(&self, _dispute: &Dispute, count: usize) -> BoxFuture<'_, Result<Vec<UserId>>> {
+2026-05-19T07:51:46.3392855Z +    fn select_arbitrators(
+2026-05-19T07:51:46.3393035Z +        &self,
+2026-05-19T07:51:46.3393185Z +        _dispute: &Dispute,
+2026-05-19T07:51:46.3393362Z +        count: usize,
+2026-05-19T07:51:46.3393536Z +    ) -> BoxFuture<'_, Result<Vec<UserId>>> {
+2026-05-19T07:51:46.3393757Z          Box::pin(async move {
+2026-05-19T07:51:46.3393968Z              let pool = self.arbitrator_pool.read().unwrap();
+2026-05-19T07:51:46.3394190Z  
+2026-05-19T07:51:46.3394444Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/arbitration.rs:62:
+2026-05-19T07:51:46.3394756Z  
+2026-05-19T07:51:46.3394905Z              if selected.len() < count {
+2026-05-19T07:51:46.3395139Z                  // Not enough arbitrators, but for mock we'll allow it
+2026-05-19T07:51:46.3395807Z -                tracing::warn!("Not enough arbitrators in pool: {} < {}", selected.len(), count);
+2026-05-19T07:51:46.3396144Z +                tracing::warn!(
+2026-05-19T07:51:46.3396362Z +                    "Not enough arbitrators in pool: {} < {}",
+2026-05-19T07:51:46.3396592Z +                    selected.len(),
+2026-05-19T07:51:46.3396779Z +                    count
+2026-05-19T07:51:46.3396935Z +                );
+2026-05-19T07:51:46.3397084Z              }
+2026-05-19T07:51:46.3397218Z  
+2026-05-19T07:51:46.3397347Z              Ok(selected)
+2026-05-19T07:51:46.3397676Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/custodian.rs:42:
+2026-05-19T07:51:46.3397988Z  }
+2026-05-19T07:51:46.3398123Z  
+2026-05-19T07:51:46.3398280Z  impl CustodianProvider for MockCustodian {
+2026-05-19T07:51:46.3398803Z -    fn create_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<DepositAddress>> {
+2026-05-19T07:51:46.3399176Z +    fn create_deposit_address(
+2026-05-19T07:51:46.3399468Z +        &self,
+2026-05-19T07:51:46.3399625Z +        escrow_id: &EscrowId,
+2026-05-19T07:51:46.3399823Z +    ) -> BoxFuture<'_, Result<DepositAddress>> {
+2026-05-19T07:51:46.3400058Z          let escrow_id = escrow_id.clone();
+2026-05-19T07:51:46.3400261Z          Box::pin(async move {
+2026-05-19T07:51:46.3400497Z              let mut counter = self.address_counter.write().unwrap();
+2026-05-19T07:51:46.3400865Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/custodian.rs:50:
+2026-05-19T07:51:46.3401261Z              let address = DepositAddress(format!("bc1qmock{:08x}", *counter));
+2026-05-19T07:51:46.3401512Z  
+2026-05-19T07:51:46.3401683Z              let mut accounts = self.accounts.write().unwrap();
+2026-05-19T07:51:46.3401922Z -            accounts.insert(
+2026-05-19T07:51:46.3402107Z -                escrow_id.0.to_string(),
+2026-05-19T07:51:46.3402319Z -                (address.clone(), Satoshis(0)),
+2026-05-19T07:51:46.3402512Z -            );
+2026-05-19T07:51:46.3402760Z +            accounts.insert(escrow_id.0.to_string(), (address.clone(), Satoshis(0)));
+2026-05-19T07:51:46.3403032Z  
+2026-05-19T07:51:46.3403168Z              Ok(address)
+2026-05-19T07:51:46.3403333Z          })
+2026-05-19T07:51:46.3403587Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/custodian.rs:93:
+2026-05-19T07:51:46.3403895Z          })
+2026-05-19T07:51:46.3404023Z      }
+2026-05-19T07:51:46.3404156Z  
+2026-05-19T07:51:46.3404478Z -    fn get_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Option<DepositAddress>>> {
+2026-05-19T07:51:46.3405036Z +    fn get_deposit_address(
+2026-05-19T07:51:46.3405288Z +        &self,
+2026-05-19T07:51:46.3405462Z +        escrow_id: &EscrowId,
+2026-05-19T07:51:46.3405796Z +    ) -> BoxFuture<'_, Result<Option<DepositAddress>>> {
+2026-05-19T07:51:46.3406162Z          let escrow_id = escrow_id.clone();
+2026-05-19T07:51:46.3406470Z          Box::pin(async move {
+2026-05-19T07:51:46.3406721Z              let accounts = self.accounts.read().unwrap();
+2026-05-19T07:51:46.3407080Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/identity.rs:61:
+2026-05-19T07:51:46.3407412Z                          if stored_password == &password {
+2026-05-19T07:51:46.3407694Z                              // Find user by username (simplified: username == display_name)
+2026-05-19T07:51:46.3407991Z                              let users = self.users.read().unwrap();
+2026-05-19T07:51:46.3408299Z -                            if let Some(user) = users.values().find(|u| u.display_name == username) {
+2026-05-19T07:51:46.3408666Z +                            if let Some(user) = users.values().find(|u| u.display_name == username)
+2026-05-19T07:51:46.3408950Z +                            {
+2026-05-19T07:51:46.3409156Z                                  let user_id = user.id.clone();
+2026-05-19T07:51:46.3409603Z                                  drop(users); // Release read lock before write
+2026-05-19T07:51:46.3409966Z  
+2026-05-19T07:51:46.3410225Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/identity.rs:141:
+2026-05-19T07:51:46.3410525Z          })
+2026-05-19T07:51:46.3410659Z      }
+2026-05-19T07:51:46.3410782Z  
+2026-05-19T07:51:46.3411062Z -    fn update_reputation(&self, user_id: &UserId, score: ReputationScore) -> BoxFuture<'_, Result<()>> {
+2026-05-19T07:51:46.3411397Z +    fn update_reputation(
+2026-05-19T07:51:46.3411559Z +        &self,
+2026-05-19T07:51:46.3411703Z +        user_id: &UserId,
+2026-05-19T07:51:46.3411877Z +        score: ReputationScore,
+2026-05-19T07:51:46.3412071Z +    ) -> BoxFuture<'_, Result<()>> {
+2026-05-19T07:51:46.3412266Z          let user_id = user_id.clone();
+2026-05-19T07:51:46.3412467Z          Box::pin(async move {
+2026-05-19T07:51:46.3412773Z              let mut users = self.users.write().unwrap();
+2026-05-19T07:51:46.3413113Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/identity.rs:152:
+2026-05-19T07:51:46.3413416Z          })
+2026-05-19T07:51:46.3413549Z      }
+2026-05-19T07:51:46.3413669Z  
+2026-05-19T07:51:46.3413947Z -    fn register(&self, display_name: String, credentials: Credentials) -> BoxFuture<'_, Result<User>> {
+2026-05-19T07:51:46.3414277Z +    fn register(
+2026-05-19T07:51:46.3414420Z +        &self,
+2026-05-19T07:51:46.3414571Z +        display_name: String,
+2026-05-19T07:51:46.3414743Z +        credentials: Credentials,
+2026-05-19T07:51:46.3415007Z +    ) -> BoxFuture<'_, Result<User>> {
+2026-05-19T07:51:46.3415206Z          Box::pin(async move {
+2026-05-19T07:51:46.3415372Z              let user = User {
+2026-05-19T07:51:46.3415546Z                  id: UserId::new(),
+2026-05-19T07:51:46.3415824Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/mod.rs:1:
+2026-05-19T07:51:46.3416135Z  //! Mock implementations for all traits
+2026-05-19T07:51:46.3416331Z  
+2026-05-19T07:51:46.3416454Z -mod custodian;
+2026-05-19T07:51:46.3416603Z -mod payment;
+2026-05-19T07:51:46.3416746Z  mod arbitration;
+2026-05-19T07:51:46.3416897Z +mod custodian;
+2026-05-19T07:51:46.3417036Z  mod identity;
+2026-05-19T07:51:46.3417186Z +mod payment;
+2026-05-19T07:51:46.3417325Z  mod repository;
+2026-05-19T07:51:46.3417470Z  
+2026-05-19T07:51:46.3417612Z -pub use custodian::MockCustodian;
+2026-05-19T07:51:46.3417855Z -pub use payment::MockPaymentProcessor;
+2026-05-19T07:51:46.3418077Z  pub use arbitration::MockArbitration;
+2026-05-19T07:51:46.3418286Z +pub use custodian::MockCustodian;
+2026-05-19T07:51:46.3418523Z  pub use identity::MockIdentityProvider;
+2026-05-19T07:51:46.3418846Z -pub use repository::{MockEscrowRepository, MockDisputeRepository, MockUserRepository};
+2026-05-19T07:51:46.3419190Z +pub use payment::MockPaymentProcessor;
+2026-05-19T07:51:46.3419639Z +pub use repository::{MockDisputeRepository, MockEscrowRepository, MockUserRepository};
+2026-05-19T07:51:46.3420022Z  
+2026-05-19T07:51:46.3420520Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/repository.rs:62:
+2026-05-19T07:51:46.3421033Z          let buyer = buyer.clone();
+2026-05-19T07:51:46.3421313Z          Box::pin(async move {
+2026-05-19T07:51:46.3421612Z              let escrows = self.escrows.read().unwrap();
+2026-05-19T07:51:46.3422070Z -            Ok(escrows.values().filter(|e| e.buyer == buyer).cloned().collect())
+2026-05-19T07:51:46.3422477Z +            Ok(escrows
+2026-05-19T07:51:46.3422715Z +                .values()
+2026-05-19T07:51:46.3422979Z +                .filter(|e| e.buyer == buyer)
+2026-05-19T07:51:46.3423271Z +                .cloned()
+2026-05-19T07:51:46.3423512Z +                .collect())
+2026-05-19T07:51:46.3423753Z          })
+2026-05-19T07:51:46.3423948Z      }
+2026-05-19T07:51:46.3424130Z  
+2026-05-19T07:51:46.3424536Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/repository.rs:70:
+2026-05-19T07:51:46.3425067Z          let seller = seller.clone();
+2026-05-19T07:51:46.3425377Z          Box::pin(async move {
+2026-05-19T07:51:46.3425848Z              let escrows = self.escrows.read().unwrap();
+2026-05-19T07:51:46.3426336Z -            Ok(escrows.values().filter(|e| e.seller == seller).cloned().collect())
+2026-05-19T07:51:46.3426758Z +            Ok(escrows
+2026-05-19T07:51:46.3426977Z +                .values()
+2026-05-19T07:51:46.3427242Z +                .filter(|e| e.seller == seller)
+2026-05-19T07:51:46.3427530Z +                .cloned()
+2026-05-19T07:51:46.3427771Z +                .collect())
+2026-05-19T07:51:46.3428000Z          })
+2026-05-19T07:51:46.3428190Z      }
+2026-05-19T07:51:46.3428360Z  
+2026-05-19T07:51:46.3428757Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/repository.rs:89:
+2026-05-19T07:51:46.3429491Z      fn find_pending_auto_release(&self) -> BoxFuture<'_, Result<Vec<Escrow>>> {
+2026-05-19T07:51:46.3429934Z          Box::pin(async move {
+2026-05-19T07:51:46.3430344Z              let escrows = self.escrows.read().unwrap();
+2026-05-19T07:51:46.3430744Z -            Ok(escrows.values().filter(|e| e.should_auto_release()).cloned().collect())
+2026-05-19T07:51:46.3431122Z +            Ok(escrows
+2026-05-19T07:51:46.3431325Z +                .values()
+2026-05-19T07:51:46.3431569Z +                .filter(|e| e.should_auto_release())
+2026-05-19T07:51:46.3431834Z +                .cloned()
+2026-05-19T07:51:46.3432062Z +                .collect())
+2026-05-19T07:51:46.3432292Z          })
+2026-05-19T07:51:46.3432554Z      }
+2026-05-19T07:51:46.3432757Z  }
+2026-05-19T07:51:46.3433170Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/repository.rs:144:
+2026-05-19T07:51:46.3433697Z          let escrow_id = escrow_id.clone();
+2026-05-19T07:51:46.3434018Z          Box::pin(async move {
+2026-05-19T07:51:46.3434349Z              let disputes = self.disputes.read().unwrap();
+2026-05-19T07:51:46.3434827Z -            Ok(disputes.values().find(|d| d.escrow_id == escrow_id).cloned())
+2026-05-19T07:51:46.3435241Z +            Ok(disputes
+2026-05-19T07:51:46.3435513Z +                .values()
+2026-05-19T07:51:46.3435768Z +                .find(|d| d.escrow_id == escrow_id)
+2026-05-19T07:51:46.3436103Z +                .cloned())
+2026-05-19T07:51:46.3436370Z          })
+2026-05-19T07:51:46.3436553Z      }
+2026-05-19T07:51:46.3436741Z  
+2026-05-19T07:51:46.3437141Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mock/repository.rs:166:
+2026-05-19T07:51:46.3437650Z              Ok(disputes
+2026-05-19T07:51:46.3437881Z                  .values()
+2026-05-19T07:51:46.3438125Z                  .filter(|d| {
+2026-05-19T07:51:46.3438597Z -                    if let sats_escrow_core::dispute::DisputeState::InReview { arbitrators } = &d.state {
+2026-05-19T07:51:46.3439384Z +                    if let sats_escrow_core::dispute::DisputeState::InReview { arbitrators } =
+2026-05-19T07:51:46.3439846Z +                        &d.state
+2026-05-19T07:51:46.3440104Z +                    {
+2026-05-19T07:51:46.3440379Z                          arbitrators.contains(&arbitrator)
+2026-05-19T07:51:46.3440706Z                      } else {
+2026-05-19T07:51:46.3440957Z                          false
+2026-05-19T07:51:46.3441394Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/client.rs:1:
+2026-05-19T07:51:46.3441750Z  //! MongoDB client wrapper for connection management
+2026-05-19T07:51:46.3441972Z  
+2026-05-19T07:51:46.3442155Z -use mongodb::{Client, Database, options::ClientOptions};
+2026-05-19T07:51:46.3442443Z +use mongodb::{options::ClientOptions, Client, Database};
+2026-05-19T07:51:46.3442722Z  use tracing::info;
+2026-05-19T07:51:46.3442994Z  
+2026-05-19T07:51:46.3443234Z  /// MongoDB client wrapper with connection pooling
+2026-05-19T07:51:46.3443757Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/client.rs:23:
+2026-05-19T07:51:46.3444245Z  
+2026-05-19T07:51:46.3444429Z          // Test connection
+2026-05-19T07:51:46.3444720Z          let db = client.database(database_name);
+2026-05-19T07:51:46.3445377Z -        db.run_command(mongodb::bson::doc! { "ping": 1 }, None).await?;
+2026-05-19T07:51:46.3445842Z +        db.run_command(mongodb::bson::doc! { "ping": 1 }, None)
+2026-05-19T07:51:46.3446192Z +            .await?;
+2026-05-19T07:51:46.3446498Z          info!("Connected to MongoDB database: {}", database_name);
+2026-05-19T07:51:46.3446857Z  
+2026-05-19T07:51:46.3447030Z          Ok(client)
+2026-05-19T07:51:46.3447489Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/dispute_repo.rs:78:
+2026-05-19T07:51:46.3448046Z                      { "state": { "$regex": "^InReview" } }
+2026-05-19T07:51:46.3448361Z                  ]
+2026-05-19T07:51:46.3448566Z              };
+2026-05-19T07:51:46.3448801Z -            let cursor = self.collection
+2026-05-19T07:51:46.3449100Z +            let cursor = self
+2026-05-19T07:51:46.3449490Z +                .collection
+2026-05-19T07:51:46.3449881Z                  .find(filter, None)
+2026-05-19T07:51:46.3450152Z                  .await
+2026-05-19T07:51:46.3450464Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3451028Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/dispute_repo.rs:97:
+2026-05-19T07:51:46.3451562Z              let filter = doc! {
+2026-05-19T07:51:46.3451909Z                  "state.InReview.arbitrators": arbitrator.0.to_string()
+2026-05-19T07:51:46.3452280Z              };
+2026-05-19T07:51:46.3452507Z -            let cursor = self.collection
+2026-05-19T07:51:46.3452799Z +            let cursor = self
+2026-05-19T07:51:46.3453058Z +                .collection
+2026-05-19T07:51:46.3453308Z                  .find(filter, None)
+2026-05-19T07:51:46.3453515Z                  .await
+2026-05-19T07:51:46.3453708Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3454073Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/escrow_repo.rs:2:
+2026-05-19T07:51:46.3454389Z  
+2026-05-19T07:51:46.3454558Z  use mongodb::{bson::doc, Collection, Database};
+2026-05-19T07:51:46.3454788Z  use sats_escrow_core::{
+2026-05-19T07:51:46.3454958Z -    escrow::Escrow,
+2026-05-19T07:51:46.3455130Z      error::{Error, Result},
+2026-05-19T07:51:46.3455300Z +    escrow::Escrow,
+2026-05-19T07:51:46.3455504Z      traits::repository::{BoxFuture, EscrowRepository},
+2026-05-19T07:51:46.3455726Z      types::EscrowId,
+2026-05-19T07:51:46.3455890Z      user::UserId,
+2026-05-19T07:51:46.3456171Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/escrow_repo.rs:69:
+2026-05-19T07:51:46.3456512Z          Box::pin(async move {
+2026-05-19T07:51:46.3456708Z              use futures::TryStreamExt;
+2026-05-19T07:51:46.3456937Z              let filter = doc! { "buyer": buyer.0.to_string() };
+2026-05-19T07:51:46.3457176Z -            let cursor = self.collection
+2026-05-19T07:51:46.3457369Z +            let cursor = self
+2026-05-19T07:51:46.3457542Z +                .collection
+2026-05-19T07:51:46.3457709Z                  .find(filter, None)
+2026-05-19T07:51:46.3457899Z                  .await
+2026-05-19T07:51:46.3458091Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3458443Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/escrow_repo.rs:85:
+2026-05-19T07:51:46.3458769Z          Box::pin(async move {
+2026-05-19T07:51:46.3458950Z              use futures::TryStreamExt;
+2026-05-19T07:51:46.3459184Z              let filter = doc! { "seller": seller.0.to_string() };
+2026-05-19T07:51:46.3459596Z -            let cursor = self.collection
+2026-05-19T07:51:46.3459793Z +            let cursor = self
+2026-05-19T07:51:46.3459956Z +                .collection
+2026-05-19T07:51:46.3460130Z                  .find(filter, None)
+2026-05-19T07:51:46.3460307Z                  .await
+2026-05-19T07:51:46.3460501Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3460858Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/escrow_repo.rs:128:
+2026-05-19T07:51:46.3461305Z              let filter = doc! {
+2026-05-19T07:51:46.3461526Z                  "state": { "$regex": "^AwaitingDelivery" }
+2026-05-19T07:51:46.3461736Z              };
+2026-05-19T07:51:46.3461896Z -            let cursor = self.collection
+2026-05-19T07:51:46.3462085Z +            let cursor = self
+2026-05-19T07:51:46.3462276Z +                .collection
+2026-05-19T07:51:46.3462446Z                  .find(filter, None)
+2026-05-19T07:51:46.3462617Z                  .await
+2026-05-19T07:51:46.3462812Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3463134Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/mod.rs:2:
+2026-05-19T07:51:46.3463433Z  //!
+2026-05-19T07:51:46.3463665Z  //! Provides persistent storage using MongoDB for escrows, disputes, and users.
+2026-05-19T07:51:46.3463947Z  
+2026-05-19T07:51:46.3464173Z -mod escrow_repo;
+2026-05-19T07:51:46.3464335Z +mod client;
+2026-05-19T07:51:46.3464485Z  mod dispute_repo;
+2026-05-19T07:51:46.3464645Z +mod escrow_repo;
+2026-05-19T07:51:46.3464797Z  mod user_repo;
+2026-05-19T07:51:46.3464937Z -mod client;
+2026-05-19T07:51:46.3465078Z  
+2026-05-19T07:51:46.3465222Z  pub use client::MongoClient;
+2026-05-19T07:51:46.3465432Z -pub use escrow_repo::MongoEscrowRepository;
+2026-05-19T07:51:46.3465666Z  pub use dispute_repo::MongoDisputeRepository;
+2026-05-19T07:51:46.3465899Z +pub use escrow_repo::MongoEscrowRepository;
+2026-05-19T07:51:46.3466114Z  pub use user_repo::MongoUserRepository;
+2026-05-19T07:51:46.3466311Z  
+2026-05-19T07:51:46.3466566Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/adapters/src/mongodb/user_repo.rs:62:
+2026-05-19T07:51:46.3466890Z              let filter = doc! {
+2026-05-19T07:51:46.3467080Z                  "roles": "Arbitrator"
+2026-05-19T07:51:46.3467257Z              };
+2026-05-19T07:51:46.3467419Z -            let cursor = self.collection
+2026-05-19T07:51:46.3467611Z +            let cursor = self
+2026-05-19T07:51:46.3467785Z +                .collection
+2026-05-19T07:51:46.3467952Z                  .find(filter, None)
+2026-05-19T07:51:46.3468131Z                  .await
+2026-05-19T07:51:46.3468322Z                  .map_err(|e| Error::Repository(e.to_string()))?;
+2026-05-19T07:51:46.3473219Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/error.rs:99:
+2026-05-19T07:51:46.3473684Z                  message: err.to_string(),
+2026-05-19T07:51:46.3473981Z                  details: None,
+2026-05-19T07:51:46.3474240Z              },
+2026-05-19T07:51:46.3474583Z -            CoreError::InsufficientFunds { required, available } => ApiError {
+2026-05-19T07:51:46.3475042Z +            CoreError::InsufficientFunds {
+2026-05-19T07:51:46.3475332Z +                required,
+2026-05-19T07:51:46.3475575Z +                available,
+2026-05-19T07:51:46.3475821Z +            } => ApiError {
+2026-05-19T07:51:46.3476123Z                  status: StatusCode::PAYMENT_REQUIRED,
+2026-05-19T07:51:46.3476505Z                  code: "INSUFFICIENT_FUNDS".to_string(),
+2026-05-19T07:51:46.3476840Z                  message: err.to_string(),
+2026-05-19T07:51:46.3477274Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/error.rs:108:
+2026-05-19T07:51:46.3477720Z                      "available": available
+2026-05-19T07:51:46.3478005Z                  })),
+2026-05-19T07:51:46.3478186Z              },
+2026-05-19T07:51:46.3478514Z -            CoreError::Custodian(_) | CoreError::PaymentProcessor(_) | CoreError::IdentityProvider(_) => ApiError {
+2026-05-19T07:51:46.3478887Z +            CoreError::Custodian(_)
+2026-05-19T07:51:46.3479092Z +            | CoreError::PaymentProcessor(_)
+2026-05-19T07:51:46.3479509Z +            | CoreError::IdentityProvider(_) => ApiError {
+2026-05-19T07:51:46.3479762Z                  status: StatusCode::SERVICE_UNAVAILABLE,
+2026-05-19T07:51:46.3480010Z                  code: "EXTERNAL_SERVICE_ERROR".to_string(),
+2026-05-19T07:51:46.3480283Z                  message: "An external service is unavailable".to_string(),
+2026-05-19T07:51:46.3488166Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/dispute.rs:69:
+2026-05-19T07:51:46.3488668Z      State(state): State<AppState>,
+2026-05-19T07:51:46.3488951Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3489362Z  ) -> ApiResult<ApiResponse<DisputeResponse>> {
+2026-05-19T07:51:46.3489723Z -    let dispute = state.services.dispute_repo
+2026-05-19T07:51:46.3490046Z +    let dispute = state
+2026-05-19T07:51:46.3490279Z +        .services
+2026-05-19T07:51:46.3490494Z +        .dispute_repo
+2026-05-19T07:51:46.3490729Z          .find_by_id(&DisputeId(id))
+2026-05-19T07:51:46.3491004Z          .await
+2026-05-19T07:51:46.3491277Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3491803Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/dispute.rs:82:
+2026-05-19T07:51:46.3492296Z      State(state): State<AppState>,
+2026-05-19T07:51:46.3492723Z      AuthUser(_user_id): AuthUser,
+2026-05-19T07:51:46.3493065Z  ) -> ApiResult<ApiResponse<Vec<DisputeResponse>>> {
+2026-05-19T07:51:46.3493450Z -    let disputes = state.services.dispute_repo
+2026-05-19T07:51:46.3493770Z +    let disputes = state
+2026-05-19T07:51:46.3494012Z +        .services
+2026-05-19T07:51:46.3494218Z +        .dispute_repo
+2026-05-19T07:51:46.3494462Z          .find_open_disputes()
+2026-05-19T07:51:46.3494706Z          .await
+2026-05-19T07:51:46.3494910Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3495232Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/dispute.rs:97:
+2026-05-19T07:51:46.3495541Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3495719Z      Json(req): Json<VoteRequest>,
+2026-05-19T07:51:46.3495920Z  ) -> ApiResult<ApiResponse<DisputeResponse>> {
+2026-05-19T07:51:46.3496163Z -    let mut dispute = state.services.dispute_repo
+2026-05-19T07:51:46.3496378Z +    let mut dispute = state
+2026-05-19T07:51:46.3496554Z +        .services
+2026-05-19T07:51:46.3496696Z +        .dispute_repo
+2026-05-19T07:51:46.3496866Z          .find_by_id(&DisputeId(id))
+2026-05-19T07:51:46.3497055Z          .await
+2026-05-19T07:51:46.3497235Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3497554Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/dispute.rs:117:
+2026-05-19T07:51:46.3497849Z  
+2026-05-19T07:51:46.3498032Z      dispute.record_vote(vote).map_err(ApiError::from)?;
+2026-05-19T07:51:46.3498243Z  
+2026-05-19T07:51:46.3498391Z -    state.services.dispute_repo
+2026-05-19T07:51:46.3498569Z +    state
+2026-05-19T07:51:46.3498710Z +        .services
+2026-05-19T07:51:46.3498854Z +        .dispute_repo
+2026-05-19T07:51:46.3499032Z          .update(&dispute)
+2026-05-19T07:51:46.3499193Z          .await
+2026-05-19T07:51:46.3499557Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3514519Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:67:
+2026-05-19T07:51:46.3515003Z              state: match &e.state {
+2026-05-19T07:51:46.3515404Z                  sats_escrow_core::escrow::EscrowState::Created => "created",
+2026-05-19T07:51:46.3515886Z                  sats_escrow_core::escrow::EscrowState::Funded => "funded",
+2026-05-19T07:51:46.3516482Z -                sats_escrow_core::escrow::EscrowState::AwaitingDelivery { .. } => "awaiting_delivery",
+2026-05-19T07:51:46.3517097Z +                sats_escrow_core::escrow::EscrowState::AwaitingDelivery { .. } => {
+2026-05-19T07:51:46.3517533Z +                    "awaiting_delivery"
+2026-05-19T07:51:46.3517892Z +                }
+2026-05-19T07:51:46.3518241Z                  sats_escrow_core::escrow::EscrowState::Disputed { .. } => "disputed",
+2026-05-19T07:51:46.3518794Z                  sats_escrow_core::escrow::EscrowState::Cancelled { .. } => "cancelled",
+2026-05-19T07:51:46.3519601Z -                sats_escrow_core::escrow::EscrowState::ReleasedToSeller { .. } => "released_to_seller",
+2026-05-19T07:51:46.3520313Z -                sats_escrow_core::escrow::EscrowState::ReleasedToBuyer { .. } => "released_to_buyer",
+2026-05-19T07:51:46.3520986Z -            }.to_string(),
+2026-05-19T07:51:46.3521370Z +                sats_escrow_core::escrow::EscrowState::ReleasedToSeller { .. } => {
+2026-05-19T07:51:46.3521795Z +                    "released_to_seller"
+2026-05-19T07:51:46.3522075Z +                }
+2026-05-19T07:51:46.3522409Z +                sats_escrow_core::escrow::EscrowState::ReleasedToBuyer { .. } => {
+2026-05-19T07:51:46.3522833Z +                    "released_to_buyer"
+2026-05-19T07:51:46.3523100Z +                }
+2026-05-19T07:51:46.3523304Z +            }
+2026-05-19T07:51:46.3523514Z +            .to_string(),
+2026-05-19T07:51:46.3523760Z              buyer: e.buyer.0,
+2026-05-19T07:51:46.3524022Z              seller: e.seller.0,
+2026-05-19T07:51:46.3524288Z              amount_sats: e.amount.0,
+2026-05-19T07:51:46.3524869Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:121:
+2026-05-19T07:51:46.3525531Z          PartyDto::Seller => (Party::Seller, UserId(req.counterparty_id), user_id.clone()),
+2026-05-19T07:51:46.3525987Z      };
+2026-05-19T07:51:46.3526172Z  
+2026-05-19T07:51:46.3526402Z -    let terms = req.terms.map(|t| EscrowTerms {
+2026-05-19T07:51:46.3526882Z -        auto_release_after: chrono::Duration::days(t.auto_release_days.unwrap_or(14)),
+2026-05-19T07:51:46.3527482Z -        dispute_window: chrono::Duration::days(t.dispute_window_days.unwrap_or(7)),
+2026-05-19T07:51:46.3527935Z -    }).unwrap_or_default();
+2026-05-19T07:51:46.3528187Z +    let terms = req
+2026-05-19T07:51:46.3528410Z +        .terms
+2026-05-19T07:51:46.3528615Z +        .map(|t| EscrowTerms {
+2026-05-19T07:51:46.3529048Z +            auto_release_after: chrono::Duration::days(t.auto_release_days.unwrap_or(14)),
+2026-05-19T07:51:46.3529789Z +            dispute_window: chrono::Duration::days(t.dispute_window_days.unwrap_or(7)),
+2026-05-19T07:51:46.3530235Z +        })
+2026-05-19T07:51:46.3530446Z +        .unwrap_or_default();
+2026-05-19T07:51:46.3530691Z  
+2026-05-19T07:51:46.3530900Z      let mut escrow = Escrow::new(
+2026-05-19T07:51:46.3531164Z          initiator,
+2026-05-19T07:51:46.3531566Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:136:
+2026-05-19T07:51:46.3532018Z      );
+2026-05-19T07:51:46.3532207Z  
+2026-05-19T07:51:46.3532410Z      // Create deposit address via custodian
+2026-05-19T07:51:46.3532883Z -    let address = state.services.custodian.create_deposit_address(&escrow.id).await
+2026-05-19T07:51:46.3533339Z +    let address = state
+2026-05-19T07:51:46.3533581Z +        .services
+2026-05-19T07:51:46.3533801Z +        .custodian
+2026-05-19T07:51:46.3534080Z +        .create_deposit_address(&escrow.id)
+2026-05-19T07:51:46.3534407Z +        .await
+2026-05-19T07:51:46.3534682Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3535051Z      escrow.set_deposit_address(address);
+2026-05-19T07:51:46.3535331Z  
+2026-05-19T07:51:46.3535701Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:143:
+2026-05-19T07:51:46.3536169Z      // Persist
+2026-05-19T07:51:46.3536438Z -    state.services.escrow_repo.create(&escrow).await
+2026-05-19T07:51:46.3536771Z +    state
+2026-05-19T07:51:46.3536954Z +        .services
+2026-05-19T07:51:46.3537170Z +        .escrow_repo
+2026-05-19T07:51:46.3537386Z +        .create(&escrow)
+2026-05-19T07:51:46.3537621Z +        .await
+2026-05-19T07:51:46.3537876Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3538190Z  
+2026-05-19T07:51:46.3538441Z      Ok(CreatedResponse(EscrowResponse::from(&escrow)))
+2026-05-19T07:51:46.3538788Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:151:
+2026-05-19T07:51:46.3539107Z      State(state): State<AppState>,
+2026-05-19T07:51:46.3539464Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3539677Z  ) -> ApiResult<ApiResponse<EscrowResponse>> {
+2026-05-19T07:51:46.3539907Z -    let escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3540280Z +    let escrow = state
+2026-05-19T07:51:46.3540438Z +        .services
+2026-05-19T07:51:46.3540591Z +        .escrow_repo
+2026-05-19T07:51:46.3540796Z          .find_by_id(&sats_escrow_core::types::EscrowId(id))
+2026-05-19T07:51:46.3541023Z          .await
+2026-05-19T07:51:46.3541203Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3541524Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:164:
+2026-05-19T07:51:46.3541843Z      State(state): State<AppState>,
+2026-05-19T07:51:46.3542033Z      AuthUser(user_id): AuthUser,
+2026-05-19T07:51:46.3542253Z  ) -> ApiResult<ApiResponse<Vec<EscrowResponse>>> {
+2026-05-19T07:51:46.3542494Z -    let escrows = state.services.escrow_repo
+2026-05-19T07:51:46.3542704Z +    let escrows = state
+2026-05-19T07:51:46.3542863Z +        .services
+2026-05-19T07:51:46.3543013Z +        .escrow_repo
+2026-05-19T07:51:46.3543269Z          .find_by_user(&user_id)
+2026-05-19T07:51:46.3543451Z          .await
+2026-05-19T07:51:46.3543640Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3543963Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:179:
+2026-05-19T07:51:46.3544273Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3544447Z      Json(req): Json<FundRequest>,
+2026-05-19T07:51:46.3544664Z  ) -> ApiResult<ApiResponse<ActionResponse>> {
+2026-05-19T07:51:46.3544891Z -    let mut escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3545108Z +    let mut escrow = state
+2026-05-19T07:51:46.3545270Z +        .services
+2026-05-19T07:51:46.3545420Z +        .escrow_repo
+2026-05-19T07:51:46.3545585Z          .find_by_id(&EscrowId(id))
+2026-05-19T07:51:46.3545756Z          .await
+2026-05-19T07:51:46.3545941Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3546253Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:186:
+2026-05-19T07:51:46.3546598Z          .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
+2026-05-19T07:51:46.3546825Z  
+2026-05-19T07:51:46.3546981Z -    escrow.mark_funded(TxId(req.tx_id))
+2026-05-19T07:51:46.3547169Z +    escrow
+2026-05-19T07:51:46.3547322Z +        .mark_funded(TxId(req.tx_id))
+2026-05-19T07:51:46.3547528Z          .map_err(ApiError::from)?;
+2026-05-19T07:51:46.3547701Z  
+2026-05-19T07:51:46.3547848Z -    state.services.escrow_repo
+2026-05-19T07:51:46.3548021Z +    state
+2026-05-19T07:51:46.3548162Z +        .services
+2026-05-19T07:51:46.3548307Z +        .escrow_repo
+2026-05-19T07:51:46.3548472Z          .update(&escrow)
+2026-05-19T07:51:46.3548641Z          .await
+2026-05-19T07:51:46.3548831Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3549156Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:206:
+2026-05-19T07:51:46.3549629Z      AuthUser(user_id): AuthUser,
+2026-05-19T07:51:46.3549832Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3550025Z  ) -> ApiResult<ApiResponse<ActionResponse>> {
+2026-05-19T07:51:46.3550268Z -    let mut escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3550479Z +    let mut escrow = state
+2026-05-19T07:51:46.3550652Z +        .services
+2026-05-19T07:51:46.3550795Z +        .escrow_repo
+2026-05-19T07:51:46.3550964Z          .find_by_id(&EscrowId(id))
+2026-05-19T07:51:46.3551139Z          .await
+2026-05-19T07:51:46.3551334Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3551646Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:217:
+2026-05-19T07:51:46.3552031Z          return Err(ApiError::forbidden("Only the seller can mark as delivered"));
+2026-05-19T07:51:46.3552308Z      }
+2026-05-19T07:51:46.3552436Z  
+2026-05-19T07:51:46.3552583Z -    escrow.mark_delivered(user_id)
+2026-05-19T07:51:46.3552777Z -        .map_err(ApiError::from)?;
+2026-05-19T07:51:46.3553015Z +    escrow.mark_delivered(user_id).map_err(ApiError::from)?;
+2026-05-19T07:51:46.3553240Z  
+2026-05-19T07:51:46.3553502Z -    state.services.escrow_repo
+2026-05-19T07:51:46.3553677Z +    state
+2026-05-19T07:51:46.3553820Z +        .services
+2026-05-19T07:51:46.3553968Z +        .escrow_repo
+2026-05-19T07:51:46.3554132Z          .update(&escrow)
+2026-05-19T07:51:46.3554297Z          .await
+2026-05-19T07:51:46.3554481Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3554807Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:238:
+2026-05-19T07:51:46.3555106Z      AuthUser(user_id): AuthUser,
+2026-05-19T07:51:46.3555297Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3555485Z  ) -> ApiResult<ApiResponse<ActionResponse>> {
+2026-05-19T07:51:46.3555749Z -    let mut escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3555961Z +    let mut escrow = state
+2026-05-19T07:51:46.3556139Z +        .services
+2026-05-19T07:51:46.3556290Z +        .escrow_repo
+2026-05-19T07:51:46.3556549Z          .find_by_id(&EscrowId(id))
+2026-05-19T07:51:46.3556735Z          .await
+2026-05-19T07:51:46.3556914Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3557240Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:250:
+2026-05-19T07:51:46.3557525Z      }
+2026-05-19T07:51:46.3557658Z  
+2026-05-19T07:51:46.3557805Z      // Release funds to seller via custodian
+2026-05-19T07:51:46.3558029Z -    let tx_id = state.services.custodian
+2026-05-19T07:51:46.3558230Z +    let tx_id = state
+2026-05-19T07:51:46.3558382Z +        .services
+2026-05-19T07:51:46.3558529Z +        .custodian
+2026-05-19T07:51:46.3558739Z          .transfer(&escrow.id, &escrow.seller, escrow.amount.clone())
+2026-05-19T07:51:46.3558987Z          .await
+2026-05-19T07:51:46.3559161Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3559632Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:257:
+2026-05-19T07:51:46.3559920Z  
+2026-05-19T07:51:46.3560070Z -    escrow.confirm(user_id, tx_id)
+2026-05-19T07:51:46.3560262Z -        .map_err(ApiError::from)?;
+2026-05-19T07:51:46.3560505Z +    escrow.confirm(user_id, tx_id).map_err(ApiError::from)?;
+2026-05-19T07:51:46.3560738Z  
+2026-05-19T07:51:46.3560877Z -    state.services.escrow_repo
+2026-05-19T07:51:46.3561052Z +    state
+2026-05-19T07:51:46.3561185Z +        .services
+2026-05-19T07:51:46.3561337Z +        .escrow_repo
+2026-05-19T07:51:46.3561490Z          .update(&escrow)
+2026-05-19T07:51:46.3561651Z          .await
+2026-05-19T07:51:46.3561824Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3562149Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:277:
+2026-05-19T07:51:46.3562444Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3562623Z      Json(req): Json<DisputeRequest>,
+2026-05-19T07:51:46.3562842Z  ) -> ApiResult<CreatedResponse<ActionResponse>> {
+2026-05-19T07:51:46.3563083Z -    let mut escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3563301Z +    let mut escrow = state
+2026-05-19T07:51:46.3563694Z +        .services
+2026-05-19T07:51:46.3563948Z +        .escrow_repo
+2026-05-19T07:51:46.3564217Z          .find_by_id(&EscrowId(id))
+2026-05-19T07:51:46.3564482Z          .await
+2026-05-19T07:51:46.3564775Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3565198Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:294:
+2026-05-19T07:51:46.3565596Z          attachments: req.attachments,
+2026-05-19T07:51:46.3565931Z      };
+2026-05-19T07:51:46.3566122Z  
+2026-05-19T07:51:46.3566389Z -    let dispute = Dispute::new(
+2026-05-19T07:51:46.3566661Z -        escrow.id.clone(),
+2026-05-19T07:51:46.3566921Z -        user_id.clone(),
+2026-05-19T07:51:46.3578198Z -        evidence,
+2026-05-19T07:51:46.3578428Z -    );
+2026-05-19T07:51:46.3578773Z +    let dispute = Dispute::new(escrow.id.clone(), user_id.clone(), evidence);
+2026-05-19T07:51:46.3579189Z      let dispute_id = dispute.id.clone();
+2026-05-19T07:51:46.3579637Z  
+2026-05-19T07:51:46.3580009Z      // Update escrow state
+2026-05-19T07:51:46.3580454Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:305:
+2026-05-19T07:51:46.3580964Z -    escrow.open_dispute(user_id, dispute_id)
+2026-05-19T07:51:46.3581172Z +    escrow
+2026-05-19T07:51:46.3581331Z +        .open_dispute(user_id, dispute_id)
+2026-05-19T07:51:46.3581542Z          .map_err(ApiError::from)?;
+2026-05-19T07:51:46.3581733Z  
+2026-05-19T07:51:46.3581868Z      // Persist both
+2026-05-19T07:51:46.3582145Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:309:
+2026-05-19T07:51:46.3582465Z -    state.services.dispute_repo
+2026-05-19T07:51:46.3582652Z +    state
+2026-05-19T07:51:46.3582793Z +        .services
+2026-05-19T07:51:46.3582951Z +        .dispute_repo
+2026-05-19T07:51:46.3583111Z          .create(&dispute)
+2026-05-19T07:51:46.3583279Z          .await
+2026-05-19T07:51:46.3583565Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3583902Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:313:
+2026-05-19T07:51:46.3584193Z  
+2026-05-19T07:51:46.3584341Z -    state.services.escrow_repo
+2026-05-19T07:51:46.3584523Z +    state
+2026-05-19T07:51:46.3584654Z +        .services
+2026-05-19T07:51:46.3584805Z +        .escrow_repo
+2026-05-19T07:51:46.3584962Z          .update(&escrow)
+2026-05-19T07:51:46.3585126Z          .await
+2026-05-19T07:51:46.3585316Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3585649Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:330:
+2026-05-19T07:51:46.3585953Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3586142Z      Json(_req): Json<CancelRequest>,
+2026-05-19T07:51:46.3586372Z  ) -> ApiResult<ApiResponse<ActionResponse>> {
+2026-05-19T07:51:46.3586620Z -    let mut escrow = state.services.escrow_repo
+2026-05-19T07:51:46.3586847Z +    let mut escrow = state
+2026-05-19T07:51:46.3587012Z +        .services
+2026-05-19T07:51:46.3587173Z +        .escrow_repo
+2026-05-19T07:51:46.3587338Z          .find_by_id(&EscrowId(id))
+2026-05-19T07:51:46.3587529Z          .await
+2026-05-19T07:51:46.3587712Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3588039Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:345:
+2026-05-19T07:51:46.3588420Z          return Err(ApiError::forbidden("Only buyer or seller can cancel"));
+2026-05-19T07:51:46.3588679Z      };
+2026-05-19T07:51:46.3588815Z  
+2026-05-19T07:51:46.3588953Z -    escrow.cancel(reason, user_id)
+2026-05-19T07:51:46.3589148Z -        .map_err(ApiError::from)?;
+2026-05-19T07:51:46.3589550Z +    escrow.cancel(reason, user_id).map_err(ApiError::from)?;
+2026-05-19T07:51:46.3589779Z  
+2026-05-19T07:51:46.3589917Z -    state.services.escrow_repo
+2026-05-19T07:51:46.3590100Z +    state
+2026-05-19T07:51:46.3590241Z +        .services
+2026-05-19T07:51:46.3590395Z +        .escrow_repo
+2026-05-19T07:51:46.3590552Z          .update(&escrow)
+2026-05-19T07:51:46.3590718Z          .await
+2026-05-19T07:51:46.3590903Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3591221Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/escrow.rs:362:
+2026-05-19T07:51:46.3591517Z  
+2026-05-19T07:51:46.3591659Z  pub fn router() -> Router<AppState> {
+2026-05-19T07:51:46.3591856Z      Router::new()
+2026-05-19T07:51:46.3592079Z -        .route("/api/v1/escrows", post(create_escrow).get(list_user_escrows))
+2026-05-19T07:51:46.3592344Z +        .route(
+2026-05-19T07:51:46.3592492Z +            "/api/v1/escrows",
+2026-05-19T07:51:46.3592701Z +            post(create_escrow).get(list_user_escrows),
+2026-05-19T07:51:46.3592910Z +        )
+2026-05-19T07:51:46.3593076Z          .route("/api/v1/escrows/:id", get(get_escrow))
+2026-05-19T07:51:46.3593330Z          .route("/api/v1/escrows/:id/fund", post(fund_escrow))
+2026-05-19T07:51:46.3593605Z          .route("/api/v1/escrows/:id/deliver", post(mark_delivered))
+2026-05-19T07:51:46.3594109Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/mod.rs:1:
+2026-05-19T07:51:46.3594405Z  //! API route handlers
+2026-05-19T07:51:46.3594561Z  
+2026-05-19T07:51:46.3594700Z -pub mod escrow;
+2026-05-19T07:51:46.3594858Z  pub mod dispute;
+2026-05-19T07:51:46.3595012Z -pub mod user;
+2026-05-19T07:51:46.3595158Z +pub mod escrow;
+2026-05-19T07:51:46.3595308Z  pub mod health;
+2026-05-19T07:51:46.3595446Z +pub mod user;
+2026-05-19T07:51:46.3595586Z  
+2026-05-19T07:51:46.3595821Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/user.rs:57:
+2026-05-19T07:51:46.3596138Z      State(state): State<AppState>,
+2026-05-19T07:51:46.3596347Z      AuthUser(user_id): AuthUser,
+2026-05-19T07:51:46.3596554Z  ) -> ApiResult<ApiResponse<UserResponse>> {
+2026-05-19T07:51:46.3596785Z -    let user = state.services.identity
+2026-05-19T07:51:46.3596978Z +    let user = state
+2026-05-19T07:51:46.3597232Z +        .services
+2026-05-19T07:51:46.3597376Z +        .identity
+2026-05-19T07:51:46.3597534Z          .get_user(&user_id)
+2026-05-19T07:51:46.3597695Z          .await
+2026-05-19T07:51:46.3597891Z          .map_err(|e| ApiError::internal(e.to_string()))?
+2026-05-19T07:51:46.3598216Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/routes/user.rs:71:
+2026-05-19T07:51:46.3598511Z      Path(id): Path<Uuid>,
+2026-05-19T07:51:46.3598711Z  ) -> ApiResult<ApiResponse<ReputationDto>> {
+2026-05-19T07:51:46.3598947Z      let user_id = sats_escrow_core::user::UserId(id);
+2026-05-19T07:51:46.3599191Z -    let reputation = state.services.identity
+2026-05-19T07:51:46.3599538Z +    let reputation = state
+2026-05-19T07:51:46.3599712Z +        .services
+2026-05-19T07:51:46.3599852Z +        .identity
+2026-05-19T07:51:46.3600005Z          .get_reputation(&user_id)
+2026-05-19T07:51:46.3600182Z          .await
+2026-05-19T07:51:46.3600370Z          .map_err(|e| ApiError::internal(e.to_string()))?;
+2026-05-19T07:51:46.3600677Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/src/state.rs:3:
+2026-05-19T07:51:46.3600952Z  use std::sync::Arc;
+2026-05-19T07:51:46.3601110Z  
+2026-05-19T07:51:46.3601252Z  use sats_escrow_core::traits::{
+2026-05-19T07:51:46.3601548Z -    ArbitrationStrategy, CustodianProvider, DisputeRepository, EscrowRepository,
+2026-05-19T07:51:46.3601889Z -    IdentityProvider, PaymentProcessor, UserRepository,
+2026-05-19T07:51:46.3602273Z +    ArbitrationStrategy, CustodianProvider, DisputeRepository, EscrowRepository, IdentityProvider,
+2026-05-19T07:51:46.3602727Z +    PaymentProcessor, UserRepository,
+2026-05-19T07:51:46.3603005Z  };
+2026-05-19T07:51:46.3603198Z  
+2026-05-19T07:51:46.3603427Z  /// Application state containing all dependencies
+2026-05-19T07:51:46.3603949Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/tests/escrow_api_tests.rs:78:
+2026-05-19T07:51:46.3604430Z  
+2026-05-19T07:51:46.3604653Z      // Response is wrapped in { data: { ... } }
+2026-05-19T07:51:46.3604970Z      let data = &body["data"];
+2026-05-19T07:51:46.3605368Z -    assert!(data["id"].is_string(), "Expected id to be a string, got: {:?}", data);
+2026-05-19T07:51:46.3605797Z +    assert!(
+2026-05-19T07:51:46.3606004Z +        data["id"].is_string(),
+2026-05-19T07:51:46.3606306Z +        "Expected id to be a string, got: {:?}",
+2026-05-19T07:51:46.3606603Z +        data
+2026-05-19T07:51:46.3606803Z +    );
+2026-05-19T07:51:46.3607022Z      assert_eq!(data["state"], "created");
+2026-05-19T07:51:46.3607354Z      assert_eq!(data["amount_sats"], 100000);
+2026-05-19T07:51:46.3607638Z  }
+2026-05-19T07:51:46.3608042Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/tests/escrow_api_tests.rs:165:
+2026-05-19T07:51:46.3608576Z      let body = get_response_json(response).await;
+2026-05-19T07:51:46.3608899Z  
+2026-05-19T07:51:46.3609104Z      // Response format: { data: [...] }
+2026-05-19T07:51:46.3609649Z -    assert!(body["data"].is_array(), "Expected data to be an array, got: {:?}", body);
+2026-05-19T07:51:46.3610092Z +    assert!(
+2026-05-19T07:51:46.3610294Z +        body["data"].is_array(),
+2026-05-19T07:51:46.3610781Z +        "Expected data to be an array, got: {:?}",
+2026-05-19T07:51:46.3611084Z +        body
+2026-05-19T07:51:46.3611276Z +    );
+2026-05-19T07:51:46.3611452Z  }
+2026-05-19T07:51:46.3611633Z  
+2026-05-19T07:51:46.3611819Z  // === Get Escrow Tests ===
+2026-05-19T07:51:46.3612283Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/tests/escrow_api_tests.rs:212:
+2026-05-19T07:51:46.3612813Z      // Should return 400 or 422 for invalid JSON
+2026-05-19T07:51:46.3613101Z      assert!(
+2026-05-19T07:51:46.3613289Z          response.status() == StatusCode::BAD_REQUEST
+2026-05-19T07:51:46.3613555Z -        || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+2026-05-19T07:51:46.3613849Z +            || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+2026-05-19T07:51:46.3614076Z      );
+2026-05-19T07:51:46.3614209Z  }
+2026-05-19T07:51:46.3614330Z  
+2026-05-19T07:51:46.3614683Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/tests/escrow_api_tests.rs:243:
+2026-05-19T07:51:46.3615031Z      // Should return 400 or 422 for missing field
+2026-05-19T07:51:46.3615228Z      assert!(
+2026-05-19T07:51:46.3615411Z          response.status() == StatusCode::BAD_REQUEST
+2026-05-19T07:51:46.3615671Z -        || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+2026-05-19T07:51:46.3615958Z +            || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+2026-05-19T07:51:46.3616182Z      );
+2026-05-19T07:51:46.3616315Z  }
+2026-05-19T07:51:46.3616437Z  
+2026-05-19T07:51:46.3616688Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/api/tests/escrow_api_tests.rs:278:
+2026-05-19T07:51:46.3616989Z  
+2026-05-19T07:51:46.3617167Z      assert_eq!(response.status(), StatusCode::CREATED);
+2026-05-19T07:51:46.3617423Z      let body = get_response_json(response).await;
+2026-05-19T07:51:46.3617655Z -    let escrow_id: Uuid = body["data"]["id"]
+2026-05-19T07:51:46.3617892Z -        .as_str()
+2026-05-19T07:51:46.3618039Z -        .unwrap()
+2026-05-19T07:51:46.3618196Z -        .parse()
+2026-05-19T07:51:46.3618340Z -        .unwrap();
+2026-05-19T07:51:46.3618580Z +    let escrow_id: Uuid = body["data"]["id"].as_str().unwrap().parse().unwrap();
+2026-05-19T07:51:46.3618861Z      (buyer_auth, seller_id, escrow_id)
+2026-05-19T07:51:46.3619162Z  }
+2026-05-19T07:51:46.3619449Z  
+2026-05-19T07:51:46.3619862Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:103:
+2026-05-19T07:51:46.3620304Z              _ => return,
+2026-05-19T07:51:46.3620532Z          };
+2026-05-19T07:51:46.3620714Z  
+2026-05-19T07:51:46.3621105Z -        let buyer_votes = self.votes.iter().filter(|v| v.decision == Party::Buyer).count() as u32;
+2026-05-19T07:51:46.3621785Z -        let seller_votes = self.votes.iter().filter(|v| v.decision == Party::Seller).count() as u32;
+2026-05-19T07:51:46.3622288Z +        let buyer_votes = self
+2026-05-19T07:51:46.3622542Z +            .votes
+2026-05-19T07:51:46.3622752Z +            .iter()
+2026-05-19T07:51:46.3623010Z +            .filter(|v| v.decision == Party::Buyer)
+2026-05-19T07:51:46.3623326Z +            .count() as u32;
+2026-05-19T07:51:46.3623594Z +        let seller_votes = self
+2026-05-19T07:51:46.3623839Z +            .votes
+2026-05-19T07:51:46.3624048Z +            .iter()
+2026-05-19T07:51:46.3624294Z +            .filter(|v| v.decision == Party::Seller)
+2026-05-19T07:51:46.3624614Z +            .count() as u32;
+2026-05-19T07:51:46.3624841Z  
+2026-05-19T07:51:46.3625032Z          // Check for majority
+2026-05-19T07:51:46.3625321Z          if buyer_votes >= required_votes as u32 {
+2026-05-19T07:51:46.3625795Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:174:
+2026-05-19T07:51:46.3626234Z  
+2026-05-19T07:51:46.3626403Z      #[test]
+2026-05-19T07:51:46.3626671Z      fn assign_arbitrators_transitions_to_in_review() {
+2026-05-19T07:51:46.3627023Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3627318Z -            EscrowId::new(),
+2026-05-19T07:51:46.3627580Z -            UserId::new(),
+2026-05-19T07:51:46.3627981Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3628262Z -        );
+2026-05-19T07:51:46.3628655Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3629225Z          let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+2026-05-19T07:51:46.3629772Z          dispute.assign_arbitrators(arbs.clone(), 48);
+2026-05-19T07:51:46.3630089Z  
+2026-05-19T07:51:46.3630436Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:193:
+2026-05-19T07:51:46.3630861Z  
+2026-05-19T07:51:46.3631036Z      #[test]
+2026-05-19T07:51:46.3631273Z      fn record_vote_rejects_when_not_in_review() {
+2026-05-19T07:51:46.3631614Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3631907Z -            EscrowId::new(),
+2026-05-19T07:51:46.3632173Z -            UserId::new(),
+2026-05-19T07:51:46.3632554Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3632829Z -        );
+2026-05-19T07:51:46.3633233Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3633729Z          // State is Opened, not InReview
+2026-05-19T07:51:46.3634084Z          let vote = make_vote(UserId::new(), Party::Buyer);
+2026-05-19T07:51:46.3634444Z          let result = dispute.record_vote(vote);
+2026-05-19T07:51:46.3634906Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:206:
+2026-05-19T07:51:46.3635337Z  
+2026-05-19T07:51:46.3635526Z      #[test]
+2026-05-19T07:51:46.3635761Z      fn record_vote_rejects_duplicate() {
+2026-05-19T07:51:46.3636072Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3636373Z -            EscrowId::new(),
+2026-05-19T07:51:46.3636616Z -            UserId::new(),
+2026-05-19T07:51:46.3636803Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3636985Z -        );
+2026-05-19T07:51:46.3637251Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3637569Z          let arb = UserId::new();
+2026-05-19T07:51:46.3637866Z          dispute.assign_arbitrators(vec![arb.clone(), UserId::new(), UserId::new()], 48);
+2026-05-19T07:51:46.3638158Z  
+2026-05-19T07:51:46.3638381Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:224:
+2026-05-19T07:51:46.3638659Z  
+2026-05-19T07:51:46.3638781Z      #[test]
+2026-05-19T07:51:46.3638958Z      fn majority_buyer_votes_resolves_for_buyer() {
+2026-05-19T07:51:46.3639184Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3639557Z -            EscrowId::new(),
+2026-05-19T07:51:46.3639735Z -            UserId::new(),
+2026-05-19T07:51:46.3639916Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3640101Z -        );
+2026-05-19T07:51:46.3640365Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3640737Z          let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+2026-05-19T07:51:46.3641008Z          dispute.assign_arbitrators(arbs.clone(), 48);
+2026-05-19T07:51:46.3641294Z  
+2026-05-19T07:51:46.3641632Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:235:
+2026-05-19T07:51:46.3642224Z -        dispute.record_vote(make_vote(arbs[0].clone(), Party::Buyer)).unwrap();
+2026-05-19T07:51:46.3642776Z -        dispute.record_vote(make_vote(arbs[1].clone(), Party::Buyer)).unwrap();
+2026-05-19T07:51:46.3643193Z +        dispute
+2026-05-19T07:51:46.3643490Z +            .record_vote(make_vote(arbs[0].clone(), Party::Buyer))
+2026-05-19T07:51:46.3643839Z +            .unwrap();
+2026-05-19T07:51:46.3644064Z +        dispute
+2026-05-19T07:51:46.3644335Z +            .record_vote(make_vote(arbs[1].clone(), Party::Buyer))
+2026-05-19T07:51:46.3644682Z +            .unwrap();
+2026-05-19T07:51:46.3644886Z  
+2026-05-19T07:51:46.3645176Z          let res = dispute.resolution().expect("should be resolved");
+2026-05-19T07:51:46.3645580Z          assert_eq!(res.winner, Party::Buyer);
+2026-05-19T07:51:46.3646179Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:242:
+2026-05-19T07:51:46.3646619Z  
+2026-05-19T07:51:46.3646790Z      #[test]
+2026-05-19T07:51:46.3647050Z      fn majority_seller_votes_resolves_for_seller() {
+2026-05-19T07:51:46.3647393Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3647623Z -            EscrowId::new(),
+2026-05-19T07:51:46.3647798Z -            UserId::new(),
+2026-05-19T07:51:46.3647983Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3648162Z -        );
+2026-05-19T07:51:46.3648421Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3648885Z          let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+2026-05-19T07:51:46.3649429Z          dispute.assign_arbitrators(arbs.clone(), 48);
+2026-05-19T07:51:46.3649756Z  
+2026-05-19T07:51:46.3650219Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:253:
+2026-05-19T07:51:46.3650812Z -        dispute.record_vote(make_vote(arbs[0].clone(), Party::Seller)).unwrap();
+2026-05-19T07:51:46.3651369Z -        dispute.record_vote(make_vote(arbs[1].clone(), Party::Seller)).unwrap();
+2026-05-19T07:51:46.3651788Z +        dispute
+2026-05-19T07:51:46.3652076Z +            .record_vote(make_vote(arbs[0].clone(), Party::Seller))
+2026-05-19T07:51:46.3652438Z +            .unwrap();
+2026-05-19T07:51:46.3652660Z +        dispute
+2026-05-19T07:51:46.3652935Z +            .record_vote(make_vote(arbs[1].clone(), Party::Seller))
+2026-05-19T07:51:46.3653285Z +            .unwrap();
+2026-05-19T07:51:46.3653492Z  
+2026-05-19T07:51:46.3653767Z          let res = dispute.resolution().expect("should be resolved");
+2026-05-19T07:51:46.3654159Z          assert_eq!(res.winner, Party::Seller);
+2026-05-19T07:51:46.3654665Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:260:
+2026-05-19T07:51:46.3655087Z  
+2026-05-19T07:51:46.3655220Z      #[test]
+2026-05-19T07:51:46.3655379Z      fn no_majority_stays_in_review() {
+2026-05-19T07:51:46.3655585Z -        let mut dispute = Dispute::new(
+2026-05-19T07:51:46.3655790Z -            EscrowId::new(),
+2026-05-19T07:51:46.3655965Z -            UserId::new(),
+2026-05-19T07:51:46.3656150Z -            make_evidence("complaint"),
+2026-05-19T07:51:46.3656327Z -        );
+2026-05-19T07:51:46.3656586Z +        let mut dispute = Dispute::new(EscrowId::new(), UserId::new(), make_evidence("complaint"));
+2026-05-19T07:51:46.3656942Z          let arbs = vec![UserId::new(), UserId::new(), UserId::new()];
+2026-05-19T07:51:46.3657211Z          dispute.assign_arbitrators(arbs.clone(), 48);
+2026-05-19T07:51:46.3657424Z  
+2026-05-19T07:51:46.3657639Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/dispute.rs:271:
+2026-05-19T07:51:46.3658004Z -        dispute.record_vote(make_vote(arbs[0].clone(), Party::Buyer)).unwrap();
+2026-05-19T07:51:46.3658269Z +        dispute
+2026-05-19T07:51:46.3658465Z +            .record_vote(make_vote(arbs[0].clone(), Party::Buyer))
+2026-05-19T07:51:46.3658696Z +            .unwrap();
+2026-05-19T07:51:46.3658851Z  
+2026-05-19T07:51:46.3659002Z          assert!(dispute.resolution().is_none());
+2026-05-19T07:51:46.3659415Z          assert!(matches!(dispute.state, DisputeState::InReview { .. }));
+2026-05-19T07:51:46.3659766Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/error.rs:1:
+2026-05-19T07:51:46.3660041Z  //! Domain error types
+2026-05-19T07:51:46.3660200Z  
+2026-05-19T07:51:46.3660366Z -use crate::{EscrowId, EscrowState, DisputeId};
+2026-05-19T07:51:46.3660605Z +use crate::{DisputeId, EscrowId, EscrowState};
+2026-05-19T07:51:46.3660810Z  use thiserror::Error;
+2026-05-19T07:51:46.3660964Z  
+2026-05-19T07:51:46.3661126Z  pub type Result<T> = std::result::Result<T, Error>;
+2026-05-19T07:51:46.3661431Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/error.rs:14:
+2026-05-19T07:51:46.3661726Z      DisputeNotFound(DisputeId),
+2026-05-19T07:51:46.3662037Z  
+2026-05-19T07:51:46.3662228Z      #[error("Invalid state transition from {from:?} to {to:?}")]
+2026-05-19T07:51:46.3662475Z -    InvalidStateTransition {
+2026-05-19T07:51:46.3662666Z -        from: EscrowState,
+2026-05-19T07:51:46.3662837Z -        to: &'static str,
+2026-05-19T07:51:46.3663004Z -    },
+2026-05-19T07:51:46.3663214Z +    InvalidStateTransition { from: EscrowState, to: &'static str },
+2026-05-19T07:51:46.3663470Z  
+2026-05-19T07:51:46.3663607Z      #[error("Unauthorized: {0}")]
+2026-05-19T07:51:46.3663799Z      Unauthorized(String),
+2026-05-19T07:51:46.3664060Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/escrow.rs:179:
+2026-05-19T07:51:46.3664332Z          }
+2026-05-19T07:51:46.3664471Z  
+2026-05-19T07:51:46.3664606Z          let now = Utc::now();
+2026-05-19T07:51:46.3664860Z -        self.state = EscrowState::ReleasedToSeller { tx_id: tx_id.clone() };
+2026-05-19T07:51:46.3665364Z +        self.state = EscrowState::ReleasedToSeller {
+2026-05-19T07:51:46.3665684Z +            tx_id: tx_id.clone(),
+2026-05-19T07:51:46.3665938Z +        };
+2026-05-19T07:51:46.3666161Z          self.events.push(EscrowEvent {
+2026-05-19T07:51:46.3666465Z              timestamp: now,
+2026-05-19T07:51:46.3666876Z -            event_type: EscrowEventType::Released { to: Party::Seller, tx_id },
+2026-05-19T07:51:46.3667341Z +            event_type: EscrowEventType::Released {
+2026-05-19T07:51:46.3667556Z +                to: Party::Seller,
+2026-05-19T07:51:46.3667741Z +                tx_id,
+2026-05-19T07:51:46.3667893Z +            },
+2026-05-19T07:51:46.3668046Z              actor: Some(actor),
+2026-05-19T07:51:46.3668214Z          });
+2026-05-19T07:51:46.3668356Z  
+2026-05-19T07:51:46.3668572Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/escrow.rs:199:
+2026-05-19T07:51:46.3668851Z          }
+2026-05-19T07:51:46.3669008Z  
+2026-05-19T07:51:46.3669150Z          let now = Utc::now();
+2026-05-19T07:51:46.3669677Z -        self.state = EscrowState::Disputed { dispute_id: dispute_id.clone() };
+2026-05-19T07:51:46.3670274Z +        self.state = EscrowState::Disputed {
+2026-05-19T07:51:46.3670597Z +            dispute_id: dispute_id.clone(),
+2026-05-19T07:51:46.3670847Z +        };
+2026-05-19T07:51:46.3671065Z          self.events.push(EscrowEvent {
+2026-05-19T07:51:46.3671347Z              timestamp: now,
+2026-05-19T07:51:46.3671684Z              event_type: EscrowEventType::DisputeOpened { dispute_id },
+2026-05-19T07:51:46.3672033Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/escrow.rs:219:
+2026-05-19T07:51:46.3672308Z          }
+2026-05-19T07:51:46.3672451Z  
+2026-05-19T07:51:46.3672588Z          let now = Utc::now();
+2026-05-19T07:51:46.3672832Z -        self.state = EscrowState::Cancelled { reason: reason.clone() };
+2026-05-19T07:51:46.3673107Z +        self.state = EscrowState::Cancelled {
+2026-05-19T07:51:46.3673323Z +            reason: reason.clone(),
+2026-05-19T07:51:46.3673505Z +        };
+2026-05-19T07:51:46.3673661Z          self.events.push(EscrowEvent {
+2026-05-19T07:51:46.3673858Z              timestamp: now,
+2026-05-19T07:51:46.3674084Z              event_type: EscrowEventType::Cancelled { reason },
+2026-05-19T07:51:46.3674402Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/escrow.rs:239:
+2026-05-19T07:51:46.3674675Z          }
+2026-05-19T07:51:46.3674810Z  
+2026-05-19T07:51:46.3674946Z          let now = Utc::now();
+2026-05-19T07:51:46.3675196Z -        self.state = EscrowState::ReleasedToBuyer { tx_id: tx_id.clone() };
+2026-05-19T07:51:46.3675486Z +        self.state = EscrowState::ReleasedToBuyer {
+2026-05-19T07:51:46.3675710Z +            tx_id: tx_id.clone(),
+2026-05-19T07:51:46.3675884Z +        };
+2026-05-19T07:51:46.3676038Z          self.events.push(EscrowEvent {
+2026-05-19T07:51:46.3676235Z              timestamp: now,
+2026-05-19T07:51:46.3676475Z -            event_type: EscrowEventType::Released { to: Party::Buyer, tx_id },
+2026-05-19T07:51:46.3676767Z +            event_type: EscrowEventType::Released {
+2026-05-19T07:51:46.3677156Z +                to: Party::Buyer,
+2026-05-19T07:51:46.3677348Z +                tx_id,
+2026-05-19T07:51:46.3677504Z +            },
+2026-05-19T07:51:46.3677651Z              actor: None,
+2026-05-19T07:51:46.3677815Z          });
+2026-05-19T07:51:46.3677948Z  
+2026-05-19T07:51:46.3678172Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/escrow.rs:254:
+2026-05-19T07:51:46.3678459Z          match &self.state {
+2026-05-19T07:51:46.3678713Z              EscrowState::Disputed { .. } | EscrowState::AwaitingDelivery { .. } => {
+2026-05-19T07:51:46.3679004Z                  let now = Utc::now();
+2026-05-19T07:51:46.3679417Z -                self.state = EscrowState::ReleasedToSeller { tx_id: tx_id.clone() };
+2026-05-19T07:51:46.3679746Z +                self.state = EscrowState::ReleasedToSeller {
+2026-05-19T07:51:46.3679977Z +                    tx_id: tx_id.clone(),
+2026-05-19T07:51:46.3680267Z +                };
+2026-05-19T07:51:46.3680438Z                  self.events.push(EscrowEvent {
+2026-05-19T07:51:46.3680648Z                      timestamp: now,
+2026-05-19T07:51:46.3680921Z -                    event_type: EscrowEventType::Released { to: Party::Seller, tx_id },
+2026-05-19T07:51:46.3681223Z +                    event_type: EscrowEventType::Released {
+2026-05-19T07:51:46.3681449Z +                        to: Party::Seller,
+2026-05-19T07:51:46.3681640Z +                        tx_id,
+2026-05-19T07:51:46.3681808Z +                    },
+2026-05-19T07:51:46.3681964Z                      actor: None,
+2026-05-19T07:51:46.3682143Z                  });
+2026-05-19T07:51:46.3682291Z                  Ok(())
+2026-05-19T07:51:46.3682588Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/lib.rs:4:
+2026-05-19T07:51:46.3682947Z  //! All external concerns (custody, payments, arbitration, identity) are defined
+2026-05-19T07:51:46.3683252Z  //! as traits to be implemented by adapters.
+2026-05-19T07:51:46.3683447Z  
+2026-05-19T07:51:46.3683585Z +pub mod dispute;
+2026-05-19T07:51:46.3683738Z  pub mod error;
+2026-05-19T07:51:46.3683886Z  pub mod escrow;
+2026-05-19T07:51:46.3684031Z -pub mod dispute;
+2026-05-19T07:51:46.3684182Z -pub mod user;
+2026-05-19T07:51:46.3684324Z  pub mod traits;
+2026-05-19T07:51:46.3684471Z  pub mod types;
+2026-05-19T07:51:46.3684617Z +pub mod user;
+2026-05-19T07:51:46.3684751Z  
+2026-05-19T07:51:46.3684938Z +pub use dispute::{Dispute, DisputeState, Resolution, Vote};
+2026-05-19T07:51:46.3685182Z  pub use error::{Error, Result};
+2026-05-19T07:51:46.3685427Z -pub use escrow::{Escrow, EscrowState, EscrowTerms, EscrowEvent};
+2026-05-19T07:51:46.3685720Z -pub use dispute::{Dispute, DisputeState, Vote, Resolution};
+2026-05-19T07:51:46.3685980Z -pub use user::{User, UserId, ReputationScore};
+2026-05-19T07:51:46.3686239Z +pub use escrow::{Escrow, EscrowEvent, EscrowState, EscrowTerms};
+2026-05-19T07:51:46.3686486Z  pub use types::*;
+2026-05-19T07:51:46.3686669Z +pub use user::{ReputationScore, User, UserId};
+2026-05-19T07:51:46.3686868Z  
+2026-05-19T07:51:46.3687125Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/arbitration.rs:1:
+2026-05-19T07:51:46.3687474Z  //! Arbitration strategy trait for dispute resolution
+2026-05-19T07:51:46.3687693Z  
+2026-05-19T07:51:46.3687825Z -use std::pin::Pin;
+2026-05-19T07:51:46.3687986Z  use std::future::Future;
+2026-05-19T07:51:46.3688155Z +use std::pin::Pin;
+2026-05-19T07:51:46.3688303Z  
+2026-05-19T07:51:46.3688432Z  use crate::{
+2026-05-19T07:51:46.3688590Z      dispute::{Dispute, Vote},
+2026-05-19T07:51:46.3688888Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/arbitration.rs:22:
+2026-05-19T07:51:46.3689227Z  /// - Professional tier with expert arbitrators
+2026-05-19T07:51:46.3689675Z  pub trait ArbitrationStrategy: Send + Sync {
+2026-05-19T07:51:46.3689897Z      /// Select arbitrators for a dispute
+2026-05-19T07:51:46.3690248Z -    fn select_arbitrators(&self, dispute: &Dispute, count: usize) -> BoxFuture<'_, Result<Vec<UserId>>>;
+2026-05-19T07:51:46.3690586Z +    fn select_arbitrators(
+2026-05-19T07:51:46.3690889Z +        &self,
+2026-05-19T07:51:46.3691035Z +        dispute: &Dispute,
+2026-05-19T07:51:46.3691203Z +        count: usize,
+2026-05-19T07:51:46.3691380Z +    ) -> BoxFuture<'_, Result<Vec<UserId>>>;
+2026-05-19T07:51:46.3691563Z  
+2026-05-19T07:51:46.3691705Z      /// Submit a vote for a dispute
+2026-05-19T07:51:46.3691993Z      fn submit_vote(&self, dispute_id: &DisputeId, vote: Vote) -> BoxFuture<'_, Result<()>>;
+2026-05-19T07:51:46.3692398Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/custodian.rs:1:
+2026-05-19T07:51:46.3692736Z  //! Custodian provider trait for fund management
+2026-05-19T07:51:46.3692946Z  
+2026-05-19T07:51:46.3693080Z -use std::pin::Pin;
+2026-05-19T07:51:46.3693247Z  use std::future::Future;
+2026-05-19T07:51:46.3693411Z +use std::pin::Pin;
+2026-05-19T07:51:46.3693555Z  
+2026-05-19T07:51:46.3693683Z  use crate::{
+2026-05-19T07:51:46.3693917Z      error::Result,
+2026-05-19T07:51:46.3694188Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/custodian.rs:20:
+2026-05-19T07:51:46.3694535Z  /// - Executing transfers when escrows are released
+2026-05-19T07:51:46.3694776Z  pub trait CustodianProvider: Send + Sync {
+2026-05-19T07:51:46.3695000Z      /// Create a new deposit address for an escrow
+2026-05-19T07:51:46.3695351Z -    fn create_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<DepositAddress>>;
+2026-05-19T07:51:46.3695713Z +    fn create_deposit_address(&self, escrow_id: &EscrowId)
+2026-05-19T07:51:46.3695959Z +        -> BoxFuture<'_, Result<DepositAddress>>;
+2026-05-19T07:51:46.3696166Z  
+2026-05-19T07:51:46.3696314Z      /// Check the current balance for an escrow
+2026-05-19T07:51:46.3696608Z      fn check_balance(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Satoshis>>;
+2026-05-19T07:51:46.3696999Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/custodian.rs:34:
+2026-05-19T07:51:46.3697319Z      ) -> BoxFuture<'_, Result<TxId>>;
+2026-05-19T07:51:46.3697502Z  
+2026-05-19T07:51:46.3697673Z      /// Get the deposit address for an escrow if it exists
+2026-05-19T07:51:46.3698037Z -    fn get_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Option<DepositAddress>>>;
+2026-05-19T07:51:46.3698373Z +    fn get_deposit_address(
+2026-05-19T07:51:46.3698550Z +        &self,
+2026-05-19T07:51:46.3698701Z +        escrow_id: &EscrowId,
+2026-05-19T07:51:46.3698917Z +    ) -> BoxFuture<'_, Result<Option<DepositAddress>>>;
+2026-05-19T07:51:46.3699126Z  }
+2026-05-19T07:51:46.3699382Z  
+2026-05-19T07:51:46.3699653Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/identity.rs:1:
+2026-05-19T07:51:46.3700018Z  //! Identity provider trait for authentication and reputation
+2026-05-19T07:51:46.3700249Z  
+2026-05-19T07:51:46.3700388Z -use std::pin::Pin;
+2026-05-19T07:51:46.3700554Z  use std::future::Future;
+2026-05-19T07:51:46.3700719Z +use std::pin::Pin;
+2026-05-19T07:51:46.3700870Z  
+2026-05-19T07:51:46.3700999Z  use crate::{
+2026-05-19T07:51:46.3701151Z      error::Result,
+2026-05-19T07:51:46.3701402Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/identity.rs:50:
+2026-05-19T07:51:46.3701806Z      fn get_reputation(&self, user_id: &UserId) -> BoxFuture<'_, Result<ReputationScore>>;
+2026-05-19T07:51:46.3702083Z  
+2026-05-19T07:51:46.3702239Z      /// Update reputation after a transaction
+2026-05-19T07:51:46.3702584Z -    fn update_reputation(&self, user_id: &UserId, score: ReputationScore) -> BoxFuture<'_, Result<()>>;
+2026-05-19T07:51:46.3702914Z +    fn update_reputation(
+2026-05-19T07:51:46.3703083Z +        &self,
+2026-05-19T07:51:46.3703227Z +        user_id: &UserId,
+2026-05-19T07:51:46.3703402Z +        score: ReputationScore,
+2026-05-19T07:51:46.3703585Z +    ) -> BoxFuture<'_, Result<()>>;
+2026-05-19T07:51:46.3703770Z  
+2026-05-19T07:51:46.3703904Z      /// Register a new user
+2026-05-19T07:51:46.3704223Z -    fn register(&self, display_name: String, credentials: Credentials) -> BoxFuture<'_, Result<User>>;
+2026-05-19T07:51:46.3704684Z +    fn register(
+2026-05-19T07:51:46.3704833Z +        &self,
+2026-05-19T07:51:46.3704988Z +        display_name: String,
+2026-05-19T07:51:46.3705167Z +        credentials: Credentials,
+2026-05-19T07:51:46.3705365Z +    ) -> BoxFuture<'_, Result<User>>;
+2026-05-19T07:51:46.3705544Z  }
+2026-05-19T07:51:46.3705672Z  
+2026-05-19T07:51:46.3705894Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/mod.rs:3:
+2026-05-19T07:51:46.3706232Z  //! These traits define the interfaces for external systems.
+2026-05-19T07:51:46.3706540Z  //! Implementations (adapters) are provided in the `adapters` crate.
+2026-05-19T07:51:46.3706792Z  
+2026-05-19T07:51:46.3706921Z -pub mod custodian;
+2026-05-19T07:51:46.3707078Z -pub mod payment;
+2026-05-19T07:51:46.3707232Z  pub mod arbitration;
+2026-05-19T07:51:46.3707389Z +pub mod custodian;
+2026-05-19T07:51:46.3707542Z  pub mod identity;
+2026-05-19T07:51:46.3707784Z +pub mod payment;
+2026-05-19T07:51:46.3707939Z  pub mod repository;
+2026-05-19T07:51:46.3708092Z  
+2026-05-19T07:51:46.3708247Z -pub use custodian::CustodianProvider;
+2026-05-19T07:51:46.3708459Z -pub use payment::PaymentProcessor;
+2026-05-19T07:51:46.3708679Z  pub use arbitration::ArbitrationStrategy;
+2026-05-19T07:51:46.3708895Z +pub use custodian::CustodianProvider;
+2026-05-19T07:51:46.3709098Z  pub use identity::IdentityProvider;
+2026-05-19T07:51:46.3709540Z -pub use repository::{EscrowRepository, DisputeRepository, UserRepository};
+2026-05-19T07:51:46.3709852Z +pub use payment::PaymentProcessor;
+2026-05-19T07:51:46.3710124Z +pub use repository::{DisputeRepository, EscrowRepository, UserRepository};
+2026-05-19T07:51:46.3710382Z  
+2026-05-19T07:51:46.3710636Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/payment.rs:1:
+2026-05-19T07:51:46.3710993Z  //! Payment processor trait for invoicing and exchange rates
+2026-05-19T07:51:46.3711224Z  
+2026-05-19T07:51:46.3711357Z -use std::pin::Pin;
+2026-05-19T07:51:46.3711521Z  use std::future::Future;
+2026-05-19T07:51:46.3711702Z +use std::pin::Pin;
+2026-05-19T07:51:46.3711844Z  
+2026-05-19T07:51:46.3711980Z  use crate::{
+2026-05-19T07:51:46.3712125Z      error::Result,
+2026-05-19T07:51:46.3712394Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/core/src/traits/repository.rs:1:
+2026-05-19T07:51:46.3712719Z  //! Repository traits for data persistence
+2026-05-19T07:51:46.3712911Z  
+2026-05-19T07:51:46.3713041Z -use std::pin::Pin;
+2026-05-19T07:51:46.3713200Z  use std::future::Future;
+2026-05-19T07:51:46.3713361Z +use std::pin::Pin;
+2026-05-19T07:51:46.3713505Z  
+2026-05-19T07:51:46.3713631Z  use crate::{
+2026-05-19T07:51:46.3713789Z      dispute::Dispute,
+2026-05-19T07:51:46.3714048Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/config.rs:28:
+2026-05-19T07:51:46.3714356Z                  .and_then(|p| p.parse().ok())
+2026-05-19T07:51:46.3714569Z                  .unwrap_or(3000),
+2026-05-19T07:51:46.3714784Z              mongodb_uri: env::var("MONGODB_URI").ok(),
+2026-05-19T07:51:46.3715023Z -            database_name: env::var("DATABASE_NAME")
+2026-05-19T07:51:46.3715276Z -                .unwrap_or_else(|_| "sats_escrow".to_string()),
+2026-05-19T07:51:46.3715626Z +            database_name: env::var("DATABASE_NAME").unwrap_or_else(|_| "sats_escrow".to_string()),
+2026-05-19T07:51:46.3715932Z          }
+2026-05-19T07:51:46.3716068Z      }
+2026-05-19T07:51:46.3716204Z  
+2026-05-19T07:51:46.3716423Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/main.rs:17:
+2026-05-19T07:51:46.3716700Z  
+2026-05-19T07:51:46.3716842Z  use sats_escrow_adapters::{
+2026-05-19T07:51:46.3717129Z      MockArbitration, MockCustodian, MockDisputeRepository, MockEscrowRepository,
+2026-05-19T07:51:46.3717499Z -    MockIdentityProvider, MockPaymentProcessor, MockUserRepository,
+2026-05-19T07:51:46.3717878Z -    MongoClient, MongoEscrowRepository, MongoDisputeRepository, MongoUserRepository,
+2026-05-19T07:51:46.3718293Z +    MockIdentityProvider, MockPaymentProcessor, MockUserRepository, MongoClient,
+2026-05-19T07:51:46.3718802Z +    MongoDisputeRepository, MongoEscrowRepository, MongoUserRepository,
+2026-05-19T07:51:46.3719070Z  };
+2026-05-19T07:51:46.3719435Z  use sats_escrow_api::{create_router, state::Services, AppState};
+2026-05-19T07:51:46.3719717Z  
+2026-05-19T07:51:46.3719941Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/main.rs:40:
+2026-05-19T07:51:46.3720222Z  
+2026-05-19T07:51:46.3720394Z      tracing::info!("Starting SatsEscrow server...");
+2026-05-19T07:51:46.3720645Z      tracing::info!("Port: {}", config.port);
+2026-05-19T07:51:46.3720977Z -    tracing::info!("Database: {}", if config.use_mongodb() { "MongoDB" } else { "In-Memory (Mock)" });
+2026-05-19T07:51:46.3721295Z +    tracing::info!(
+2026-05-19T07:51:46.3721464Z +        "Database: {}",
+2026-05-19T07:51:46.3721638Z +        if config.use_mongodb() {
+2026-05-19T07:51:46.3721825Z +            "MongoDB"
+2026-05-19T07:51:46.3722081Z +        } else {
+2026-05-19T07:51:46.3722240Z +            "In-Memory (Mock)"
+2026-05-19T07:51:46.3722411Z +        }
+2026-05-19T07:51:46.3722553Z +    );
+2026-05-19T07:51:46.3722683Z  
+2026-05-19T07:51:46.3722869Z      // Build application state based on configuration
+2026-05-19T07:51:46.3723140Z      let state = if let Some(ref uri) = config.mongodb_uri {
+2026-05-19T07:51:46.3723457Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/main.rs:87:
+2026-05-19T07:51:46.3723866Z  async fn create_mongo_state(uri: &str, database_name: &str) -> anyhow::Result<AppState> {
+2026-05-19T07:51:46.3724195Z      tracing::info!("Connecting to MongoDB...");
+2026-05-19T07:51:46.3724400Z  
+2026-05-19T07:51:46.3724563Z -    let client = MongoClient::connect(uri).await
+2026-05-19T07:51:46.3724797Z +    let client = MongoClient::connect(uri)
+2026-05-19T07:51:46.3725003Z +        .await
+2026-05-19T07:51:46.3725218Z          .map_err(|e| anyhow::anyhow!("Failed to connect to MongoDB: {}", e))?;
+2026-05-19T07:51:46.3725476Z  
+2026-05-19T07:51:46.3725612Z      // Verify connection
+2026-05-19T07:51:46.3725874Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/main.rs:94:
+2026-05-19T07:51:46.3726155Z -    client.ping().await
+2026-05-19T07:51:46.3726329Z +    client
+2026-05-19T07:51:46.3726462Z +        .ping()
+2026-05-19T07:51:46.3726611Z +        .await
+2026-05-19T07:51:46.3726818Z          .map_err(|e| anyhow::anyhow!("MongoDB ping failed: {}", e))?;
+2026-05-19T07:51:46.3727048Z  
+2026-05-19T07:51:46.3727222Z      tracing::info!("MongoDB connected successfully");
+2026-05-19T07:51:46.3727520Z Diff in /home/runner/work/sats-escrow/sats-escrow/crates/server/src/main.rs:99:
+2026-05-19T07:51:46.3727821Z      let db = client.database(database_name);
+2026-05-19T07:51:46.3728012Z  
+2026-05-19T07:51:46.3728158Z      let services = Services::new(
+2026-05-19T07:51:46.3728405Z -        MockCustodian::new(),           // TODO: Real Bitcoin custodian
+2026-05-19T07:51:46.3728721Z +        MockCustodian::new(),            // TODO: Real Bitcoin custodian
+2026-05-19T07:51:46.3729048Z          MockPaymentProcessor::default(), // TODO: Real payment processor
+2026-05-19T07:51:46.3729527Z          MockArbitration::default(),      // TODO: Real arbitration service
+2026-05-19T07:51:46.3729859Z          MockIdentityProvider::new(),     // TODO: Real identity provider
+2026-05-19T07:51:46.3739506Z ##[error]Process completed with exit code 1.
+2026-05-19T07:51:46.3828578Z Post job cleanup.
+2026-05-19T07:51:46.4581221Z [command]/usr/bin/git version
+2026-05-19T07:51:46.4610435Z git version 2.54.0
+2026-05-19T07:51:46.4642002Z Temporarily overriding HOME='/home/runner/work/_temp/8214c862-e4e4-4190-a2c6-1218b0a9b899' before making global git config changes
+2026-05-19T07:51:46.4642694Z Adding repository directory to the temporary git global config as a safe directory
+2026-05-19T07:51:46.4646236Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sats-escrow/sats-escrow
+2026-05-19T07:51:46.4674425Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-05-19T07:51:46.4700154Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-05-19T07:51:46.4883728Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-05-19T07:51:46.4900672Z http.https://github.com/.extraheader
+2026-05-19T07:51:46.4909916Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-05-19T07:51:46.4933724Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-05-19T07:51:46.5112358Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-05-19T07:51:46.5136127Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-05-19T07:51:46.5405430Z Cleaning up orphan processes
+2026-05-19T07:51:46.5623107Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/cache@v4, actions/checkout@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

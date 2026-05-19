@@ -57,7 +57,9 @@ async fn get_current_user(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
 ) -> ApiResult<ApiResponse<UserResponse>> {
-    let user = state.services.identity
+    let user = state
+        .services
+        .identity
         .get_user(&user_id)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -71,7 +73,9 @@ async fn get_user_reputation(
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<ReputationDto>> {
     let user_id = sats_escrow_core::user::UserId(id);
-    let reputation = state.services.identity
+    let reputation = state
+        .services
+        .identity
         .get_reputation(&user_id)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;

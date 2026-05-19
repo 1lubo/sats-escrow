@@ -99,7 +99,10 @@ impl From<CoreError> for ApiError {
                 message: err.to_string(),
                 details: None,
             },
-            CoreError::InsufficientFunds { required, available } => ApiError {
+            CoreError::InsufficientFunds {
+                required,
+                available,
+            } => ApiError {
                 status: StatusCode::PAYMENT_REQUIRED,
                 code: "INSUFFICIENT_FUNDS".to_string(),
                 message: err.to_string(),
@@ -108,7 +111,9 @@ impl From<CoreError> for ApiError {
                     "available": available
                 })),
             },
-            CoreError::Custodian(_) | CoreError::PaymentProcessor(_) | CoreError::IdentityProvider(_) => ApiError {
+            CoreError::Custodian(_)
+            | CoreError::PaymentProcessor(_)
+            | CoreError::IdentityProvider(_) => ApiError {
                 status: StatusCode::SERVICE_UNAVAILABLE,
                 code: "EXTERNAL_SERVICE_ERROR".to_string(),
                 message: "An external service is unavailable".to_string(),

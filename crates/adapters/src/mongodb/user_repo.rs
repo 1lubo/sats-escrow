@@ -62,7 +62,8 @@ impl UserRepository for MongoUserRepository {
             let filter = doc! {
                 "roles": "Arbitrator"
             };
-            let cursor = self.collection
+            let cursor = self
+                .collection
                 .find(filter, None)
                 .await
                 .map_err(|e| Error::Repository(e.to_string()))?;

@@ -1,6 +1,6 @@
 //! MongoDB client wrapper for connection management
 
-use mongodb::{Client, Database, options::ClientOptions};
+use mongodb::{options::ClientOptions, Client, Database};
 use tracing::info;
 
 /// MongoDB client wrapper with connection pooling
@@ -23,7 +23,8 @@ impl MongoClient {
 
         // Test connection
         let db = client.database(database_name);
-        db.run_command(mongodb::bson::doc! { "ping": 1 }, None).await?;
+        db.run_command(mongodb::bson::doc! { "ping": 1 }, None)
+            .await?;
         info!("Connected to MongoDB database: {}", database_name);
 
         Ok(client)

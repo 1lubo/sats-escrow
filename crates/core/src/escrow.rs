@@ -179,10 +179,15 @@ impl Escrow {
         }
 
         let now = Utc::now();
-        self.state = EscrowState::ReleasedToSeller { tx_id: tx_id.clone() };
+        self.state = EscrowState::ReleasedToSeller {
+            tx_id: tx_id.clone(),
+        };
         self.events.push(EscrowEvent {
             timestamp: now,
-            event_type: EscrowEventType::Released { to: Party::Seller, tx_id },
+            event_type: EscrowEventType::Released {
+                to: Party::Seller,
+                tx_id,
+            },
             actor: Some(actor),
         });
 
@@ -199,7 +204,9 @@ impl Escrow {
         }
 
         let now = Utc::now();
-        self.state = EscrowState::Disputed { dispute_id: dispute_id.clone() };
+        self.state = EscrowState::Disputed {
+            dispute_id: dispute_id.clone(),
+        };
         self.events.push(EscrowEvent {
             timestamp: now,
             event_type: EscrowEventType::DisputeOpened { dispute_id },
@@ -219,7 +226,9 @@ impl Escrow {
         }
 
         let now = Utc::now();
-        self.state = EscrowState::Cancelled { reason: reason.clone() };
+        self.state = EscrowState::Cancelled {
+            reason: reason.clone(),
+        };
         self.events.push(EscrowEvent {
             timestamp: now,
             event_type: EscrowEventType::Cancelled { reason },
@@ -239,10 +248,15 @@ impl Escrow {
         }
 
         let now = Utc::now();
-        self.state = EscrowState::ReleasedToBuyer { tx_id: tx_id.clone() };
+        self.state = EscrowState::ReleasedToBuyer {
+            tx_id: tx_id.clone(),
+        };
         self.events.push(EscrowEvent {
             timestamp: now,
-            event_type: EscrowEventType::Released { to: Party::Buyer, tx_id },
+            event_type: EscrowEventType::Released {
+                to: Party::Buyer,
+                tx_id,
+            },
             actor: None,
         });
 
@@ -254,10 +268,15 @@ impl Escrow {
         match &self.state {
             EscrowState::Disputed { .. } | EscrowState::AwaitingDelivery { .. } => {
                 let now = Utc::now();
-                self.state = EscrowState::ReleasedToSeller { tx_id: tx_id.clone() };
+                self.state = EscrowState::ReleasedToSeller {
+                    tx_id: tx_id.clone(),
+                };
                 self.events.push(EscrowEvent {
                     timestamp: now,
-                    event_type: EscrowEventType::Released { to: Party::Seller, tx_id },
+                    event_type: EscrowEventType::Released {
+                        to: Party::Seller,
+                        tx_id,
+                    },
                     actor: None,
                 });
                 Ok(())

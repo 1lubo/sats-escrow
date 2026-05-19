@@ -1,13 +1,13 @@
 //! Mock implementations for all traits
 
-mod custodian;
-mod payment;
 mod arbitration;
+mod custodian;
 mod identity;
+mod payment;
 mod repository;
 
-pub use custodian::MockCustodian;
-pub use payment::MockPaymentProcessor;
 pub use arbitration::MockArbitration;
+pub use custodian::MockCustodian;
 pub use identity::MockIdentityProvider;
-pub use repository::{MockEscrowRepository, MockDisputeRepository, MockUserRepository};
+pub use payment::MockPaymentProcessor;
+pub use repository::{MockDisputeRepository, MockEscrowRepository, MockUserRepository};

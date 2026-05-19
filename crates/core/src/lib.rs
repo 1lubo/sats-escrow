@@ -4,15 +4,15 @@
 //! All external concerns (custody, payments, arbitration, identity) are defined
 //! as traits to be implemented by adapters.
 
+pub mod dispute;
 pub mod error;
 pub mod escrow;
-pub mod dispute;
-pub mod user;
 pub mod traits;
 pub mod types;
+pub mod user;
 
+pub use dispute::{Dispute, DisputeState, Resolution, Vote};
 pub use error::{Error, Result};
-pub use escrow::{Escrow, EscrowState, EscrowTerms, EscrowEvent};
-pub use dispute::{Dispute, DisputeState, Vote, Resolution};
-pub use user::{User, UserId, ReputationScore};
+pub use escrow::{Escrow, EscrowEvent, EscrowState, EscrowTerms};
 pub use types::*;
+pub use user::{ReputationScore, User, UserId};

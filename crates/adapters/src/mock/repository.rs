@@ -62,7 +62,11 @@ impl EscrowRepository for MockEscrowRepository {
         let buyer = buyer.clone();
         Box::pin(async move {
             let escrows = self.escrows.read().unwrap();
-            Ok(escrows.values().filter(|e| e.buyer == buyer).cloned().collect())
+            Ok(escrows
+                .values()
+                .filter(|e| e.buyer == buyer)
+                .cloned()
+                .collect())
         })
     }
 
@@ -70,7 +74,11 @@ impl EscrowRepository for MockEscrowRepository {
         let seller = seller.clone();
         Box::pin(async move {
             let escrows = self.escrows.read().unwrap();
-            Ok(escrows.values().filter(|e| e.seller == seller).cloned().collect())
+            Ok(escrows
+                .values()
+                .filter(|e| e.seller == seller)
+                .cloned()
+                .collect())
         })
     }
 
@@ -89,7 +97,11 @@ impl EscrowRepository for MockEscrowRepository {
     fn find_pending_auto_release(&self) -> BoxFuture<'_, Result<Vec<Escrow>>> {
         Box::pin(async move {
             let escrows = self.escrows.read().unwrap();
-            Ok(escrows.values().filter(|e| e.should_auto_release()).cloned().collect())
+            Ok(escrows
+                .values()
+                .filter(|e| e.should_auto_release())
+                .cloned()
+                .collect())
         })
     }
 }
@@ -144,7 +156,10 @@ impl DisputeRepository for MockDisputeRepository {
         let escrow_id = escrow_id.clone();
         Box::pin(async move {
             let disputes = self.disputes.read().unwrap();
-            Ok(disputes.values().find(|d| d.escrow_id == escrow_id).cloned())
+            Ok(disputes
+                .values()
+                .find(|d| d.escrow_id == escrow_id)
+                .cloned())
         })
     }
 
@@ -166,7 +181,9 @@ impl DisputeRepository for MockDisputeRepository {
             Ok(disputes
                 .values()
                 .filter(|d| {
-                    if let sats_escrow_core::dispute::DisputeState::InReview { arbitrators } = &d.state {
+                    if let sats_escrow_core::dispute::DisputeState::InReview { arbitrators } =
+                        &d.state
+                    {
                         arbitrators.contains(&arbitrator)
                     } else {
                         false

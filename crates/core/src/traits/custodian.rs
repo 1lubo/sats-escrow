@@ -1,7 +1,7 @@
 //! Custodian provider trait for fund management
 
-use std::pin::Pin;
 use std::future::Future;
+use std::pin::Pin;
 
 use crate::{
     error::Result,
@@ -20,7 +20,8 @@ pub type BoxFuture<'a, T> = Pin<Box<dyn Future<Output = T> + Send + 'a>>;
 /// - Executing transfers when escrows are released
 pub trait CustodianProvider: Send + Sync {
     /// Create a new deposit address for an escrow
-    fn create_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<DepositAddress>>;
+    fn create_deposit_address(&self, escrow_id: &EscrowId)
+        -> BoxFuture<'_, Result<DepositAddress>>;
 
     /// Check the current balance for an escrow
     fn check_balance(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Satoshis>>;
@@ -34,5 +35,8 @@ pub trait CustodianProvider: Send + Sync {
     ) -> BoxFuture<'_, Result<TxId>>;
 
     /// Get the deposit address for an escrow if it exists
-    fn get_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Option<DepositAddress>>>;
+    fn get_deposit_address(
+        &self,
+        escrow_id: &EscrowId,
+    ) -> BoxFuture<'_, Result<Option<DepositAddress>>>;
 }

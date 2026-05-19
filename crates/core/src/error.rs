@@ -1,6 +1,6 @@
 //! Domain error types
 
-use crate::{EscrowId, EscrowState, DisputeId};
+use crate::{DisputeId, EscrowId, EscrowState};
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
@@ -14,10 +14,7 @@ pub enum Error {
     DisputeNotFound(DisputeId),
 
     #[error("Invalid state transition from {from:?} to {to:?}")]
-    InvalidStateTransition {
-        from: EscrowState,
-        to: &'static str,
-    },
+    InvalidStateTransition { from: EscrowState, to: &'static str },
 
     #[error("Unauthorized: {0}")]
     Unauthorized(String),

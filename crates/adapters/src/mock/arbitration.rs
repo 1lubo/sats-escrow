@@ -53,7 +53,11 @@ impl Default for MockArbitration {
 }
 
 impl ArbitrationStrategy for MockArbitration {
-    fn select_arbitrators(&self, _dispute: &Dispute, count: usize) -> BoxFuture<'_, Result<Vec<UserId>>> {
+    fn select_arbitrators(
+        &self,
+        _dispute: &Dispute,
+        count: usize,
+    ) -> BoxFuture<'_, Result<Vec<UserId>>> {
         Box::pin(async move {
             let pool = self.arbitrator_pool.read().unwrap();
 
@@ -62,7 +66,11 @@ impl ArbitrationStrategy for MockArbitration {
 
             if selected.len() < count {
                 // Not enough arbitrators, but for mock we'll allow it
-                tracing::warn!("Not enough arbitrators in pool: {} < {}", selected.len(), count);
+                tracing::warn!(
+                    "Not enough arbitrators in pool: {} < {}",
+                    selected.len(),
+                    count
+                );
             }
 
             Ok(selected)

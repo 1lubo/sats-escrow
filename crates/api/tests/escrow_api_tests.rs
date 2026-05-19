@@ -78,7 +78,11 @@ async fn test_create_escrow_as_buyer() {
 
     // Response is wrapped in { data: { ... } }
     let data = &body["data"];
-    assert!(data["id"].is_string(), "Expected id to be a string, got: {:?}", data);
+    assert!(
+        data["id"].is_string(),
+        "Expected id to be a string, got: {:?}",
+        data
+    );
     assert_eq!(data["state"], "created");
     assert_eq!(data["amount_sats"], 100000);
 }
@@ -165,7 +169,11 @@ async fn test_list_escrows_empty() {
     let body = get_response_json(response).await;
 
     // Response format: { data: [...] }
-    assert!(body["data"].is_array(), "Expected data to be an array, got: {:?}", body);
+    assert!(
+        body["data"].is_array(),
+        "Expected data to be an array, got: {:?}",
+        body
+    );
 }
 
 // === Get Escrow Tests ===
@@ -212,7 +220,7 @@ async fn test_create_escrow_invalid_json() {
     // Should return 400 or 422 for invalid JSON
     assert!(
         response.status() == StatusCode::BAD_REQUEST
-        || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+            || response.status() == StatusCode::UNPROCESSABLE_ENTITY
     );
 }
 
@@ -243,7 +251,7 @@ async fn test_create_escrow_missing_required_field() {
     // Should return 400 or 422 for missing field
     assert!(
         response.status() == StatusCode::BAD_REQUEST
-        || response.status() == StatusCode::UNPROCESSABLE_ENTITY
+            || response.status() == StatusCode::UNPROCESSABLE_ENTITY
     );
 }
 
@@ -278,11 +286,7 @@ async fn create_test_escrow_via_api(app: &Router) -> (String, Uuid, Uuid) {
 
     assert_eq!(response.status(), StatusCode::CREATED);
     let body = get_response_json(response).await;
-    let escrow_id: Uuid = body["data"]["id"]
-        .as_str()
-        .unwrap()
-        .parse()
-        .unwrap();
+    let escrow_id: Uuid = body["data"]["id"].as_str().unwrap().parse().unwrap();
     (buyer_auth, seller_id, escrow_id)
 }
 

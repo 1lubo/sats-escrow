@@ -1,7 +1,7 @@
 //! Payment processor trait for invoicing and exchange rates
 
-use std::pin::Pin;
 use std::future::Future;
+use std::pin::Pin;
 
 use crate::{
     error::Result,

@@ -67,12 +67,19 @@ impl From<&Escrow> for EscrowResponse {
             state: match &e.state {
                 sats_escrow_core::escrow::EscrowState::Created => "created",
                 sats_escrow_core::escrow::EscrowState::Funded => "funded",
-                sats_escrow_core::escrow::EscrowState::AwaitingDelivery { .. } => "awaiting_delivery",
+                sats_escrow_core::escrow::EscrowState::AwaitingDelivery { .. } => {
+                    "awaiting_delivery"
+                }
                 sats_escrow_core::escrow::EscrowState::Disputed { .. } => "disputed",
                 sats_escrow_core::escrow::EscrowState::Cancelled { .. } => "cancelled",
-                sats_escrow_core::escrow::EscrowState::ReleasedToSeller { .. } => "released_to_seller",
-                sats_escrow_core::escrow::EscrowState::ReleasedToBuyer { .. } => "released_to_buyer",
-            }.to_string(),
+                sats_escrow_core::escrow::EscrowState::ReleasedToSeller { .. } => {
+                    "released_to_seller"
+                }
+                sats_escrow_core::escrow::EscrowState::ReleasedToBuyer { .. } => {
+                    "released_to_buyer"
+                }
+            }
+            .to_string(),
             buyer: e.buyer.0,
             seller: e.seller.0,
             amount_sats: e.amount.0,
@@ -121,10 +128,13 @@ async fn create_escrow(
         PartyDto::Seller => (Party::Seller, UserId(req.counterparty_id), user_id.clone()),
     };
 
-    let terms = req.terms.map(|t| EscrowTerms {
-        auto_release_after: chrono::Duration::days(t.auto_release_days.unwrap_or(14)),
-        dispute_window: chrono::Duration::days(t.dispute_window_days.unwrap_or(7)),
-    }).unwrap_or_default();
+    let terms = req
+        .terms
+        .map(|t| EscrowTerms {
+            auto_release_after: chrono::Duration::days(t.auto_release_days.unwrap_or(14)),
+            dispute_window: chrono::Duration::days(t.dispute_window_days.unwrap_or(7)),
+        })
+        .unwrap_or_default();
 
     let mut escrow = Escrow::new(
         initiator,
@@ -136,12 +146,20 @@ async fn create_escrow(
     );
 
     // Create deposit address via custodian
-    let address = state.services.custodian.create_deposit_address(&escrow.id).await
+    let address = state
+        .services
+        .custodian
+        .create_deposit_address(&escrow.id)
+        .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
     escrow.set_deposit_address(address);
 
     // Persist
-    state.services.escrow_repo.create(&escrow).await
+    state
+        .services
+        .escrow_repo
+        .create(&escrow)
+        .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
     Ok(CreatedResponse(EscrowResponse::from(&escrow)))
@@ -151,7 +169,9 @@ async fn get_escrow(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<EscrowResponse>> {
-    let escrow = state.services.escrow_repo
+    let escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&sats_escrow_core::types::EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -164,7 +184,9 @@ async fn list_user_escrows(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
 ) -> ApiResult<ApiResponse<Vec<EscrowResponse>>> {
-    let escrows = state.services.escrow_repo
+    let escrows = state
+        .services
+        .escrow_repo
         .find_by_user(&user_id)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -179,16 +201,21 @@ async fn fund_escrow(
     Path(id): Path<Uuid>,
     Json(req): Json<FundRequest>,
 ) -> ApiResult<ApiResponse<ActionResponse>> {
-    let mut escrow = state.services.escrow_repo
+    let mut escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
         .ok_or_else(|| ApiError::not_found("Escrow not found"))?;
 
-    escrow.mark_funded(TxId(req.tx_id))
+    escrow
+        .mark_funded(TxId(req.tx_id))
         .map_err(ApiError::from)?;
 
-    state.services.escrow_repo
+    state
+        .services
+        .escrow_repo
         .update(&escrow)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -206,7 +233,9 @@ async fn mark_delivered(
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<ActionResponse>> {
-    let mut escrow = state.services.escrow_repo
+    let mut escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -217,10 +246,11 @@ async fn mark_delivered(
         return Err(ApiError::forbidden("Only the seller can mark as delivered"));
     }
 
-    escrow.mark_delivered(user_id)
-        .map_err(ApiError::from)?;
+    escrow.mark_delivered(user_id).map_err(ApiError::from)?;
 
-    state.services.escrow_repo
+    state
+        .services
+        .escrow_repo
         .update(&escrow)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -238,7 +268,9 @@ async fn confirm_escrow(
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<ActionResponse>> {
-    let mut escrow = state.services.escrow_repo
+    let mut escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -250,15 +282,18 @@ async fn confirm_escrow(
     }
 
     // Release funds to seller via custodian
-    let tx_id = state.services.custodian
+    let tx_id = state
+        .services
+        .custodian
         .transfer(&escrow.id, &escrow.seller, escrow.amount.clone())
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
-    escrow.confirm(user_id, tx_id)
-        .map_err(ApiError::from)?;
+    escrow.confirm(user_id, tx_id).map_err(ApiError::from)?;
 
-    state.services.escrow_repo
+    state
+        .services
+        .escrow_repo
         .update(&escrow)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -277,7 +312,9 @@ async fn open_dispute(
     Path(id): Path<Uuid>,
     Json(req): Json<DisputeRequest>,
 ) -> ApiResult<CreatedResponse<ActionResponse>> {
-    let mut escrow = state.services.escrow_repo
+    let mut escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -294,24 +331,25 @@ async fn open_dispute(
         attachments: req.attachments,
     };
 
-    let dispute = Dispute::new(
-        escrow.id.clone(),
-        user_id.clone(),
-        evidence,
-    );
+    let dispute = Dispute::new(escrow.id.clone(), user_id.clone(), evidence);
     let dispute_id = dispute.id.clone();
 
     // Update escrow state
-    escrow.open_dispute(user_id, dispute_id)
+    escrow
+        .open_dispute(user_id, dispute_id)
         .map_err(ApiError::from)?;
 
     // Persist both
-    state.services.dispute_repo
+    state
+        .services
+        .dispute_repo
         .create(&dispute)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
-    state.services.escrow_repo
+    state
+        .services
+        .escrow_repo
         .update(&escrow)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -330,7 +368,9 @@ async fn cancel_escrow(
     Path(id): Path<Uuid>,
     Json(_req): Json<CancelRequest>,
 ) -> ApiResult<ApiResponse<ActionResponse>> {
-    let mut escrow = state.services.escrow_repo
+    let mut escrow = state
+        .services
+        .escrow_repo
         .find_by_id(&EscrowId(id))
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?
@@ -345,10 +385,11 @@ async fn cancel_escrow(
         return Err(ApiError::forbidden("Only buyer or seller can cancel"));
     };
 
-    escrow.cancel(reason, user_id)
-        .map_err(ApiError::from)?;
+    escrow.cancel(reason, user_id).map_err(ApiError::from)?;
 
-    state.services.escrow_repo
+    state
+        .services
+        .escrow_repo
         .update(&escrow)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
@@ -362,7 +403,10 @@ async fn cancel_escrow(
 
 pub fn router() -> Router<AppState> {
     Router::new()
-        .route("/api/v1/escrows", post(create_escrow).get(list_user_escrows))
+        .route(
+            "/api/v1/escrows",
+            post(create_escrow).get(list_user_escrows),
+        )
         .route("/api/v1/escrows/:id", get(get_escrow))
         .route("/api/v1/escrows/:id/fund", post(fund_escrow))
         .route("/api/v1/escrows/:id/deliver", post(mark_delivered))

@@ -42,7 +42,10 @@ impl Default for MockCustodian {
 }
 
 impl CustodianProvider for MockCustodian {
-    fn create_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<DepositAddress>> {
+    fn create_deposit_address(
+        &self,
+        escrow_id: &EscrowId,
+    ) -> BoxFuture<'_, Result<DepositAddress>> {
         let escrow_id = escrow_id.clone();
         Box::pin(async move {
             let mut counter = self.address_counter.write().unwrap();
@@ -50,10 +53,7 @@ impl CustodianProvider for MockCustodian {
             let address = DepositAddress(format!("bc1qmock{:08x}", *counter));
 
             let mut accounts = self.accounts.write().unwrap();
-            accounts.insert(
-                escrow_id.0.to_string(),
-                (address.clone(), Satoshis(0)),
-            );
+            accounts.insert(escrow_id.0.to_string(), (address.clone(), Satoshis(0)));
 
             Ok(address)
         })
@@ -93,7 +93,10 @@ impl CustodianProvider for MockCustodian {
         })
     }
 
-    fn get_deposit_address(&self, escrow_id: &EscrowId) -> BoxFuture<'_, Result<Option<DepositAddress>>> {
+    fn get_deposit_address(
+        &self,
+        escrow_id: &EscrowId,
+    ) -> BoxFuture<'_, Result<Option<DepositAddress>>> {
         let escrow_id = escrow_id.clone();
         Box::pin(async move {
             let accounts = self.accounts.read().unwrap();

@@ -28,8 +28,7 @@ impl Config {
                 .and_then(|p| p.parse().ok())
                 .unwrap_or(3000),
             mongodb_uri: env::var("MONGODB_URI").ok(),
-            database_name: env::var("DATABASE_NAME")
-                .unwrap_or_else(|_| "sats_escrow".to_string()),
+            database_name: env::var("DATABASE_NAME").unwrap_or_else(|_| "sats_escrow".to_string()),
         }
     }
 

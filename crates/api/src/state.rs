@@ -3,8 +3,8 @@
 use std::sync::Arc;
 
 use sats_escrow_core::traits::{
-    ArbitrationStrategy, CustodianProvider, DisputeRepository, EscrowRepository,
-    IdentityProvider, PaymentProcessor, UserRepository,
+    ArbitrationStrategy, CustodianProvider, DisputeRepository, EscrowRepository, IdentityProvider,
+    PaymentProcessor, UserRepository,
 };
 
 /// Application state containing all dependencies
