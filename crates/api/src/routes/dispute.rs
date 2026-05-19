@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 use sats_escrow_core::{
     dispute::{Dispute, DisputeState, Vote},
-    types::{DisputeId, Evidence, Party},
+    types::{DisputeId, Party},
 };
 
 use crate::{

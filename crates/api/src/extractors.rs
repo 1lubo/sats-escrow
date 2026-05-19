@@ -8,7 +8,7 @@ use axum::{
 
 use sats_escrow_core::user::UserId;
 
-use crate::{error::ApiError, state::AppState};
+use crate::error::ApiError;
 
 /// Extractor for authenticated user
 pub struct AuthUser(pub UserId);

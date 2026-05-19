@@ -11,7 +11,7 @@ use uuid::Uuid;
 use sats_escrow_core::{
     dispute::Dispute,
     escrow::{CancelReason, Escrow, EscrowTerms},
-    types::{DisputeId, EscrowId, Evidence, Party, Satoshis, TxId},
+    types::{EscrowId, Evidence, Party, Satoshis, TxId},
     user::UserId,
 };
 
@@ -285,7 +285,7 @@ async fn confirm_escrow(
     let tx_id = state
         .services
         .custodian
-        .transfer(&escrow.id, &escrow.seller, escrow.amount.clone())
+        .transfer(&escrow.id, &escrow.seller, escrow.amount)
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 

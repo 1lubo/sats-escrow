@@ -3,12 +3,12 @@
 use axum::{
     extract::{Path, State},
     routing::get,
-    Json, Router,
+    Router,
 };
 use serde::Serialize;
 use uuid::Uuid;
 
-use sats_escrow_core::user::{ReputationScore, User};
+use sats_escrow_core::user::User;
 
 use crate::{
     error::{ApiError, ApiResult},
