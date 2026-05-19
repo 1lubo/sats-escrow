@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     error::{Error, Result},
-    types::{DepositAddress, DisputeId, EscrowId, Evidence, Party, Satoshis, TxId},
+    types::{DepositAddress, DisputeId, EscrowId, Party, Satoshis, TxId},
     user::UserId,
 };
 
