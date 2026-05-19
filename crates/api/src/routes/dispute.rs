@@ -128,6 +128,6 @@ async fn submit_vote(
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/api/v1/disputes", get(list_open_disputes))
-        .route("/api/v1/disputes/{id}", get(get_dispute))
-        .route("/api/v1/disputes/{id}/vote", post(submit_vote))
+        .route("/api/v1/disputes/:id", get(get_dispute))
+        .route("/api/v1/disputes/:id/vote", post(submit_vote))
 }
