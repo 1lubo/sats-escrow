@@ -2,8 +2,7 @@ app = "sats-escrow"
 primary_region = "lhr"
 
 [build]
-  dockerfile = "Dockerfile"
-
+  dockerfile = "frontend/Dockerfile"
   [build.args]
     VITE_API_URL = "https://sats-escrow-api.fly.dev"
 

@@ -1,19 +1,19 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-COPY package*.json ./
+COPY frontend/package*.json ./
 RUN npm ci
 
-COPY . .
+COPY frontend/ .
 RUN npm run build
 
 # Runtime stage
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
