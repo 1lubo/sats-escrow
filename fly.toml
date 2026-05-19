@@ -1,7 +1,7 @@
 # fly.toml - Fly.io deployment configuration
 # See https://fly.io/docs/reference/configuration/ for details
 
-app = "sats-escrow"
+app = "sats-escrow-api"
 primary_region = "lhr"  # London - change to your preferred region
 
 [build]

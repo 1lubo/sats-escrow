@@ -1,11 +1,11 @@
-app = "sats-escrow-frontend"
+app = "sats-escrow"
 primary_region = "lhr"
 
 [build]
   dockerfile = "Dockerfile"
 
   [build.args]
-    VITE_API_URL = "https://sats-escrow.fly.dev"
+    VITE_API_URL = "https://sats-escrow-api.fly.dev"
 
 [http_service]
   internal_port = 3000
