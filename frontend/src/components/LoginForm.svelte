@@ -25,15 +25,21 @@
     <p class="text-gray-600 text-center mb-8">Enter your UUID to continue</p>
 
     <div class="space-y-4">
-      <input
-        type="text"
-        placeholder="Your UUID"
-        bind:value={uuid}
-        on:keydown={(e) => e.key === 'Enter' && handleLogin()}
-        aria-required="true"
-        aria-invalid={!!error}
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+      <div class="relative group">
+        <input
+          type="text"
+          placeholder="Your UUID"
+          bind:value={uuid}
+          on:keydown={(e) => e.key === 'Enter' && handleLogin()}
+          aria-required="true"
+          aria-invalid={!!error}
+          title="Try: 550e8400-e29b-41d4-a716-446655440000"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div class="absolute left-0 right-0 mt-1 bg-gray-800 text-white text-xs rounded-md px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+          Demo UUID: <span class="font-mono">550e8400-e29b-41d4-a716-446655440000</span>
+        </div>
+      </div>
       {#if error}
         <p class="text-red-600 text-sm" aria-live="assertive">{error}</p>
       {/if}
