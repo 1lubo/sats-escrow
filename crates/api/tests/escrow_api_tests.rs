@@ -8,8 +8,8 @@ use axum::{
     Router,
 };
 use http_body_util::BodyExt;
-use serde_json::{json, Value};
 use tower::util::ServiceExt;
+use serde_json::{json, Value};
 use uuid::Uuid;
 
 use crate::common::test_router;
