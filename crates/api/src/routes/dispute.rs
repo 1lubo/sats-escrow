@@ -1,7 +1,7 @@
 //! Dispute routes
 
 use axum::{
-    extract::{Path, State},
+    extract::{Path, Query, State},
     routing::{get, post},
     Json, Router,
 };
@@ -16,8 +16,8 @@ use sats_escrow_core::{
 
 use crate::{
     error::{ApiError, ApiResult},
-    extractors::AuthUser,
-    response::ApiResponse,
+    extractors::{AuthUser, PaginationParams},
+    response::{ApiResponse, PaginatedResponse},
     state::AppState,
 };
 
@@ -83,7 +83,8 @@ async fn get_dispute(
 async fn list_open_disputes(
     State(state): State<AppState>,
     AuthUser(_user_id): AuthUser,
-) -> ApiResult<ApiResponse<Vec<DisputeResponse>>> {
+    Query(pagination): Query<PaginationParams>,
+) -> ApiResult<PaginatedResponse<DisputeResponse>> {
     let disputes = state
         .services
         .dispute_repo
@@ -91,8 +92,19 @@ async fn list_open_disputes(
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
-    let responses: Vec<DisputeResponse> = disputes.iter().map(DisputeResponse::from).collect();
-    Ok(ApiResponse::new(responses))
+    let total = disputes.len();
+    let responses: Vec<DisputeResponse> = disputes
+        .iter()
+        .skip(pagination.offset)
+        .take(pagination.limit)
+        .map(DisputeResponse::from)
+        .collect();
+    Ok(PaginatedResponse::new(
+        responses,
+        total,
+        pagination.limit,
+        pagination.offset,
+    ))
 }
 
 async fn submit_vote(

@@ -1,7 +1,7 @@
 //! Escrow routes
 
 use axum::{
-    extract::{Path, State},
+    extract::{Path, Query, State},
     routing::{get, post},
     Json, Router,
 };
@@ -17,8 +17,8 @@ use sats_escrow_core::{
 
 use crate::{
     error::{ApiError, ApiResult},
-    extractors::AuthUser,
-    response::{ApiResponse, CreatedResponse},
+    extractors::{AuthUser, PaginationParams},
+    response::{ApiResponse, CreatedResponse, PaginatedResponse},
     state::AppState,
 };
 
@@ -32,6 +32,40 @@ pub struct CreateEscrowRequest {
     pub description: String,
     #[serde(default)]
     pub terms: Option<EscrowTermsDto>,
+}
+
+impl CreateEscrowRequest {
+    #[allow(clippy::result_large_err)]
+    fn validate(&self) -> Result<(), ApiError> {
+        if self.amount_sats == 0 {
+            return Err(ApiError::bad_request("Amount must be greater than 0"));
+        }
+        if self.description.trim().is_empty() {
+            return Err(ApiError::bad_request("Description cannot be empty"));
+        }
+        if self.description.len() > 1000 {
+            return Err(ApiError::bad_request(
+                "Description must not exceed 1000 characters",
+            ));
+        }
+        if let Some(terms) = &self.terms {
+            if let Some(days) = terms.auto_release_days {
+                if !(1..=90).contains(&days) {
+                    return Err(ApiError::bad_request(
+                        "auto_release_days must be between 1 and 90",
+                    ));
+                }
+            }
+            if let Some(days) = terms.dispute_window_days {
+                if !(1..=30).contains(&days) {
+                    return Err(ApiError::bad_request(
+                        "dispute_window_days must be between 1 and 30",
+                    ));
+                }
+            }
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -118,11 +152,18 @@ pub struct ActionResponse {
 
 // === Route Handlers ===
 
+#[tracing::instrument(skip_all)]
 async fn create_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Json(req): Json<CreateEscrowRequest>,
 ) -> ApiResult<CreatedResponse<EscrowResponse>> {
+    req.validate()?;
+
+    if user_id.0 == req.counterparty_id {
+        return Err(ApiError::bad_request("Cannot create escrow with yourself"));
+    }
+
     let (initiator, buyer, seller) = match req.role {
         PartyDto::Buyer => (Party::Buyer, user_id.clone(), UserId(req.counterparty_id)),
         PartyDto::Seller => (Party::Seller, UserId(req.counterparty_id), user_id.clone()),
@@ -165,6 +206,7 @@ async fn create_escrow(
     Ok(CreatedResponse(EscrowResponse::from(&escrow)))
 }
 
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn get_escrow(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
@@ -180,10 +222,12 @@ async fn get_escrow(
     Ok(ApiResponse::new(EscrowResponse::from(&escrow)))
 }
 
+#[tracing::instrument(skip_all)]
 async fn list_user_escrows(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
-) -> ApiResult<ApiResponse<Vec<EscrowResponse>>> {
+    Query(pagination): Query<PaginationParams>,
+) -> ApiResult<PaginatedResponse<EscrowResponse>> {
     let escrows = state
         .services
         .escrow_repo
@@ -191,11 +235,23 @@ async fn list_user_escrows(
         .await
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
-    let responses: Vec<EscrowResponse> = escrows.iter().map(EscrowResponse::from).collect();
-    Ok(ApiResponse::new(responses))
+    let total = escrows.len();
+    let responses: Vec<EscrowResponse> = escrows
+        .iter()
+        .skip(pagination.offset)
+        .take(pagination.limit)
+        .map(EscrowResponse::from)
+        .collect();
+    Ok(PaginatedResponse::new(
+        responses,
+        total,
+        pagination.limit,
+        pagination.offset,
+    ))
 }
 
 /// Mark escrow as funded (typically called via webhook from custodian)
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn fund_escrow(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
@@ -228,6 +284,7 @@ async fn fund_escrow(
 }
 
 /// Seller marks delivery complete
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn mark_delivered(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
@@ -263,6 +320,7 @@ async fn mark_delivered(
 }
 
 /// Buyer confirms receipt and releases funds to seller
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn confirm_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
@@ -306,6 +364,7 @@ async fn confirm_escrow(
 }
 
 /// Buyer opens a dispute
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn open_dispute(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
@@ -362,6 +421,7 @@ async fn open_dispute(
 }
 
 /// Cancel escrow (only allowed before funding)
+#[tracing::instrument(skip_all, fields(escrow_id = %id))]
 async fn cancel_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,

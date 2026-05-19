@@ -6,14 +6,15 @@ import { auth } from '../../stores/auth';
 describe('App', () => {
   beforeEach(() => {
     localStorage.clear();
+    window.location.hash = '';
     auth.logout();
   });
 
-  it('shows LoginForm when not authenticated', () => {
+  it('shows LandingPage when not authenticated', () => {
     render(App);
 
-    // LoginForm renders the SatsEscrow heading
+    // LandingPage renders the SatsEscrow heading and tagline
     expect(screen.getByText('SatsEscrow')).toBeTruthy();
-    expect(screen.getByPlaceholderText('Your UUID')).toBeTruthy();
+    expect(screen.getAllByText('Try Demo').length).toBeGreaterThan(0);
   });
 });

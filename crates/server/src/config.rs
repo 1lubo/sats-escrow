@@ -4,6 +4,7 @@
 //! - `PORT` - HTTP server port (default: 3000)
 //! - `MONGODB_URI` - MongoDB connection string (optional, uses mock if not set)
 //! - `DATABASE_NAME` - MongoDB database name (default: sats_escrow)
+//! - `ALLOWED_ORIGINS` - Comma-separated list of allowed CORS origins (optional, allows any if not set)
 //! - `RUST_LOG` - Log level (default: info)
 
 use std::env;
@@ -17,6 +18,8 @@ pub struct Config {
     pub mongodb_uri: Option<String>,
     /// MongoDB database name
     pub database_name: String,
+    /// Allowed CORS origins (None = allow any origin)
+    pub allowed_origins: Option<Vec<String>>,
 }
 
 impl Config {
@@ -29,6 +32,13 @@ impl Config {
                 .unwrap_or(3000),
             mongodb_uri: env::var("MONGODB_URI").ok(),
             database_name: env::var("DATABASE_NAME").unwrap_or_else(|_| "sats_escrow".to_string()),
+            allowed_origins: env::var("ALLOWED_ORIGINS").ok().map(|origins| {
+                origins
+                    .split(',')
+                    .map(|s| s.trim().to_string())
+                    .filter(|s| !s.is_empty())
+                    .collect()
+            }),
         }
     }
 

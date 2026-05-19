@@ -1,5 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import { escrow } from '../stores/escrow';
+
+  const dispatch = createEventDispatcher();
 
   export let escrowItem;
 
@@ -62,9 +65,15 @@
   };
 </script>
 
-<div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+<div
+  class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition cursor-pointer"
+  on:click={() => dispatch('select', { id: escrowItem.id })}
+  on:keydown={(e) => e.key === 'Enter' && dispatch('select', { id: escrowItem.id })}
+  role="button"
+  tabindex="0"
+>
   <div class="flex justify-between items-start mb-4">
-    <h3 class="text-lg font-bold text-gray-800">Escrow {escrowItem.id.substring(0, 8)}</h3>
+    <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">Escrow {escrowItem.id.substring(0, 8)}</h3>
     <span class="px-3 py-1 rounded-full text-xs font-semibold {getStatusColor(escrowItem.state)}">
       {escrowItem.state}
     </span>
@@ -76,7 +85,7 @@
     </div>
   {/if}
 
-  <div class="space-y-2 text-sm text-gray-600 mb-6">
+  <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
     <p><strong>Amount:</strong> {escrowItem.amount_sats} sats</p>
     <p><strong>Buyer:</strong> {escrowItem.buyer.substring(0, 8)}...</p>
     <p><strong>Seller:</strong> {escrowItem.seller.substring(0, 8)}...</p>

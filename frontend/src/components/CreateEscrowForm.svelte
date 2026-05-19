@@ -69,8 +69,8 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<form on:submit={handleSubmit} class="bg-white rounded-lg shadow-lg p-6 mb-8">
-  <h3 class="text-2xl font-bold text-gray-800 mb-4">Create New Escrow</h3>
+<form on:submit={handleSubmit} class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+  <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Create New Escrow</h3>
 
   {#if error}
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" aria-live="assertive">
@@ -80,7 +80,7 @@
 
   <div class="space-y-4">
     <div>
-      <label for="seller_id" class="block text-sm font-semibold text-gray-700 mb-2"
+      <label for="seller_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
         >Seller UUID</label
       >
       <input
@@ -98,7 +98,7 @@
     </div>
 
     <div>
-      <label for="amount" class="block text-sm font-semibold text-gray-700 mb-2"
+      <label for="amount" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
         >Amount (sats)</label
       >
       <input
@@ -116,7 +116,7 @@
     </div>
 
     <div>
-      <label for="description" class="block text-sm font-semibold text-gray-700 mb-2"
+      <label for="description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
         >Description</label
       >
       <textarea
