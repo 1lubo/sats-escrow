@@ -1,32 +1,20 @@
 app = "sats-escrow-frontend"
-primary_region = "iad"
+primary_region = "lhr"
 
 [build]
-  dockerfile = "frontend/Dockerfile"
+  dockerfile = "Dockerfile"
 
-[env]
-  VITE_API_URL = "https://sats-escrow.fly.dev"
+  [build.args]
+    VITE_API_URL = "https://sats-escrow.fly.dev"
 
 [http_service]
   internal_port = 3000
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = "stop"
   auto_start_machines = true
+  min_machines_running = 0
 
-[[services]]
-  protocol = "tcp"
-  internal_port = 3000
-
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-    force_https = true
-
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-
-  [services.concurrency]
-    type = "connections"
-    hard_limit = 1000
-    soft_limit = 200
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
