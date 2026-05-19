@@ -41,7 +41,7 @@
     </div>
 
     {#if showCreateForm}
-      <CreateEscrowForm on:created={() => (showCreateForm = false)} />
+      <CreateEscrowForm on:created={() => (showCreateForm = false)} on:close={() => (showCreateForm = false)} />
     {/if}
 
     {#if $escrow.error}

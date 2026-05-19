@@ -1,9 +1,11 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { escrow } from '../stores/escrow';
   import { auth } from '../stores/auth';
 
   const dispatch = createEventDispatcher();
+
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   let formData = {
     seller_id: '',
@@ -12,6 +14,17 @@
   };
   let error = '';
   let loading = false;
+  let sellerInput;
+
+  onMount(() => {
+    if (sellerInput) sellerInput.focus();
+  });
+
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape') {
+      dispatch('close');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +37,28 @@
       return;
     }
 
+    if (!UUID_REGEX.test(formData.seller_id.trim())) {
+      error = 'Seller UUID must be in format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+      loading = false;
+      return;
+    }
+
+    const parsedAmount = parseInt(formData.amount);
+    if (!Number.isInteger(parsedAmount) || parsedAmount <= 0) {
+      error = 'Amount must be a positive integer';
+      loading = false;
+      return;
+    }
+
     try {
       await escrow.create({
-        seller_id: formData.seller_id,
-        amount: parseInt(formData.amount),
-        description: formData.description,
+        role: 'buyer',
+        counterparty_id: formData.seller_id.trim(),
+        amount_sats: parsedAmount,
+        description: formData.description.trim(),
       });
-      dispatch('created');
       formData = { seller_id: '', amount: '', description: '' };
+      dispatch('created');
     } catch (err) {
       error = err.response?.data?.message || 'Failed to create escrow';
     } finally {
@@ -40,11 +67,13 @@
   };
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
+
 <form on:submit={handleSubmit} class="bg-white rounded-lg shadow-lg p-6 mb-8">
   <h3 class="text-2xl font-bold text-gray-800 mb-4">Create New Escrow</h3>
 
   {#if error}
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" aria-live="assertive">
       {error}
     </div>
   {/if}
@@ -57,11 +86,14 @@
       <input
         type="text"
         id="seller_id"
+        bind:this={sellerInput}
         bind:value={formData.seller_id}
         placeholder="Enter seller's UUID"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         disabled={loading}
         required
+        aria-required="true"
+        aria-invalid={!!error && !UUID_REGEX.test(formData.seller_id.trim())}
       />
     </div>
 
@@ -78,6 +110,8 @@
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         disabled={loading}
         required
+        aria-required="true"
+        aria-invalid={!!error && (!formData.amount || parseInt(formData.amount) <= 0)}
       />
     </div>
 
@@ -93,6 +127,7 @@
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         disabled={loading}
         required
+        aria-required="true"
       />
     </div>
   </div>

@@ -15,11 +15,11 @@ function createEscrowStore() {
       update((state) => ({ ...state, loading: true, error: null }));
       try {
         const { data } = await escrowAPI.list();
-        update((state) => ({ ...state, escrows: data, loading: false }));
+        update((state) => ({ ...state, escrows: data.data ?? data, loading: false }));
       } catch (error) {
         update((state) => ({
           ...state,
-          error: error.response?.data?.message || 'Failed to fetch escrows',
+          error: error.response?.data?.message || error.message || 'Failed to fetch escrows',
           loading: false,
         }));
       }
@@ -30,10 +30,10 @@ function createEscrowStore() {
         const { data } = await escrowAPI.create(escrowData);
         update((state) => ({
           ...state,
-          escrows: [...state.escrows, data],
+          escrows: [...state.escrows, data.data ?? data],
           loading: false,
         }));
-        return data;
+        return data.data ?? data;
       } catch (error) {
         update((state) => ({
           ...state,
@@ -43,26 +43,23 @@ function createEscrowStore() {
         throw error;
       }
     },
-    updateStatus: async (id, action) => {
-      update((state) => ({ ...state, loading: true }));
+    updateStatus: async (id, action, extra) => {
       try {
         let response;
-        if (action === 'fund') response = await escrowAPI.fund(id);
+        if (action === 'fund') response = await escrowAPI.fund(id, extra?.txId || 'mock-tx');
         else if (action === 'deliver') response = await escrowAPI.deliver(id);
         else if (action === 'confirm') response = await escrowAPI.confirm(id);
         else if (action === 'cancel') response = await escrowAPI.cancel(id);
+        else if (action === 'dispute') response = await escrowAPI.dispute(id, extra?.description);
+
+        // Action endpoints return { data: { success, message, escrow } }
+        const updatedEscrow = response.data?.data?.escrow ?? response.data?.escrow ?? response.data;
 
         update((state) => ({
           ...state,
-          escrows: state.escrows.map((e) => (e.id === id ? response.data : e)),
-          loading: false,
+          escrows: state.escrows.map((e) => (e.id === id ? updatedEscrow : e)),
         }));
       } catch (error) {
-        update((state) => ({
-          ...state,
-          error: error.response?.data?.message || `Failed to ${action} escrow`,
-          loading: false,
-        }));
         throw error;
       }
     },

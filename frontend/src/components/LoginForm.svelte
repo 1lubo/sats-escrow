@@ -4,12 +4,18 @@
   let uuid = '';
   let error = '';
 
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
   const handleLogin = () => {
     if (!uuid.trim()) {
       error = 'Please enter a valid UUID';
       return;
     }
-    auth.login(uuid);
+    if (!UUID_REGEX.test(uuid.trim())) {
+      error = 'UUID must be in format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+      return;
+    }
+    auth.login(uuid.trim());
   };
 </script>
 
@@ -17,16 +23,19 @@
   <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">SatsEscrow</h1>
     <p class="text-gray-600 text-center mb-8">Enter your UUID to continue</p>
-    
+
     <div class="space-y-4">
       <input
         type="text"
         placeholder="Your UUID"
         bind:value={uuid}
+        on:keydown={(e) => e.key === 'Enter' && handleLogin()}
+        aria-required="true"
+        aria-invalid={!!error}
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       {#if error}
-        <p class="text-red-600 text-sm">{error}</p>
+        <p class="text-red-600 text-sm" aria-live="assertive">{error}</p>
       {/if}
       <button
         on:click={handleLogin}

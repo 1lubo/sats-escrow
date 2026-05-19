@@ -64,7 +64,15 @@ impl From<&Escrow> for EscrowResponse {
     fn from(e: &Escrow) -> Self {
         Self {
             id: e.id.0,
-            state: format!("{:?}", e.state).to_lowercase(),
+            state: match &e.state {
+                sats_escrow_core::escrow::EscrowState::Created => "created",
+                sats_escrow_core::escrow::EscrowState::Funded => "funded",
+                sats_escrow_core::escrow::EscrowState::AwaitingDelivery { .. } => "awaiting_delivery",
+                sats_escrow_core::escrow::EscrowState::Disputed { .. } => "disputed",
+                sats_escrow_core::escrow::EscrowState::Cancelled { .. } => "cancelled",
+                sats_escrow_core::escrow::EscrowState::ReleasedToSeller { .. } => "released_to_seller",
+                sats_escrow_core::escrow::EscrowState::ReleasedToBuyer { .. } => "released_to_buyer",
+            }.to_string(),
             buyer: e.buyer.0,
             seller: e.seller.0,
             amount_sats: e.amount.0,
@@ -355,10 +363,10 @@ async fn cancel_escrow(
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/api/v1/escrows", post(create_escrow).get(list_user_escrows))
-        .route("/api/v1/escrows/{id}", get(get_escrow))
-        .route("/api/v1/escrows/{id}/fund", post(fund_escrow))
-        .route("/api/v1/escrows/{id}/deliver", post(mark_delivered))
-        .route("/api/v1/escrows/{id}/confirm", post(confirm_escrow))
-        .route("/api/v1/escrows/{id}/dispute", post(open_dispute))
-        .route("/api/v1/escrows/{id}/cancel", post(cancel_escrow))
+        .route("/api/v1/escrows/:id", get(get_escrow))
+        .route("/api/v1/escrows/:id/fund", post(fund_escrow))
+        .route("/api/v1/escrows/:id/deliver", post(mark_delivered))
+        .route("/api/v1/escrows/:id/confirm", post(confirm_escrow))
+        .route("/api/v1/escrows/:id/dispute", post(open_dispute))
+        .route("/api/v1/escrows/:id/cancel", post(cancel_escrow))
 }

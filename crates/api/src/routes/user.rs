@@ -86,5 +86,5 @@ async fn get_user_reputation(
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/api/v1/users/me", get(get_current_user))
-        .route("/api/v1/users/{id}/reputation", get(get_user_reputation))
+        .route("/api/v1/users/:id/reputation", get(get_user_reputation))
 }
