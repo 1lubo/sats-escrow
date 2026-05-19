@@ -5,13 +5,14 @@ use std::time::Instant;
 
 use axum::{routing::get, Json, Router};
 use serde::Serialize;
+use utoipa::ToSchema;
 
 use crate::state::AppState;
 
 static START_TIME: OnceLock<Instant> = OnceLock::new();
 
-#[derive(Serialize)]
-struct HealthResponse {
+#[derive(Serialize, ToSchema)]
+pub struct HealthResponse {
     status: &'static str,
     version: &'static str,
     uptime_seconds: u64,
@@ -19,7 +20,16 @@ struct HealthResponse {
     timestamp: String,
 }
 
-async fn health_check() -> Json<HealthResponse> {
+/// Health check endpoint
+#[utoipa::path(
+    get,
+    path = "/health",
+    responses(
+        (status = 200, description = "Service is healthy", body = HealthResponse),
+    ),
+    tag = "Health"
+)]
+pub async fn health_check() -> Json<HealthResponse> {
     let start = START_TIME.get_or_init(Instant::now);
     let uptime_seconds = start.elapsed().as_secs();
 

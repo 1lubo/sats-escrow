@@ -6,6 +6,7 @@ use axum::{
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use sats_escrow_core::{
@@ -24,7 +25,7 @@ use crate::{
 
 // === Request/Response DTOs ===
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct CreateEscrowRequest {
     pub role: PartyDto,
     pub counterparty_id: Uuid,
@@ -68,20 +69,20 @@ impl CreateEscrowRequest {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum PartyDto {
     Buyer,
     Seller,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct EscrowTermsDto {
     pub auto_release_days: Option<i64>,
     pub dispute_window_days: Option<i64>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct EscrowResponse {
     pub id: Uuid,
     pub state: String,
@@ -125,25 +126,25 @@ impl From<&Escrow> for EscrowResponse {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct DisputeRequest {
     pub description: String,
     #[serde(default)]
     pub attachments: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct FundRequest {
     pub tx_id: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct CancelRequest {
     #[serde(default)]
     pub reason: Option<String>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct ActionResponse {
     pub success: bool,
     pub message: String,
@@ -152,8 +153,21 @@ pub struct ActionResponse {
 
 // === Route Handlers ===
 
+/// Create a new escrow contract
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows",
+    request_body = CreateEscrowRequest,
+    responses(
+        (status = 201, description = "Escrow created", body = EscrowResponse),
+        (status = 400, description = "Validation error"),
+        (status = 401, description = "Unauthorized"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all)]
-async fn create_escrow(
+pub async fn create_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Json(req): Json<CreateEscrowRequest>,
@@ -206,8 +220,19 @@ async fn create_escrow(
     Ok(CreatedResponse(EscrowResponse::from(&escrow)))
 }
 
+/// Get an escrow by ID
+#[utoipa::path(
+    get,
+    path = "/api/v1/escrows/{id}",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    responses(
+        (status = 200, description = "Escrow details", body = EscrowResponse),
+        (status = 404, description = "Escrow not found"),
+    ),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn get_escrow(
+pub async fn get_escrow(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<EscrowResponse>> {
@@ -222,8 +247,23 @@ async fn get_escrow(
     Ok(ApiResponse::new(EscrowResponse::from(&escrow)))
 }
 
+/// List escrows for the authenticated user
+#[utoipa::path(
+    get,
+    path = "/api/v1/escrows",
+    params(
+        ("limit" = Option<usize>, Query, description = "Max results per page"),
+        ("offset" = Option<usize>, Query, description = "Number of results to skip"),
+    ),
+    responses(
+        (status = 200, description = "Paginated list of escrows", body = [EscrowResponse]),
+        (status = 401, description = "Unauthorized"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all)]
-async fn list_user_escrows(
+pub async fn list_user_escrows(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Query(pagination): Query<PaginationParams>,
@@ -251,8 +291,20 @@ async fn list_user_escrows(
 }
 
 /// Mark escrow as funded (typically called via webhook from custodian)
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows/{id}/fund",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    request_body = FundRequest,
+    responses(
+        (status = 200, description = "Escrow funded", body = ActionResponse),
+        (status = 404, description = "Escrow not found"),
+        (status = 409, description = "Invalid state transition"),
+    ),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn fund_escrow(
+pub async fn fund_escrow(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
     Json(req): Json<FundRequest>,
@@ -284,8 +336,20 @@ async fn fund_escrow(
 }
 
 /// Seller marks delivery complete
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows/{id}/deliver",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    responses(
+        (status = 200, description = "Delivery marked", body = ActionResponse),
+        (status = 403, description = "Only seller can mark delivery"),
+        (status = 404, description = "Escrow not found"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn mark_delivered(
+pub async fn mark_delivered(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
@@ -320,8 +384,20 @@ async fn mark_delivered(
 }
 
 /// Buyer confirms receipt and releases funds to seller
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows/{id}/confirm",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    responses(
+        (status = 200, description = "Escrow confirmed, funds released", body = ActionResponse),
+        (status = 403, description = "Only buyer can confirm"),
+        (status = 404, description = "Escrow not found"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn confirm_escrow(
+pub async fn confirm_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
@@ -363,9 +439,22 @@ async fn confirm_escrow(
     }))
 }
 
-/// Buyer opens a dispute
+/// Buyer opens a dispute on the escrow
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows/{id}/dispute",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    request_body = DisputeRequest,
+    responses(
+        (status = 201, description = "Dispute opened", body = ActionResponse),
+        (status = 403, description = "Only buyer can dispute"),
+        (status = 404, description = "Escrow not found"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn open_dispute(
+pub async fn open_dispute(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
@@ -421,8 +510,21 @@ async fn open_dispute(
 }
 
 /// Cancel escrow (only allowed before funding)
+#[utoipa::path(
+    post,
+    path = "/api/v1/escrows/{id}/cancel",
+    params(("id" = Uuid, Path, description = "Escrow UUID")),
+    request_body = CancelRequest,
+    responses(
+        (status = 200, description = "Escrow cancelled", body = ActionResponse),
+        (status = 403, description = "Only buyer or seller can cancel"),
+        (status = 404, description = "Escrow not found"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Escrows"
+)]
 #[tracing::instrument(skip_all, fields(escrow_id = %id))]
-async fn cancel_escrow(
+pub async fn cancel_escrow(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,

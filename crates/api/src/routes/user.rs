@@ -6,6 +6,7 @@ use axum::{
     Router,
 };
 use serde::Serialize;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use sats_escrow_core::user::User;
@@ -19,7 +20,7 @@ use crate::{
 
 // === DTOs ===
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct UserResponse {
     pub id: Uuid,
     pub display_name: String,
@@ -28,7 +29,7 @@ pub struct UserResponse {
     pub created_at: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct ReputationDto {
     pub score: f64,
     pub successful_transactions: u32,
@@ -53,7 +54,18 @@ impl From<&User> for UserResponse {
 
 // === Handlers ===
 
-async fn get_current_user(
+/// Get the currently authenticated user's profile
+#[utoipa::path(
+    get,
+    path = "/api/v1/users/me",
+    responses(
+        (status = 200, description = "Current user profile", body = UserResponse),
+        (status = 401, description = "Unauthorized"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Users"
+)]
+pub async fn get_current_user(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
 ) -> ApiResult<ApiResponse<UserResponse>> {
@@ -68,7 +80,17 @@ async fn get_current_user(
     Ok(ApiResponse::new(UserResponse::from(&user)))
 }
 
-async fn get_user_reputation(
+/// Get a user's reputation by their ID
+#[utoipa::path(
+    get,
+    path = "/api/v1/users/{id}/reputation",
+    params(("id" = Uuid, Path, description = "User UUID")),
+    responses(
+        (status = 200, description = "User reputation", body = ReputationDto),
+    ),
+    tag = "Users"
+)]
+pub async fn get_user_reputation(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<ReputationDto>> {

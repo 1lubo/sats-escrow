@@ -7,6 +7,7 @@ use axum::{
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use sats_escrow_core::{
@@ -23,7 +24,7 @@ use crate::{
 
 // === DTOs ===
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct DisputeResponse {
     pub id: Uuid,
     pub escrow_id: Uuid,
@@ -50,13 +51,13 @@ impl From<&Dispute> for DisputeResponse {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct VoteRequest {
     pub decision: PartyDecision,
     pub reasoning: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum PartyDecision {
     Buyer,
@@ -65,7 +66,18 @@ pub enum PartyDecision {
 
 // === Handlers ===
 
-async fn get_dispute(
+/// Get a dispute by ID
+#[utoipa::path(
+    get,
+    path = "/api/v1/disputes/{id}",
+    params(("id" = Uuid, Path, description = "Dispute UUID")),
+    responses(
+        (status = 200, description = "Dispute details", body = DisputeResponse),
+        (status = 404, description = "Dispute not found"),
+    ),
+    tag = "Disputes"
+)]
+pub async fn get_dispute(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<ApiResponse<DisputeResponse>> {
@@ -80,7 +92,22 @@ async fn get_dispute(
     Ok(ApiResponse::new(DisputeResponse::from(&dispute)))
 }
 
-async fn list_open_disputes(
+/// List open disputes (paginated)
+#[utoipa::path(
+    get,
+    path = "/api/v1/disputes",
+    params(
+        ("limit" = Option<usize>, Query, description = "Max results per page"),
+        ("offset" = Option<usize>, Query, description = "Number of results to skip"),
+    ),
+    responses(
+        (status = 200, description = "Paginated list of open disputes", body = [DisputeResponse]),
+        (status = 401, description = "Unauthorized"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Disputes"
+)]
+pub async fn list_open_disputes(
     State(state): State<AppState>,
     AuthUser(_user_id): AuthUser,
     Query(pagination): Query<PaginationParams>,
@@ -107,7 +134,21 @@ async fn list_open_disputes(
     ))
 }
 
-async fn submit_vote(
+/// Submit a vote on a dispute (arbitrator action)
+#[utoipa::path(
+    post,
+    path = "/api/v1/disputes/{id}/vote",
+    params(("id" = Uuid, Path, description = "Dispute UUID")),
+    request_body = VoteRequest,
+    responses(
+        (status = 200, description = "Vote recorded", body = DisputeResponse),
+        (status = 404, description = "Dispute not found"),
+        (status = 409, description = "Already voted or dispute not votable"),
+    ),
+    security(("bearer_auth" = [])),
+    tag = "Disputes"
+)]
+pub async fn submit_vote(
     State(state): State<AppState>,
     AuthUser(user_id): AuthUser,
     Path(id): Path<Uuid>,
