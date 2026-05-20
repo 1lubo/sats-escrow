@@ -32,7 +32,7 @@
       fulfill their obligations — no trust required.
     </p>
 
-    <div class="flex justify-center gap-4">
+    <div class="flex justify-center gap-4 flex-wrap">
       <button
         on:click={handleTryDemo}
         class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition shadow-lg"
@@ -45,6 +45,14 @@
       >
         Login
       </button>
+      <a
+        href="/swagger-ui"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg text-lg font-semibold transition border border-white/30 inline-flex items-center gap-2"
+      >
+        📖 API Docs
+      </a>
     </div>
   </div>
 
@@ -108,11 +116,21 @@
   <!-- Footer CTA -->
   <div class="max-w-4xl mx-auto px-6 py-12 text-center">
     <p class="text-blue-200 mb-4">Ready to get started?</p>
-    <button
-      on:click={handleTryDemo}
-      class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition shadow-lg"
-    >
-      Try Demo
-    </button>
+    <div class="flex justify-center gap-4">
+      <button
+        on:click={handleTryDemo}
+        class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition shadow-lg"
+      >
+        Try Demo
+      </button>
+      <a
+        href="/swagger-ui"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg text-lg font-semibold transition border border-white/30 inline-flex items-center gap-2"
+      >
+        📖 API Docs
+      </a>
+    </div>
   </div>
 </div>

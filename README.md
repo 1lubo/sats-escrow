@@ -6,6 +6,10 @@
 
 > A Bitcoin escrow service built in Rust, showcasing hexagonal architecture, domain-driven design, and async patterns.
 
+🤖 **This project was vibecoded** — built collaboratively with AI assistance.
+
+🚀 **Live demo:** [sats-escrow.fly.dev](https://sats-escrow.fly.dev/)
+
 ## Architecture
 
 ```mermaid
