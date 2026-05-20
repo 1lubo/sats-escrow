@@ -20,6 +20,9 @@
     { emoji: '📦', label: 'Deliver', desc: 'Seller delivers goods or services' },
     { emoji: '✅', label: 'Confirm', desc: 'Buyer confirms and funds release' },
   ];
+
+  const apiUrl = import.meta.env.VITE_API_URL || '';
+  const swaggerUrl = `${apiUrl}/swagger-ui`;
 </script>
 
 <div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 text-white">
@@ -46,7 +49,7 @@
         Login
       </button>
       <a
-        href="/swagger-ui"
+        href={swaggerUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg text-lg font-semibold transition border border-white/30 inline-flex items-center gap-2"
@@ -124,7 +127,7 @@
         Try Demo
       </button>
       <a
-        href="/swagger-ui"
+        href={swaggerUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg text-lg font-semibold transition border border-white/30 inline-flex items-center gap-2"
