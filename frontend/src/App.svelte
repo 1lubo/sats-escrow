@@ -45,7 +45,7 @@
   }
 </script>
 
-<main class="dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors">
+<main class="bg-gray-950 text-white min-h-screen">
   {#if !$auth.isAuthenticated}
     {#if $router.path === '/login'}
       <LoginForm />
@@ -63,7 +63,6 @@
   :global(body) {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-      Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 </style>

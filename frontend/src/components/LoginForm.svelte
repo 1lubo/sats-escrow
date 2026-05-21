@@ -19,10 +19,10 @@
   };
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
-  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">SatsEscrow</h1>
-    <p class="text-gray-600 text-center mb-8">Enter your UUID to continue</p>
+<div class="min-h-screen bg-gray-950 flex items-center justify-center">
+  <div class="bg-white/5 border border-white/5 rounded-xl shadow-lg p-8 w-full max-w-md backdrop-blur-sm">
+    <h1 class="text-3xl font-bold text-white mb-6 text-center">SatsEscrow</h1>
+    <p class="text-gray-400 text-center mb-8">Enter your UUID to continue</p>
 
     <div class="space-y-4">
       <div class="relative group">
@@ -34,18 +34,18 @@
           aria-required="true"
           aria-invalid={!!error}
           title="Try: 550e8400-e29b-41d4-a716-446655440000"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         />
         <div class="absolute left-0 right-0 mt-1 bg-gray-800 text-white text-xs rounded-md px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
           Demo UUID: <span class="font-mono">550e8400-e29b-41d4-a716-446655440000</span>
         </div>
       </div>
       {#if error}
-        <p class="text-red-600 text-sm" aria-live="assertive">{error}</p>
+        <p class="text-red-400 text-sm" aria-live="assertive">{error}</p>
       {/if}
       <button
         on:click={handleLogin}
-        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+        class="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition font-semibold shadow-lg shadow-orange-500/20"
       >
         Login
       </button>

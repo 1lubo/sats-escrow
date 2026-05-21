@@ -3,7 +3,11 @@ export default {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,svelte}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };

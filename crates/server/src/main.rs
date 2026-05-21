@@ -3,7 +3,7 @@
 //! This binary wires together all the components and starts the HTTP server.
 //!
 //! Configuration via environment variables:
-//! - `PORT` - HTTP server port (default: 3000)
+//! - `PORT` - HTTP server port (default: 8000)
 //! - `MONGODB_URI` - MongoDB connection string (optional)
 //! - `DATABASE_NAME` - MongoDB database name (default: sats_escrow)
 

@@ -107,7 +107,7 @@ cargo run
 MONGODB_URI="mongodb+srv://user:pass@cluster.mongodb.net" cargo run
 ```
 
-The server starts on `http://localhost:3000` by default.
+The server starts on `http://localhost:8000` by default.
 
 ## Project Structure
 

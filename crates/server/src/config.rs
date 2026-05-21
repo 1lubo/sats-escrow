@@ -1,7 +1,7 @@
 //! Server configuration
 //!
 //! Configuration is loaded from environment variables:
-//! - `PORT` - HTTP server port (default: 3000)
+//! - `PORT` - HTTP server port (default: 8000)
 //! - `MONGODB_URI` - MongoDB connection string (optional, uses mock if not set)
 //! - `DATABASE_NAME` - MongoDB database name (default: sats_escrow)
 //! - `ALLOWED_ORIGINS` - Comma-separated list of allowed CORS origins (optional, allows any if not set)
@@ -29,7 +29,7 @@ impl Config {
             port: env::var("PORT")
                 .ok()
                 .and_then(|p| p.parse().ok())
-                .unwrap_or(3000),
+                .unwrap_or(8000),
             mongodb_uri: env::var("MONGODB_URI").ok(),
             database_name: env::var("DATABASE_NAME").unwrap_or_else(|_| "sats_escrow".to_string()),
             allowed_origins: env::var("ALLOWED_ORIGINS").ok().map(|origins| {

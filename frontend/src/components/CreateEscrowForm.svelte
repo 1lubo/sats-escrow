@@ -69,18 +69,18 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<form on:submit={handleSubmit} class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-  <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Create New Escrow</h3>
+<form on:submit={handleSubmit} class="bg-white/5 border border-white/5 rounded-xl p-6 mb-8 backdrop-blur-sm">
+  <h3 class="text-2xl font-bold text-white mb-4">Create New Escrow</h3>
 
   {#if error}
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" aria-live="assertive">
+    <div class="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg mb-4" aria-live="assertive">
       {error}
     </div>
   {/if}
 
   <div class="space-y-4">
     <div>
-      <label for="seller_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+      <label for="seller_id" class="block text-sm font-semibold text-gray-300 mb-2"
         >Seller UUID</label
       >
       <input
@@ -89,7 +89,7 @@
         bind:this={sellerInput}
         bind:value={formData.seller_id}
         placeholder="Enter seller's UUID"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         disabled={loading}
         required
         aria-required="true"
@@ -98,7 +98,7 @@
     </div>
 
     <div>
-      <label for="amount" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+      <label for="amount" class="block text-sm font-semibold text-gray-300 mb-2"
         >Amount (sats)</label
       >
       <input
@@ -107,7 +107,7 @@
         bind:value={formData.amount}
         placeholder="Amount in satoshis"
         min="1"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         disabled={loading}
         required
         aria-required="true"
@@ -116,7 +116,7 @@
     </div>
 
     <div>
-      <label for="description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+      <label for="description" class="block text-sm font-semibold text-gray-300 mb-2"
         >Description</label
       >
       <textarea
@@ -124,7 +124,7 @@
         bind:value={formData.description}
         placeholder="Describe the goods or services"
         rows="4"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         disabled={loading}
         required
         aria-required="true"
@@ -136,7 +136,7 @@
     <button
       type="submit"
       disabled={loading}
-      class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-semibold disabled:opacity-50"
+      class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition font-semibold disabled:opacity-50 shadow-lg shadow-orange-500/20"
     >
       {loading ? 'Creating...' : 'Create Escrow'}
     </button>
